@@ -91,9 +91,9 @@
       "cholinergic": {
         "name": "Cholinergic Deficit",
         "title": "Acetylcholine Loss",
-        "description": "A significant decrease in acetylcholine synthesis and activity. This neurotransmitter is crucial for learning and memory processes.",
+        "description": "A significant decrease in acetylcholine synthesis and activity. This neurotransmitter is crucial for learning and memory processes. The goal of treatment is to overcome this presynaptic deficit.",
         "symptoms": ["Memory loss", "Attention deficit", "Impaired learning", "Disrupted signaling"],
-        "note": "Donepezil and Rivastigmine work by inhibiting the enzyme that breaks down acetylcholine."
+        "note": "Donepezil is a selective AChEI with a long half-life (approx. 100h in elderly), allowing once-daily dosing."
       },
       "inflammation": {
         "name": "Neuroinflammation",
@@ -119,8 +119,9 @@
       "moderate": {
         "name": "Moderate Alzheimer's (Middle Stage)",
         "title": "Moderate Stage",
+        "description": "The longest stage, where patients require more help with daily activities. NMDA antagonists like Memantine are often introduced here.",
         "symptoms": ["Confusion about time/place", "Changes in sleep patterns", "Wandering risk", "Personality changes"],
-        "note": "Combination therapy (Memantine + Donepezil) is often used here."
+        "note": "Memantine acts as an NMDA antagonist, protecting neurons against glutamate-induced excitotoxicity."
       },
       "severe": {
         "name": "Severe AD (Late-stage)",
@@ -256,8 +257,8 @@
   },
   "about": {
     "title": "About Sanad (سند)",
-    "desc": "Sanad is a dedicated platform designed to support Alzheimer's caregivers with technology and medical insights.",
-    "mti": "MTI University",
+    "desc": "Sanad is a dedicated platform designed to support Alzheimer's caregivers with evidence-based insights and management tools.",
+    "mti": "Modern University for Technology & Information (MTI)",
     "project": "Faculty of Pharmacy Graduation Project 2026",
     "missionLabel": "Our Mission",
     "missionTitle": "Empowering Caregivers",
@@ -288,16 +289,16 @@
     "ctaText": "Learn how to manage sundowning and agitation using our clinical behavioral management tool.",
     "ctaBtn": "View Guides",
     "team": [
-      { "id": 1, "name": "Seveen Mohamed Ahmed Fouad Elsayoufy", "role": "Team Leader", "bio": "Coordinates clinical integration and leads the pharmacy presentation board structure." },
-      { "id": 2, "name": "Ahmed Ezzat Osman Tantawy", "role": "Clinical Pharmacist", "bio": "Specializes in neurodegenerative drug interactions." },
-      { "id": 3, "name": "Diana Yasser AbdAlazim Mohamed Salama", "role": "Clinical Pharmacist", "bio": "Focuses on caregiver compliance and behavior tracking." },
-      { "id": 4, "name": "Mina Talat Shaker Wassef", "role": "Clinical Pharmacist", "bio": "Ensures the accuracy of the Interaction Checker API integration." },
-      { "id": 5, "name": "Moustafa Khalid Mohamed Taha Bahr", "role": "Clinical Pharmacist", "bio": "Develops the behavioral algorithms used in the SOS tool." },
-      { "id": 6, "name": "Nada Mohammed Kamal Abieah", "role": "Clinical Pharmacist", "bio": "Curates the medical terminology and care instructions." },
-      { "id": 7, "name": "Zeinab Hamdy Hassab tayeeb", "role": "Clinical Pharmacist", "bio": "Evaluates application usability against healthcare standards." },
-      { "id": 8, "name": "Abdalla Abouelscoud Hassan Hassoub Soliman", "role": "Clinical Pharmacist", "bio": "Researches up-to-date Alzheimer's medications and contraindications." },
-      { "id": 9, "name": "Yassein Mohamed Mohamed Ali Almaghrabi", "role": "Clinical Pharmacist", "bio": "Structures the medical history tracking and behavior log logic." },
-      { "id": 10, "name": "Ahmed Mohamed Ahmed Elgashy", "role": "Clinical Pharmacist", "bio": "Validates final clinical safety recommendations for the board." }
+      { "id": 1, "name": "Toka Gamal", "role": "Researcher", "bio": "Focuses on AD pathophysiology and emerging therapeutics." },
+      { "id": 2, "name": "Khalid Mohamed", "role": "Researcher", "bio": "Specializes in clinical diagnosis and medication compliance." },
+      { "id": 3, "name": "Yassi boules", "role": "Researcher", "bio": "Researched neurotransmitter pathology and cholinergic deficit." },
+      { "id": 4, "name": "Youssef Asaad", "role": "Researcher", "bio": "Focuses on pharmacological agents like Donepezil and Memantine." },
+      { "id": 5, "name": "Ibrahim Hassan", "role": "Researcher", "bio": "Specializes in neuroinflammation and amyloid-beta pathology." },
+      { "id": 6, "name": "Thomas Adly", "role": "Researcher", "bio": "Researched tau protein hyperphosphorylation and tangles." },
+      { "id": 7, "name": "Ziad Ibrahim", "role": "Researcher", "bio": "Focuses on AI and Machine Learning in AD management." },
+      { "id": 8, "name": "Hamdy Ahmed", "role": "Researcher", "bio": "Specializes in drug-drug interactions and polypharmacy." },
+      { "id": 9, "name": "Toqa Ashraf", "role": "Researcher", "bio": "Researched disease-modifying therapies and gene therapy." },
+      { "id": 10, "name": "Dr. Osama Badran", "role": "Supervisor", "bio": "Project supervisor and clinical lead for the 2026 graduation project." }
     ]
   },
   "home": {
@@ -305,7 +306,7 @@
     "heroTitle": "Empowering Caregivers, Preserving Memories",
     "heroDescription": "Sanad (عون) is your digital partner in Alzheimer's care. Track behavior, manage complex medications, and access professional behavioral guides designed to make every day a little easier.",
     "understandingTitle": "Understanding Alzheimer's",
-    "understandingDescription": "Alzheimer's is a progressive brain disease. Understanding its pathophysiology and stages is the first step toward providing effective and compassionate care.",
+    "understandingDescription": "Alzheimer's is a complex neurodegenerative disease involving amyloid-β plaques and tau tangles. Understanding its pathophysiology is vital for precise care.",
     "understandingBtn": "Learn About AD Pathology",
     "servicesTitle": "Caregiver Support Suite",
     "servicesSubtitle": "Tools designed for safety and peace of mind.",

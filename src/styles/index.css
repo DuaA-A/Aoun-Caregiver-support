@@ -13,22 +13,26 @@ button {
 }
 
 :root {
-  /* Quiet & Elegant Palette */
-  --primary: #8da9c4;
-  --primary-dark: #6685a4;
-  --primary-hover: #7a97b2;
-  --secondary: #a3bcf9;
+  /* Soft Baby Blue & Light Green Palette */
+  --primary: #a2d2ff;
+  --primary-dark: #81b9e8;
+  --primary-hover: #bde0fe;
+  --secondary: #b8e0d2;
+  --secondary-dark: #96c4b6;
   --accent: #c1d3fe;
-  --bg-gradient: radial-gradient(circle at top right, #fcfaf8, #f8f4e1);
-  --glass-bg: rgba(255, 255, 255, 0.6);
-  --text-main: #4a4e69;
-  --text-muted: #9a8c98;
+  --bg-gradient: linear-gradient(135deg, #f0f7ff 0%, #f0fdf4 100%);
+  --hero-gradient: linear-gradient(135deg, #a2d2ff 0%, #b8e0d2 100%);
+  --glass-bg: rgba(255, 255, 255, 0.4);
+  --text-main: #2d3436;
+  --text-muted: #636e72;
   --success: #b8e0d2;
-  --warning: #f7e1ad;
-  --error: #f1b5b5;
-  --border: rgba(141, 169, 196, 0.15);
-  --shadow: 0 8px 32px rgba(74, 78, 105, 0.05);
+  --warning: #ffeaa7;
+  --error: #ffadad;
+  --border: rgba(162, 210, 255, 0.2);
+  --shadow: 0 12px 40px rgba(162, 210, 255, 0.1);
   --dir-sign: 1;
+  --radius-xl: 40px;
+  --radius-lg: 24px;
 }
 
 [dir="rtl"] {
@@ -256,8 +260,53 @@ h3 {
   margin: 0 auto 3rem;
 }
 
+.bg-unified { background: var(--bg-gradient); }
+
+/* Circle Animations */
+@keyframes pulse-gentle {
+  0%, 100% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.2); opacity: 0.5; }
+}
+
+.pulsing-circle {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  z-index: 1;
+  animation: pulse-gentle 8s infinite ease-in-out;
+}
+
+/* Wave Shape */
+.hero-wave {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  transform: rotate(180deg);
+  z-index: 10;
+}
+
+.hero-wave svg {
+  position: relative;
+  display: block;
+  width: calc(100% + 1.3px);
+  height: 80px;
+}
+
+.hero-wave .shape-fill {
+  fill: #f0f7ff; /* Matches the top of the next section */
+}
+
+/* More Rounded Components */
+.btn { border-radius: var(--radius-lg); }
+.glass-card { border-radius: var(--radius-lg); }
+.type-card-premium { border-radius: var(--radius-lg); }
+.modal-content { border-radius: var(--radius-xl); }
+
 .navbar-transparent .safe-text {
-  color: #00d4ff !important;
+  color: var(--secondary) !important;
 }
 
 .navbar-scrolled .safe-text {

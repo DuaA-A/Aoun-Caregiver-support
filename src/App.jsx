@@ -23,6 +23,11 @@ const Home = ({ onOpenAuth }) => {
 
       {/* Hero Section */}
       <section className="full-screen-section modern-hero">
+        {/* Pulsing Background Circles */}
+        <div className="pulsing-circle" style={{ width: '300px', height: '300px', top: '10%', left: '5%', background: 'var(--primary)', animationDelay: '0s' }}></div>
+        <div className="pulsing-circle" style={{ width: '200px', height: '200px', bottom: '20%', left: '15%', background: 'var(--secondary)', animationDelay: '2s' }}></div>
+        <div className="pulsing-circle" style={{ width: '150px', height: '150px', top: '40%', left: '40%', background: 'var(--accent)', animationDelay: '4s' }}></div>
+
         <div className="hero-content container">
           <div className="hero-flex-wrapper" style={{ flexDirection: 'row' }}>
             <motion.div 
@@ -30,22 +35,22 @@ const Home = ({ onOpenAuth }) => {
               style={{ textAlign: 'start' }}
               initial={{ x: isRTL ? 150 : -150, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.8, cubicBezier: [0.16, 1, 0.3, 1], delay: 1.8 }}
+              transition={{ duration: 0.8, cubicBezier: [0.16, 1, 0.3, 1], delay: 0.2 }}
             >
               <div className="active-badge mb-4">{t('home.heroBadge')}</div> <br />
-              <h1 className="hero-title white-text">
+              <h1 className="hero-title">
                 {t('home.heroTitle').split(' ').slice(0, -3).join(' ')} <br />
-                <span className="text-glow italic" style={{ color: '#eebef1' }}>{t('home.heroTitle').split(' ').slice(-3).join(' ')}</span>
+                <span className="text-glow italic" style={{ color: 'var(--secondary)' }}>{t('home.heroTitle').split(' ').slice(-3).join(' ')}</span>
               </h1>
-              <p className="hero-description white-text">
+              <p className="hero-description">
                 {t('home.heroDescription')}
               </p>
 
               <div className="hero-cta-group">
-                <Link to="/first-aid" className="btn-white-dark">
+                <Link to="/first-aid" className="btn btn-premium">
                   {t('common.emergencyFirstAid')} {isRTL ? <ChevronRight size={20} style={{ transform: 'rotate(180deg)' }} /> : <ChevronRight size={20} />}
                 </Link>
-                <Link to="/checker" className="btn btn-outline-white">
+                <Link to="/checker" className="btn btn-outline-primary">
                   {t('common.interactionChecker')}
                 </Link>
               </div>
@@ -55,36 +60,48 @@ const Home = ({ onOpenAuth }) => {
               className="hero-image-side"
               initial={{ x: isRTL ? -150 : 150, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.8, cubicBezier: [0.16, 1, 0.3, 1], delay: 1.9 }}
+              transition={{ duration: 0.8, cubicBezier: [0.16, 1, 0.3, 1], delay: 0.3 }}
             >
-              <div className="hero-img-container">
-                <img src="/hero.png" alt="Epilepsy Awareness" className="hero-main-img" />
-                <div className="brain-flow-overlay">
-                  {/* (Brain waves svg logic remains same) */}
-                  <svg viewBox="0 0 1000 400" className="brain-flow-svg">
-                    <defs>
-                      <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stopColor="transparent" />
-                        <stop offset="50%" stopColor="rgba(255, 255, 255, 0.3)" />
-                        <stop offset="100%" stopColor="transparent" />
-                      </linearGradient>
-                      <linearGradient id="waveGradientColor" x1="100%" y1="0%" x2="0%" y2="0%">
-                        <stop offset="0%" stopColor="transparent" />
-                        <stop offset="50%" stopColor="rgba(255, 255, 255, 0.2)" />
-                        <stop offset="100%" stopColor="transparent" />
-                      </linearGradient>
-                    </defs>
-                    <path d="M400,140 C100,40 -400,240 -900,140" className="flow-line flow-left flow-1" />
-                    <path d="M400,160 C50,90 -450,290 -950,190" className="flow-line flow-left flow-2" />
-                    <path d="M420,120 C120,20 -380,220 -880,120" className="flow-line flow-left flow-3" />
-                    <path d="M500,150 C700,50 1200,250 1700,150" className="flow-line flow-right flow-4" />
-                    <path d="M500,170 C750,100 1250,300 1750,200" className="flow-line flow-right flow-5" />
-                    <path d="M520,130 C720,30 1220,230 1720,130" className="flow-line flow-right flow-6" />
-                  </svg>
-                </div>
+              <div className="hero-circles-container">
+                {/* Main Circle Images */}
+                <motion.div 
+                  className="image-circle large"
+                  animate={{ y: [0, -20, 0] }}
+                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=600&q=80" alt="Care" />
+                </motion.div>
+                <motion.div 
+                  className="image-circle medium"
+                  animate={{ y: [0, 20, 0] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                >
+                  <img src="https://images.unsplash.com/photo-1581056771107-24ca5f033842?auto=format&fit=crop&w=400&q=80" alt="Support" />
+                </motion.div>
+                <motion.div 
+                  className="image-circle small"
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                >
+                  <img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&w=300&q=80" alt="Clinical" />
+                </motion.div>
+                
+                {/* Decorative Small Bubbles */}
+                <div className="mini-bubble bubble-1"></div>
+                <div className="mini-bubble bubble-2"></div>
+                <div className="mini-bubble bubble-3"></div>
+                <div className="mini-bubble bubble-4"></div>
+                <div className="mini-bubble bubble-5"></div>
               </div>
             </motion.div>
           </div>
+        </div>
+
+        {/* Hero Wave Shape */}
+        <div className="hero-wave">
+          <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" className="shape-fill"></path>
+          </svg>
         </div>
       </section>
 
@@ -235,52 +252,39 @@ const Home = ({ onOpenAuth }) => {
         /* Modern Hero Styles (Updated) */
         .modern-hero {
           position: relative;
-          background: linear-gradient(135deg, #4338ca 0%, #3b82f6 100%);
+          background: var(--hero-gradient);
           margin-top: -80px;
           padding-top: 80px;
           overflow: hidden;
         }
-        .hero-flex-wrapper { display: flex; align-items: center; gap: 0; width: 100%; min-height: calc(100vh - 80px); }
-        .hero-text-side { flex: 1; z-index: 10; text-align: start; padding-inline-end: 4rem; }
-        .hero-image-side { flex: 1; display: flex; justify-content: flex-end; align-items: center; z-index: 5; }
-        .hero-img-container { position: relative; display: flex; justify-content: center; align-items: center; width: 100%; }
-        [dir="rtl"] .hero-img-container { transform: scaleX(-1); }
-        .hero-main-img { width: 100%; max-width: 600px; height: auto; z-index: 2; mix-blend-mode: screen; }
-
-        /* Modal Overhaul */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 99999 !important; padding: 2rem; padding-top: calc(80px + 2rem); }
-        .modal-content { 
-          max-width: 1200px; 
-          width: 80%; 
-          max-height: 85vh; 
-          overflow-y: auto; 
-          background: white; 
-          border-radius: 32px; 
-          box-shadow: 0 40px 100px rgba(0,0,0,0.2) !important; 
-          position: relative; 
-          border: 1px solid rgba(255,255,255,0.3);
-        }
-        .modal-body-layout { display: grid; grid-template-columns: 1fr 1.3fr; gap: 0; min-height: 600px; }
-        .modal-image { height: 100%; min-height: 600px; overflow: hidden; }
-        .modal-image img { width: 100%; height: 100%; object-fit: contain; background: #f8fafc; }
-        .modal-info { padding: 4rem; display: flex; flex-direction: column; }
-        .modal-badge { display: inline-block; padding: 6px 14px; background: rgba(126, 34, 206, 0.1); color: var(--primary); border-radius: 20px; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; width: fit-content; }
-        .modal-info h2 { font-size: 2.5rem; font-weight: 900; margin-bottom: 1.5rem; color: var(--text-main); }
-        .modal-desc { font-size: 1.15rem; color: var(--text-muted); line-height: 1.6; margin: 0; }
-        .modal-details-grid { display: flex; flex-direction: column; gap: 2rem; }
-        .symptoms-box h4 { font-size: 1.1rem; font-weight: 800; margin-bottom: 1rem; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
-        .symptoms-box ul { padding-left: 1.5rem; color: var(--text-muted); }
-        .symptoms-box li { margin-bottom: 8px; font-weight: 500; }
-        .medical-note-box { padding: 2rem; background: rgba(157, 141, 241, 0.05); border-radius: 24px; border: 1px solid rgba(157, 141, 241, 0.1); }
-        .note-header { display: flex; align-items: center; gap: 10px; margin-bottom: 0.8rem; }
-        .note-header strong { font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--primary); }
-        .medical-note-box p { margin: 0; font-size: 1rem; color: var(--text-main); font-weight: 600; line-height: 1.5; }
-        .close-btn { position: absolute; top: 1.5rem; right: 1.5rem; z-index: 10; background: white; border-radius: 50%; padding: 10px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.1); cursor: pointer; color: var(--text-muted); transition: all 0.2s; }
-        .close-btn:hover { transform: rotate(90deg); color: var(--error); }
+        .hero-flex-wrapper { display: flex; align-items: center; gap: 4rem; width: 100%; min-height: calc(100vh - 80px); }
+        .hero-text-side { flex: 1.2; z-index: 10; text-align: start; }
+        .hero-image-side { flex: 1; display: flex; justify-content: center; align-items: center; z-index: 5; position: relative; }
         
-        .hero-title { font-size: 4rem; font-weight: 900; line-height: 1.1; margin-bottom: 2rem; color: white !important; text-decoration: none !important; }
-        .hero-cta-group { display: flex; gap: 1.5rem; }
-        .hero-description { font-size: 1.2rem; line-height: 1.7; color: rgba(255, 255, 255, 0.9); max-width: 600px; margin-bottom: 3rem; }
+        .hero-circles-container { position: relative; width: 100%; height: 500px; display: flex; justify-content: center; align-items: center; }
+        .image-circle { position: absolute; border-radius: 50%; overflow: hidden; border: 4px solid white; box-shadow: 0 20px 40px rgba(0,0,0,0.1); background: white; }
+        .image-circle img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .image-circle.large { width: 320px; height: 320px; z-index: 3; }
+        .image-circle.medium { width: 220px; height: 220px; top: -20px; right: -40px; z-index: 2; }
+        .image-circle.small { width: 160px; height: 160px; bottom: 20px; left: -30px; z-index: 4; }
+        
+        .mini-bubble { position: absolute; border-radius: 50%; background: white; opacity: 0.4; filter: blur(2px); animation: pulse-mini 4s infinite ease-in-out; }
+        @keyframes pulse-mini { 0%, 100% { transform: scale(1); opacity: 0.3; } 50% { transform: scale(1.3); opacity: 0.6; } }
+        .bubble-1 { width: 40px; height: 40px; top: 10%; right: 20%; }
+        .bubble-2 { width: 20px; height: 20px; bottom: 15%; right: 10%; }
+        .bubble-3 { width: 30px; height: 30px; top: 60%; left: 10%; }
+        .bubble-4 { width: 25px; height: 25px; top: 30%; right: 40%; animation-delay: 1s; }
+        .bubble-5 { width: 15px; height: 15px; bottom: 40%; right: 30%; animation-delay: 2s; }
+
+
+        .btn-outline-primary { border: 2px solid var(--primary); color: var(--primary) !important; background: white; text-decoration: none !important; padding: 14px 28px; border-radius: 24px; font-weight: 700; transition: all 0.3s; }
+        .btn-outline-primary:hover { background: var(--primary); color: white !important; transform: translateY(-3px); }
+
+        .hero-title { font-size: 4rem; font-weight: 900; line-height: 1.1; margin-bottom: 2rem; color: var(--text-main) !important; text-decoration: none !important; }
+        .hero-cta-group { display: flex; gap: 1.5rem; align-items: center; }
+        .hero-description { font-size: 1.2rem; line-height: 1.7; color: var(--text-muted); max-width: 600px; margin-bottom: 3rem; }
+
         .btn-outline-white { border: 2px solid white; color: white !important; background: transparent; text-decoration: none !important; }
         .btn-outline-white:hover { background: white; color: var(--primary) !important; }
         .hero-cta-group a { text-decoration: none !important; }
