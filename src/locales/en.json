@@ -1,0 +1,325 @@
+{
+  "common": {
+    "brand": "Sanad",
+    "education": "Education",
+    "aboutAlzheimer": "About Alzheimer's",
+    "emergencyFirstAid": "Behavioral Management",
+    "mythsFacts": "Myths & Facts",
+    "specialWarnings": "Special Warnings",
+    "interactionChecker": "Interaction Checker",
+    "aboutTeam": "About the Team",
+    "myDashboard": "My Dashboard",
+    "signIn": "Sign In",
+    "logout": "Logout",
+    "learnMore": "Learn More",
+    "checkDrugs": "Check Drugs",
+    "viewHistory": "View History",
+    "registerNow": "Register Now"
+  },
+  "firstAid": {
+    "subtitle": "CARE & CALM",
+    "title": "Behavioral SOS Guide",
+    "desc": "Managing behavioral changes like agitation, wandering, and sundowning requires patience and specific techniques. Follow these evidence-based strategies.",
+    "step1Title": "1. Stay Calm",
+    "step1Desc": "Your loved one can sense your frustration. Keep your voice low and your movements slow to avoid escalating the situation.",
+    "step2Title": "2. Check Needs",
+    "step2Desc": "Agitation is often a form of communication. Check if they are hungry, thirsty, in pain, or need the bathroom.",
+    "step3Title": "3. Reassure",
+    "step3Desc": "Use simple words and phrases. Hold their hands or provide a gentle touch if they find it comforting.",
+    "doTitle": "Do",
+    "doList": [
+      "Use short, simple sentences.",
+      "Maintain eye contact and smile.",
+      "Redirect attention to a familiar, calming activity.",
+      "Keep the environment quiet and well-lit to reduce confusion."
+    ],
+    "dontTitle": "Don't",
+    "dontList": [
+      "Don't argue or try to use logic to explain reality.",
+      "Don't use physical restraint unless there is immediate danger.",
+      "Don't raise your voice or show obvious frustration.",
+      "Don't ask complex questions with multiple choices."
+    ],
+    "emergencyTitle": "When to Call for Professional Help",
+    "emergencyList": [
+      "When the person becomes physically aggressive and a danger to themselves or others.",
+      "Sudden, unexplained changes in health or behavior (may indicate an infection).",
+      "If the person wanders away and is not found immediately.",
+      "Severe agitation that does not respond to calming techniques.",
+      "Refusing essential medications for more than 24 hours."
+    ]
+  },
+  "aboutAlzheimer": {
+    "subtitle": "Understand",
+    "title": "Alzheimer's Pathophysiology",
+    "desc": "Alzheimer's Disease (AD) is a progressive neurodegenerative disorder characterized by cognitive decline and specific pathological hallmarks.",
+    "classTitle": "Stages & Hallmarks",
+    "classSubtitle": "Select a stage or hallmark to view detailed clinical patterns and care notes.",
+    "clickDetails": "Click for Details",
+    "modalBadge": "Clinical Pathophysiology",
+    "indicators": "Clinical Indicators:",
+    "pharmacistNote": "Caregiver Note",
+    "sections": {
+      "what": {
+        "title": "What is Alzheimer's?",
+        "content": "Alzheimer's disease is the most common cause of dementia — a continuous decline in thinking, behavioral and social skills that affects a person's ability to function independently. It involves the progressive death of brain cells."
+      },
+      "causes": {
+        "title": "Biological Causes",
+        "content": "The exact causes aren't fully understood, but at its core are brain proteins that fail to function normally. This disrupts the work of brain cells (neurons) and triggers a series of toxic events."
+      },
+      "diagnosis": {
+        "title": "The Pathology (Hallmarks)",
+        "content": "The main biological changes include:\n1. Amyloid-β Plaques: Protein clumps that block cell signaling.\n2. Tau Tangles: Twisted fibers of another protein that destroy cell transport.\n3. Neuroinflammation: Chronic immune response damaging brain tissue.\n4. Cholinergic Deficit: Loss of key memory neurotransmitters."
+      }
+    },
+    "details": {
+      "amyloid": {
+        "name": "Amyloid-β Plaques",
+        "title": "Amyloid Beta",
+        "description": "Extracellular deposition of amyloid-beta protein fragments that clump together, disrupting nerve-to-nerve communication and triggering immune responses.",
+        "symptoms": ["Synaptic failure", "Memory impairment", "Signaling block", "Toxic oligomer formation"],
+        "note": "Modern drugs like Aduhelm target these plaques directly to slow disease progression."
+      },
+      "tau": {
+        "name": "Tau Tangles",
+        "title": "Tau Proteins",
+        "description": "Intracellular formation of neurofibrillary tangles. Normally tau proteins stabilize microtubules, but in AD, they collapse into twisted strands.",
+        "symptoms": ["Transport collapse", "Neuron death", "Widespread atrophy", "Cognitive decline"],
+        "note": "Tau accumulation correlates more closely with cognitive decline than amyloid plaques."
+      },
+      "cholinergic": {
+        "name": "Cholinergic Deficit",
+        "title": "Acetylcholine Loss",
+        "description": "A significant decrease in acetylcholine synthesis and activity. This neurotransmitter is crucial for learning and memory processes.",
+        "symptoms": ["Memory loss", "Attention deficit", "Impaired learning", "Disrupted signaling"],
+        "note": "Donepezil and Rivastigmine work by inhibiting the enzyme that breaks down acetylcholine."
+      },
+      "inflammation": {
+        "name": "Neuroinflammation",
+        "title": "Immune Response",
+        "description": "Chronic activation of microglia and astrocytes. While meant to protect, overactive immune cells release neurotoxins and inflammatory agents.",
+        "symptoms": ["Tissue damage", "Accelerated aging", "Synaptic pruning", "Oxidative stress"],
+        "note": "Managing cardiovascular health helps reduce systemic inflammation that affects the brain."
+      },
+      "mci": {
+        "name": "Mild Cognitive Impairment (MCI)",
+        "title": "MCI Stage",
+        "description": "The stage between the expected cognitive decline of normal aging and the more serious decline of dementia.",
+        "symptoms": ["Frequent memory lapses", "Difficulty planning", "Losing track of time", "Word-finding difficulties"],
+        "note": "Early detection at this stage is crucial for starting pharmacological interventions."
+      },
+      "mild": {
+        "name": "Mild Alzheimer's (Early Stage)",
+        "title": "Mild Stage",
+        "description": "A person may function independently but experiences memory lapses that affect daily life.",
+        "symptoms": ["Losing objects", "Forgetting recent events", "Difficulty with complex tasks", "Social withdrawal"],
+        "note": "Focus on maintaining routines and using memory aids like the Sanad Behavior Log."
+      },
+      "moderate": {
+        "name": "Moderate Alzheimer's (Middle Stage)",
+        "title": "Moderate Stage",
+        "symptoms": ["Confusion about time/place", "Changes in sleep patterns", "Wandering risk", "Personality changes"],
+        "note": "Combination therapy (Memantine + Donepezil) is often used here."
+      },
+      "severe": {
+        "name": "Severe AD (Late-stage)",
+        "title": "Severe Stage",
+        "description": "Individuals lose the ability to respond to their environment, carry on a conversation, and eventually control movement.",
+        "symptoms": ["Loss of awareness", "Vulnerability to infections", "Difficulty swallowing", "24/7 care requirement"],
+        "note": "Focus shifts to palliative care and maintaining comfort and dignity."
+      }
+    }
+  },
+  "mythsFacts": {
+    "subtitle": "CLARITY",
+    "title": "Myths vs. Facts",
+    "desc": "Alzheimer's is often misunderstood. Let's clear up some common misconceptions.",
+    "mythLabel": "Myth",
+    "factLabel": "Fact",
+    "items": [
+      {
+        "myth": "Alzheimer's is a normal part of aging.",
+        "fact": "It is a progressive brain disease. While age is a risk factor, AD involves significant cell death and is not an inevitable part of growing older."
+      },
+      {
+        "myth": "Only the elderly get Alzheimer's.",
+        "myth": "Memory loss is the only symptom of Alzheimer's.",
+        "fact": "AD also affects mood, behavior, language, and physical coordination. Personality changes are often more distressing than memory loss."
+      }
+    ]
+  },
+  "specialWarnings": {
+    "subtitle": "Caregiver Vigilance",
+    "title": "Population-Specific Risks",
+    "desc": "Alzheimer's treatments require careful monitoring, especially in seniors who often have multiple health conditions.",
+    "pediatric": {
+      "title": "Early-Onset AD",
+      "items": [
+        {
+          "title": "Psychosocial Impact",
+          "content": "People diagnosed in their 40s or 50s may still be working or raising families. The impact on career and family dynamics is profound and requires specialized support."
+        },
+        {
+          "title": "Genetic Factors",
+          "content": "Early-onset cases are more likely to have a strong genetic component (PSEN1, PSEN2, APP mutations). Genetic counseling is often recommended for the family."
+        }
+      ]
+    },
+    "elderly": {
+      "title": "Geriatric Monitoring",
+      "items": [
+        {
+          "title": "Polypharmacy Risks",
+          "content": "Most AD patients are over 65 and take multiple medications. The risk of drug-drug interactions with AD medications is significantly high."
+        },
+        {
+          "title": "GI Sensitivity",
+          "content": "Cholinesterase inhibitors (Donepezil, Rivastigmine) frequently cause nausea and vomiting, which can lead to weight loss and dehydration in the elderly."
+        },
+        {
+          "title": "Cardiovascular Effects",
+          "content": "These drugs can slow the heart rate (bradycardia), which may lead to fainting and dangerous falls in older adults."
+        }
+      ]
+    }
+  },
+  "checker": {
+    "subtitle": "Safe Prescribing",
+    "title": "AD Medication Safety",
+    "desc": "Check your prescriptions against core Alzheimer's therapies and identify dangerous food or drug interactions.",
+    "tabSafety": "Safety Analyzer",
+    "tabArchive": "Care Archive",
+    "buildTitle": "Patient Regimen",
+    "buildDesc": "Add medications below. We will cross-reference them with standard AD treatments.",
+    "slotText": "Drug {{index}}",
+    "required": "(Required)",
+    "optional": "(Optional)",
+    "placeholder": "e.g. Donepezil",
+    "analysing": "Analyzing...",
+    "generateBtn": "Check Interactions",
+    "awaitingTitle": "Ready for Analysis",
+    "awaitingDesc": "Enter the patient's medications to receive a comprehensive safety report based on clinical protocols.",
+    "apiInteractions": "Drug-Drug Interactions",
+    "noInteractions": "No major interactions found in our clinical database for these inputs. Always confirm with the patient's doctor.",
+    "riskLevel": "{{level}} Risk",
+    "description": "Clinical Description:",
+    "note": "Advice:",
+    "foodAlerts": "Dietary Restrictions",
+    "noFoodWarnings": "No specific food restrictions identified for these medications in our database.",
+    "mustAvoid": "Avoid:",
+    "timing": "Timing:",
+    "instruction": "Instructions:",
+    "source": "Source:",
+    "disclaimerTitle": "Medical Disclaimer:",
+    "disclaimerDesc": "This tool is for educational support for caregivers. It is not a replacement for professional medical advice. Never change a patient's medication without a doctor's order.",
+    "archiveTitle": "Caregiver Login",
+    "archiveDesc": "Sign in to save patient medication history.",
+    "loginBtn": "Sign In",
+    "savedTitle": "Saved Regimens",
+    "archivedAt": "Saved: {{date}}",
+    "noSavedMeds": "No medication history saved yet.",
+    "errors": {
+      "maxDrugs": "Max {{max}} drugs.",
+      "alreadyAdded": "Already added.",
+      "notFound": "Not found.",
+      "network": "Network error.",
+      "addOne": "Add at least one drug.",
+      "apiDown": "System unavailable."
+    }
+  },
+  "dashboard": {
+    "secureTitle": "Caregiver Dashboard",
+    "secureDesc": "Access the patient's behavior logs and medication schedule.",
+    "returnHome": "Home",
+    "previewMode": "Preview",
+    "drugsArchive": "Medication History",
+    "myMeds": "Active Medications",
+    "addPlaceholder": "Add drug...",
+    "noMeds": "No medications listed.",
+    "logout": "Logout"
+  },
+  "auth": {
+    "loginTitle": "Caregiver Sign In",
+    "signupTitle": "Join Sanad",
+    "loginDesc": "Secure access to your care tools",
+    "signupDesc": "Empowering you to provide better care",
+    "fullName": "Your Full Name",
+    "email": "Email",
+    "password": "Password",
+    "processing": "Loading...",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "createAccount": "Create Profile",
+    "newTo": "New to Sanad?",
+    "alreadyMember": "Already have an account?"
+  },
+  "about": {
+    "title": "About Sanad (سند)",
+    "desc": "Sanad is a dedicated platform designed to support Alzheimer's caregivers with technology and medical insights.",
+    "mti": "MTI University",
+    "project": "Faculty of Pharmacy Graduation Project 2026",
+    "missionLabel": "Our Mission",
+    "missionTitle": "Empowering Caregivers",
+    "missionText1": "Caregiving for someone with Alzheimer's is a heroic yet challenging task. We observed that caregivers often lack immediate tools to manage behavioral crises and track complex medication regimens.",
+    "missionText2": "Sanad provides real-time drug interaction checks, behavioral management guides, and a digital log to ensure that both the patient and the caregiver are supported.",
+    "valuesSubtitle": "Our Pillars",
+    "valuesTitle": "Clinical Integrity",
+    "values": [
+      {
+        "title": "Evidence-Based",
+        "desc": "Our guides follow clinical research from the Alzheimer's Association and pharmacological databases."
+      },
+      {
+        "title": "Compassionate",
+        "desc": "The UI is designed to be calm and intuitive, reducing the stress of daily care management."
+      },
+      {
+        "title": "Safety First",
+        "desc": "Preventing medication errors and behavioral escalations is our primary goal."
+      },
+      {
+        "title": "Empowering",
+        "desc": "We give you the knowledge to handle difficult situations with confidence."
+      }
+    ],
+    "ctaLabel": "Take Action",
+    "ctaTitle": "Try the Behavior Guide",
+    "ctaText": "Learn how to manage sundowning and agitation using our clinical behavioral management tool.",
+    "ctaBtn": "View Guides",
+    "team": [
+      { "id": 1, "name": "Seveen Mohamed Ahmed Fouad Elsayoufy", "role": "Team Leader", "bio": "Coordinates clinical integration and leads the pharmacy presentation board structure." },
+      { "id": 2, "name": "Ahmed Ezzat Osman Tantawy", "role": "Clinical Pharmacist", "bio": "Specializes in neurodegenerative drug interactions." },
+      { "id": 3, "name": "Diana Yasser AbdAlazim Mohamed Salama", "role": "Clinical Pharmacist", "bio": "Focuses on caregiver compliance and behavior tracking." },
+      { "id": 4, "name": "Mina Talat Shaker Wassef", "role": "Clinical Pharmacist", "bio": "Ensures the accuracy of the Interaction Checker API integration." },
+      { "id": 5, "name": "Moustafa Khalid Mohamed Taha Bahr", "role": "Clinical Pharmacist", "bio": "Develops the behavioral algorithms used in the SOS tool." },
+      { "id": 6, "name": "Nada Mohammed Kamal Abieah", "role": "Clinical Pharmacist", "bio": "Curates the medical terminology and care instructions." },
+      { "id": 7, "name": "Zeinab Hamdy Hassab tayeeb", "role": "Clinical Pharmacist", "bio": "Evaluates application usability against healthcare standards." },
+      { "id": 8, "name": "Abdalla Abouelscoud Hassan Hassoub Soliman", "role": "Clinical Pharmacist", "bio": "Researches up-to-date Alzheimer's medications and contraindications." },
+      { "id": 9, "name": "Yassein Mohamed Mohamed Ali Almaghrabi", "role": "Clinical Pharmacist", "bio": "Structures the medical history tracking and behavior log logic." },
+      { "id": 10, "name": "Ahmed Mohamed Ahmed Elgashy", "role": "Clinical Pharmacist", "bio": "Validates final clinical safety recommendations for the board." }
+    ]
+  },
+  "home": {
+    "heroBadge": "Compassionate Care for Alzheimer's",
+    "heroTitle": "Empowering Caregivers, Preserving Memories",
+    "heroDescription": "Sanad (عون) is your digital partner in Alzheimer's care. Track behavior, manage complex medications, and access professional behavioral guides designed to make every day a little easier.",
+    "understandingTitle": "Understanding Alzheimer's",
+    "understandingDescription": "Alzheimer's is a progressive brain disease. Understanding its pathophysiology and stages is the first step toward providing effective and compassionate care.",
+    "understandingBtn": "Learn About AD Pathology",
+    "servicesTitle": "Caregiver Support Suite",
+    "servicesSubtitle": "Tools designed for safety and peace of mind.",
+    "eduTitle": "Behavioral Management",
+    "eduDesc": "Comprehensive guides on handling agitation, wandering, and sundowning to ensure patient safety.",
+    "checkerTitle": "Interaction Hub",
+    "checkerDesc": "Safety tool for cross-verifying Alzheimer's prescriptions against daily medications.",
+    "archivesTitle": "Care Logs",
+    "archivesDesc": "Securely track behavior, appetite, and medication adherence in your caregiver dashboard.",
+    "ctaTitle": "Ready to enhance your care?",
+    "ctaDesc": "Join Sanad today to build a safer, more organized care routine for your loved one."
+  },
+  "footer": {
+    "copyright": "© 2026 Sanad (عون). MTI University Pharmacy Graduation Project.",
+    "disclaimer": "Medical Disclaimer: All content is for educational purposes only. Always consult a physician for medical diagnosis and treatment."
+  }
+}
