@@ -1,6 +1,6 @@
 {
   "common": {
-    "brand": "Sanad",
+    "brand": "Aoun",
     "education": "Education",
     "aboutAlzheimer": "About Alzheimer's",
     "emergencyFirstAid": "Behavioral Management",
@@ -242,7 +242,7 @@
   },
   "auth": {
     "loginTitle": "Caregiver Sign In",
-    "signupTitle": "Join Sanad",
+    "signupTitle": "Join Aoun",
     "loginDesc": "Secure access to your care tools",
     "signupDesc": "Empowering you to provide better care",
     "fullName": "Your Full Name",
@@ -252,18 +252,18 @@
     "signIn": "Sign In",
     "signUp": "Sign Up",
     "createAccount": "Create Profile",
-    "newTo": "New to Sanad?",
+    "newTo": "New to Aoun?",
     "alreadyMember": "Already have an account?"
   },
   "about": {
-    "title": "About Sanad (سند)",
-    "desc": "Sanad is a dedicated platform designed to support Alzheimer's caregivers with evidence-based insights and management tools.",
+    "title": "About Aoun (عون)",
+    "desc": "Aoun is a dedicated platform designed to support Alzheimer's caregivers with evidence-based insights and management tools.",
     "mti": "Modern University for Technology & Information (MTI)",
     "project": "Faculty of Pharmacy Graduation Project 2026",
     "missionLabel": "Our Mission",
     "missionTitle": "Empowering Caregivers",
     "missionText1": "Caregiving for someone with Alzheimer's is a heroic yet challenging task. We observed that caregivers often lack immediate tools to manage behavioral crises and track complex medication regimens.",
-    "missionText2": "Sanad provides real-time drug interaction checks, behavioral management guides, and a digital log to ensure that both the patient and the caregiver are supported.",
+    "missionText2": "Aoun provides real-time drug interaction checks, behavioral management guides, and a digital log to ensure that both the patient and the caregiver are supported.",
     "valuesSubtitle": "Our Pillars",
     "valuesTitle": "Clinical Integrity",
     "values": [
@@ -304,7 +304,7 @@
   "home": {
     "heroBadge": "Compassionate Care for Alzheimer's",
     "heroTitle": "Empowering Caregivers, Preserving Memories",
-    "heroDescription": "Sanad (عون) is your digital partner in Alzheimer's care. Track behavior, manage complex medications, and access professional behavioral guides designed to make every day a little easier.",
+    "heroDescription": "Aoun (عون) is your digital partner in Alzheimer's care. Track behavior, manage complex medications, and access professional behavioral guides designed to make every day a little easier.",
     "understandingTitle": "Understanding Alzheimer's",
     "understandingDescription": "Alzheimer's is a complex neurodegenerative disease involving amyloid-β plaques and tau tangles. Understanding its pathophysiology is vital for precise care.",
     "understandingBtn": "Learn About AD Pathology",
@@ -317,10 +317,10 @@
     "archivesTitle": "Care Logs",
     "archivesDesc": "Securely track behavior, appetite, and medication adherence in your caregiver dashboard.",
     "ctaTitle": "Ready to enhance your care?",
-    "ctaDesc": "Join Sanad today to build a safer, more organized care routine for your loved one."
+    "ctaDesc": "Join Aoun today to build a safer, more organized care routine for your loved one."
   },
   "footer": {
-    "copyright": "© 2026 Sanad (عون). MTI University Pharmacy Graduation Project.",
+    "copyright": "© 2026 Aoun (عون). MTI University Pharmacy Graduation Project.",
     "disclaimer": "Medical Disclaimer: All content is for educational purposes only. Always consult a physician for medical diagnosis and treatment."
   }
 }

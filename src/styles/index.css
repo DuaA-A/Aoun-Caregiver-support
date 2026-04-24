@@ -23,8 +23,8 @@ button {
   --bg-gradient: linear-gradient(135deg, #f0f7ff 0%, #f0fdf4 100%);
   --hero-gradient: linear-gradient(135deg, #a2d2ff 0%, #b8e0d2 100%);
   --glass-bg: rgba(255, 255, 255, 0.4);
-  --text-main: #2d3436;
-  --text-muted: #636e72;
+  --text-main: #1e3a5f;
+  --text-muted: #4b6a8e;
   --success: #b8e0d2;
   --warning: #ffeaa7;
   --error: #ffadad;

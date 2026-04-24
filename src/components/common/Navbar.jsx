@@ -44,10 +44,10 @@ const Navbar = ({ onOpenAuth }) => {
     <nav className={`navbar fixed-top ${scrolled || !isHome ? 'navbar-scrolled' : 'navbar-transparent'}`} dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="container nav-content">
         <Link to="/" className="nav-logo" onClick={() => setIsOpen(false)}>
-          <img src="/logo.png" alt="Sanad Logo" className="logo-img" />
+          <img src="/logo.png" alt="Aoun Logo" className="logo-img" />
           <div className="nav-logo-text">
-            <span className={`logo-main ${!scrolled && isHome ? 'white-text' : ''}`}>Sanad</span>
-            <span className={`logo-sub ${!scrolled && isHome ? 'white-text' : ''}`}>سند</span>
+            <span className={`logo-main ${!scrolled && isHome ? 'white-text' : ''}`}>Aoun</span>
+            <span className={`logo-sub ${!scrolled && isHome ? 'white-text' : ''}`}>عون</span>
           </div>
         </Link>
 

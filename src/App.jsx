@@ -11,7 +11,11 @@ import FirstAid from './components/education/FirstAid';
 import AboutAlzheimer from './components/education/AboutAlzheimer';
 import MythsFacts from './components/education/MythsFacts';
 import SpecialWarnings from './components/education/SpecialWarnings';
-import { Shield, Activity, Pill, User, ChevronRight, Heart, ClipboardList, ArrowRight, ShieldCheck, FileText, X, Info } from 'lucide-react';
+import { Shield, Activity, Pill, User, ChevronRight, Heart, ClipboardList, ArrowRight, ShieldCheck, FileText, X, Info, Users } from 'lucide-react';
+import homeImg1 from '../images/home_img.jpg';
+import homeImg2 from '../images/home_img2.webp';
+import homeImg3 from '../images/home_img3.jpg';
+import homeImg4 from '../images/home_img4.jpg';
 
 const Home = ({ onOpenAuth }) => {
   const { t, i18n } = useTranslation();
@@ -65,25 +69,32 @@ const Home = ({ onOpenAuth }) => {
               <div className="hero-circles-container">
                 {/* Main Circle Images */}
                 <motion.div 
-                  className="image-circle large"
-                  animate={{ y: [0, -20, 0] }}
+                  className="image-circle circle-1"
+                  animate={{ y: [0, -15, 0] }}
                   transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                 >
-                  <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=600&q=80" alt="Care" />
+                  <img src={homeImg1} alt="Care" />
                 </motion.div>
                 <motion.div 
-                  className="image-circle medium"
-                  animate={{ y: [0, 20, 0] }}
+                  className="image-circle circle-2"
+                  animate={{ y: [0, 15, 0] }}
                   transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
                 >
-                  <img src="https://images.unsplash.com/photo-1581056771107-24ca5f033842?auto=format&fit=crop&w=400&q=80" alt="Support" />
+                  <img src={homeImg2} alt="Support" />
                 </motion.div>
                 <motion.div 
-                  className="image-circle small"
-                  animate={{ scale: [1, 1.1, 1] }}
+                  className="image-circle circle-3"
+                  animate={{ scale: [1, 1.05, 1] }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
                 >
-                  <img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&w=300&q=80" alt="Clinical" />
+                  <img src={homeImg3} alt="Clinical" />
+                </motion.div>
+                <motion.div 
+                  className="image-circle circle-4"
+                  animate={{ y: [0, -10, 0], scale: [1, 1.02, 1] }}
+                  transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+                >
+                  <img src={homeImg4} alt="Activity" />
                 </motion.div>
                 
                 {/* Decorative Small Bubbles */}
@@ -92,6 +103,11 @@ const Home = ({ onOpenAuth }) => {
                 <div className="mini-bubble bubble-3"></div>
                 <div className="mini-bubble bubble-4"></div>
                 <div className="mini-bubble bubble-5"></div>
+                <div className="mini-bubble bubble-6"></div>
+                <div className="mini-bubble bubble-7"></div>
+                <div className="mini-bubble bubble-8"></div>
+                <div className="mini-bubble bubble-9"></div>
+                <div className="mini-bubble bubble-10"></div>
               </div>
             </motion.div>
           </div>
@@ -214,6 +230,19 @@ const Home = ({ onOpenAuth }) => {
               <p>{t('home.archivesDesc')}</p>
               <Link to="/profile" className="btn btn-premium mt-4">{t('common.viewHistory')}</Link>
             </motion.div>
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
+              whileHover={{ y: -10, scale: 1.02 }} 
+              className="service-card glass-card"
+            >
+              <div className="service-icon"><Users size={40} /></div>
+              <h3>{t('common.aboutTeam')}</h3>
+              <p>{t('about.desc')}</p>
+              <Link to="/about" className="btn btn-premium mt-4">{t('common.learnMore')}</Link>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -265,17 +294,23 @@ const Home = ({ onOpenAuth }) => {
         .image-circle { position: absolute; border-radius: 50%; overflow: hidden; border: 4px solid white; box-shadow: 0 20px 40px rgba(0,0,0,0.1); background: white; }
         .image-circle img { width: 100%; height: 100%; object-fit: cover; }
         
-        .image-circle.large { width: 320px; height: 320px; z-index: 3; }
-        .image-circle.medium { width: 220px; height: 220px; top: -20px; right: -40px; z-index: 2; }
-        .image-circle.small { width: 160px; height: 160px; bottom: 20px; left: -30px; z-index: 4; }
+        .image-circle.circle-1 { width: 320px; height: 320px; z-index: 3; top: -20px; left: 0px; }
+        .image-circle.circle-2 { width: 350px; height: 350px; z-index: 2; top: 40px; right: -80px; }
+        .image-circle.circle-3 { width: 220px; height: 220px; z-index: 4; bottom: -40px; left: 60px; }
+        .image-circle.circle-4 { width: 160px; height: 160px; z-index: 5; top: 180px; left: -100px; }
         
-        .mini-bubble { position: absolute; border-radius: 50%; background: white; opacity: 0.4; filter: blur(2px); animation: pulse-mini 4s infinite ease-in-out; }
-        @keyframes pulse-mini { 0%, 100% { transform: scale(1); opacity: 0.3; } 50% { transform: scale(1.3); opacity: 0.6; } }
-        .bubble-1 { width: 40px; height: 40px; top: 10%; right: 20%; }
-        .bubble-2 { width: 20px; height: 20px; bottom: 15%; right: 10%; }
-        .bubble-3 { width: 30px; height: 30px; top: 60%; left: 10%; }
-        .bubble-4 { width: 25px; height: 25px; top: 30%; right: 40%; animation-delay: 1s; }
-        .bubble-5 { width: 15px; height: 15px; bottom: 40%; right: 30%; animation-delay: 2s; }
+        .mini-bubble { position: absolute; border-radius: 50%; opacity: 0.6; filter: blur(1px); animation: pulse-mini 4s infinite ease-in-out; }
+        @keyframes pulse-mini { 0%, 100% { transform: scale(1); opacity: 0.4; } 50% { transform: scale(1.3); opacity: 0.7; } }
+        .bubble-1 { width: 40px; height: 40px; top: -30px; left: 160px; background: var(--primary); }
+        .bubble-2 { width: 30px; height: 30px; top: -20px; right: 20px; background: var(--secondary); }
+        .bubble-3 { width: 50px; height: 50px; bottom: 80px; left: -80px; background: var(--accent); }
+        .bubble-4 { width: 25px; height: 25px; top: 320px; right: -40px; animation-delay: 1s; background: var(--primary-dark); }
+        .bubble-5 { width: 35px; height: 35px; bottom: -60px; right: 80px; animation-delay: 2s; background: var(--secondary-dark); }
+        .bubble-6 { width: 45px; height: 45px; top: 80px; left: -40px; animation-delay: 0.5s; background: var(--secondary); }
+        .bubble-7 { width: 20px; height: 20px; top: 120px; right: 100px; animation-delay: 1.5s; background: var(--primary); }
+        .bubble-8 { width: 35px; height: 35px; bottom: -15%; right: 25%; animation-delay: 0.8s; background: var(--accent); }
+        .bubble-9 { width: 18px; height: 18px; top: 45%; right: -25%; animation-delay: 2.5s; background: var(--primary-dark); }
+        .bubble-10 { width: 28px; height: 28px; top: 15%; left: -15%; animation-delay: 1.2s; background: var(--secondary-dark); }
 
 
         .btn-outline-primary { border: 2px solid var(--primary); color: var(--primary) !important; background: white; text-decoration: none !important; padding: 14px 28px; border-radius: 24px; font-weight: 700; transition: all 0.3s; }
@@ -364,8 +399,8 @@ const Home = ({ onOpenAuth }) => {
         .centered-header { max-width: 800px; margin: 0 auto 4rem; text-align: center; }
         .centered-header h2 { text-align: center; width: 100%; margin: 0 auto 1.5rem; }
         .centered-header p { text-align: center; margin: 0 auto; }
-        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; width: 100%; }
-        .service-card { padding: 3rem 2rem !important; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; width: 100%; }
+        .service-card { padding: 2.5rem 1.5rem !important; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .service-icon { color: var(--primary); margin-bottom: 2rem; display: flex; justify-content: center; width: 100%; }
         .service-card h3 { font-size: 1.5rem; margin-bottom: 1rem; }
         .service-card p { max-width: 280px; }
@@ -472,7 +507,7 @@ const App = () => {
               className="splash-logo-container"
             >
               <img src="/logo.png" alt="Aoun Logo" className="splash-logo-img" />
-              <h1 className="splash-logo-text">Aoun<span className="safe-text"> (عون)</span></h1>
+              <h1 className="splash-logo-text">Aoun<span className="safe-text"> : عون بالعربي</span></h1>
             </motion.div>
           </motion.div>
         )}
@@ -504,7 +539,7 @@ const App = () => {
       <style>{`
         .app-container { min-height: 100vh; display: flex; flex-direction: column; position: relative; overflow-x: hidden; }
         .main-content { flex: 1; padding-top: 80px; width: 100%; position: relative; z-index: 1; margin-bottom: 0; }
-        .dark-footer { margin-top: auto; padding: 3rem 2rem; text-align: center; background: #1e1b4b; color: white; position: relative; z-index: 1; }
+        .dark-footer { margin-top: auto; padding: 3rem 2rem; text-align: center; background: #1c3a4f; color: white; position: relative; z-index: 1; }
         .footer-content { max-width: 800px; margin: 0 auto; }
         .disclaimer { font-size: 0.8rem; color: rgba(255, 255, 255, 0.5); margin-top: 1rem; line-height: 1.6; }
         
@@ -513,7 +548,7 @@ const App = () => {
         
         /* Splash Screen */
         .splash-screen {
-          position: fixed; inset: 0; background: #1e1b4b; z-index: 999999; display: flex; align-items: center; justify-content: center;
+          position: fixed; inset: 0; background: var(--bg-gradient); z-index: 999999; display: flex; align-items: center; justify-content: center;
         }
         .splash-logo-container {
           display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
