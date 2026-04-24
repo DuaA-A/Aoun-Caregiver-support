@@ -41,10 +41,9 @@ const Home = ({ onOpenAuth }) => {
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.8, cubicBezier: [0.16, 1, 0.3, 1], delay: 0.2 }}
             >
-              <div className="active-badge mb-4">{t('home.heroBadge')}</div> <br />
               <h1 className="hero-title">
                 {t('home.heroTitle').split(' ').slice(0, -3).join(' ')} <br />
-                <span className="text-glow italic" style={{ color: 'var(--secondary)' }}>{t('home.heroTitle').split(' ').slice(-3).join(' ')}</span>
+                <span className="text-glow italic" style={{ color: 'var(--text-main)' }}>{t('home.heroTitle').split(' ').slice(-3).join(' ')}</span>
               </h1>
               <p className="hero-description">
                 {t('home.heroDescription')}
@@ -286,9 +285,9 @@ const Home = ({ onOpenAuth }) => {
           padding-top: 80px;
           overflow: hidden;
         }
-        .hero-flex-wrapper { display: flex; align-items: center; gap: 4rem; width: 100%; min-height: calc(100vh - 80px); }
-        .hero-text-side { flex: 1.2; z-index: 10; text-align: start; }
-        .hero-image-side { flex: 1; display: flex; justify-content: center; align-items: center; z-index: 5; position: relative; }
+        .hero-flex-wrapper { display: flex; align-items: center; justify-content: space-between; gap: 8rem; width: 100%; min-height: calc(100vh - 80px); }
+        .hero-text-side { flex: 1; z-index: 10; text-align: start; padding-left: 1rem; }
+        .hero-image-side { flex: 1.2; display: flex; justify-content: center; align-items: center; z-index: 5; position: relative; }
         
         .hero-circles-container { position: relative; width: 100%; height: 500px; display: flex; justify-content: center; align-items: center; }
         .image-circle { position: absolute; border-radius: 50%; overflow: hidden; border: 4px solid white; box-shadow: 0 20px 40px rgba(0,0,0,0.1); background: white; }
@@ -313,8 +312,8 @@ const Home = ({ onOpenAuth }) => {
         .bubble-10 { width: 28px; height: 28px; top: 15%; left: -15%; animation-delay: 1.2s; background: var(--secondary-dark); }
 
 
-        .btn-outline-primary { border: 2px solid var(--primary); color: var(--primary) !important; background: white; text-decoration: none !important; padding: 14px 28px; border-radius: 24px; font-weight: 700; transition: all 0.3s; }
-        .btn-outline-primary:hover { background: var(--primary); color: white !important; transform: translateY(-3px); }
+        .btn-outline-primary { border: 2px solid var(--text-main); color: var(--text-main) !important; background: transparent; text-decoration: none !important; padding: 14px 28px; border-radius: 24px; font-weight: 700; transition: all 0.3s; }
+        .btn-outline-primary:hover { background: var(--text-main); color: white !important; transform: translateY(-3px); }
 
         .hero-title { font-size: 4rem; font-weight: 900; line-height: 1.1; margin-bottom: 2rem; color: var(--text-main) !important; text-decoration: none !important; }
         .hero-cta-group { display: flex; gap: 1.5rem; align-items: center; }
@@ -507,7 +506,7 @@ const App = () => {
               className="splash-logo-container"
             >
               <img src="/logo.png" alt="Aoun Logo" className="splash-logo-img" />
-              <h1 className="splash-logo-text">Aoun<span className="safe-text"> : عون بالعربي</span></h1>
+              <h1 className="splash-logo-text">{i18n.language === 'ar' ? 'عون' : 'Aoun'}</h1>
             </motion.div>
           </motion.div>
         )}

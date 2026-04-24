@@ -96,15 +96,15 @@ body {
 }
 
 .btn-premium {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  background: var(--text-main);
   color: white;
-  box-shadow: 0 4px 15px rgba(126, 34, 206, 0.2);
+  box-shadow: 0 4px 15px rgba(30, 58, 95, 0.2);
 }
 
 .btn-premium:hover {
-  background: linear-gradient(135deg, var(--primary-hover) 0%, var(--accent) 100%);
+  background: var(--text-muted);
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(126, 34, 206, 0.35);
+  box-shadow: 0 8px 25px rgba(30, 58, 95, 0.35);
 }
 
 .btn-secondary {

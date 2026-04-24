@@ -46,15 +46,14 @@ const Navbar = ({ onOpenAuth }) => {
         <Link to="/" className="nav-logo" onClick={() => setIsOpen(false)}>
           <img src="/logo.png" alt="Aoun Logo" className="logo-img" />
           <div className="nav-logo-text">
-            <span className={`logo-main ${!scrolled && isHome ? 'white-text' : ''}`}>Aoun</span>
-            <span className={`logo-sub ${!scrolled && isHome ? 'white-text' : ''}`}>عون</span>
+            <span className="logo-main">{isRTL ? 'عون' : 'Aoun'}</span>
           </div>
         </Link>
 
         {/* Desktop Nav */}
         <div className="nav-links">
           <div className="nav-dropdown-group">
-            <span className={`nav-link ${!scrolled && isHome ? 'white-link' : ''}`}>
+            <span className="nav-link">
               <BookOpen size={18} /> {t('common.education')}
             </span>
             <div className={`nav-dropdown-content animate-fade-in glass-card ${isRTL ? 'dropdown-rtl' : ''}`}>
@@ -64,16 +63,16 @@ const Navbar = ({ onOpenAuth }) => {
               <Link to="/special-warnings" className="dropdown-item">{t('common.specialWarnings')}</Link>
             </div>
           </div>
-          <Link to="/checker" className={`nav-link ${isActive('/checker') ? 'active' : ''} ${!scrolled && isHome ? 'white-link' : ''}`}>
+          <Link to="/checker" className={`nav-link ${isActive('/checker') ? 'active' : ''}`}>
             <Pill size={18} /> {t('common.interactionChecker')}
           </Link>
-          <Link to="/about" className={`nav-link ${isActive('/about') ? 'active' : ''} ${!scrolled && isHome ? 'white-link' : ''}`}>
+          <Link to="/about" className={`nav-link ${isActive('/about') ? 'active' : ''}`}>
             {t('common.aboutTeam')}
           </Link>
 
           <div className="nav-divider"></div>
 
-          <button onClick={toggleLanguage} className={`lang-toggle-btn ${!scrolled && isHome ? 'white-link' : ''}`}>
+          <button onClick={toggleLanguage} className="lang-toggle-btn">
             <Languages size={18} />
             <span className="lang-code">{i18n.language === 'ar' ? 'EN' : 'AR'}</span>
           </button>
@@ -82,22 +81,22 @@ const Navbar = ({ onOpenAuth }) => {
 
           {currentUser ? (
             <div className="user-menu">
-              <Link to="/profile" className={`nav-link profile-link ${isActive('/profile') ? 'active' : ''} ${!scrolled && isHome ? 'white-link' : ''}`}>
+              <Link to="/profile" className={`nav-link profile-link ${isActive('/profile') ? 'active' : ''}`}>
                 <User size={18} /> {t('common.myDashboard')}
               </Link>
-              <button onClick={logout} className={`btn-icon ${!scrolled && isHome ? 'white-link' : ''}`} title={t('common.logout')}>
+              <button onClick={logout} className="btn-icon" title={t('common.logout')}>
                 <LogOut size={18} />
               </button>
             </div>
           ) : (
-            <button onClick={onOpenAuth} className={`btn ${!scrolled && isHome ? 'btn-white' : 'btn-primary'} btn-sm`}>
+            <button onClick={onOpenAuth} className="btn btn-primary btn-sm">
               {t('common.signIn')}
             </button>
           )}
         </div>
 
         {/* Mobile Toggle */}
-        <button className={`mobile-toggle ${!scrolled && isHome ? 'white-link' : ''}`} onClick={() => setIsOpen(!isOpen)}>
+        <button className="mobile-toggle" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <X /> : <Menu />}
         </button>
       </div>
