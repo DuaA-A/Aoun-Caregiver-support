@@ -1,6 +1,6 @@
 <div align="center">
     <h1>Aoun (عون)</h1>
-    <h2><strong>Advanced Alzheimer's Caregiver Support Platform</strong></h2>
+    <p><strong>Advanced Alzheimer's Caregiver Support Platform</strong></p>
 </div>
 
 <hr />
@@ -10,8 +10,36 @@
     Aoun is a comprehensive, bilingual (Arabic/English) web application designed specifically to empower and assist Alzheimer's caregivers. Recognizing the immense psychological and organizational toll of caregiving, this platform bridges the gap between clinical medical data and day-to-day home care management. 
 </p>
 <p>
-    Delivered entirely as a <strong>solo freelance project</strong>, Aoun demonstrates end-to-end full-stack development, encompassing responsive UI/UX architecture, complex data-driven medical logic, and secure backend integration. The project architecture was rigorously developed to ensure high performance, accessibility, and absolute medical accuracy based on verified pharmacological research.
+    Engineered entirely from scratch as a <strong>solo freelance project</strong>, Aoun represents a complete end-to-end development cycle. Every aspect of the application—from the initial medical data extraction and structuring, to the UI/UX design, frontend architecture, and backend integration—was developed from the ground up to ensure high performance, accessibility, and absolute medical accuracy.
 </p>
+
+<h2>End-to-End Development & Solo Execution</h2>
+<p>
+    Taking full ownership of the project from A to Z, this application demonstrates a diverse and comprehensive skill set across the entire software development lifecycle:
+</p>
+<ul>
+    <li><strong>Data Engineering & Medical Integration:</strong> Extracted, parsed, and structured complex pharmacological data from academic research into queryable formats. Seamlessly merged this local data with external medical APIs to create a robust interaction logic engine.</li>
+    <li><strong>UI/UX & Visual Design:</strong> Conceptualized and implemented a premium, custom interface without relying on pre-built UI libraries. Designed calming, caregiver-focused aesthetics utilizing Glassmorphism, custom SVGs, and fluid state animations to reduce cognitive load.</li>
+    <li><strong>Frontend Architecture:</strong> Built a highly scalable, single-page application capable of handling complex state management (medication schedules, language switching, asynchronous API calls) without performance bottlenecks.</li>
+    <li><strong>Backend Implementation:</strong> Designed a secure and efficient NoSQL database structure, implementing user authentication and real-time data syncing to ensure caregiver logs and schedules are always up-to-date and protected.</li>
+</ul>
+
+<h2>Technical Architecture & Stack</h2>
+<p>
+    The application leverages a modern, performance-optimized technology stack to deliver a seamless user experience:
+</p>
+<ul>
+    <li><strong>Frontend Framework:</strong> React.js bootstrapped with Vite for rapid compilation, optimized build sizes, and dynamic rendering.</li>
+    <li><strong>External Medical APIs:</strong> 
+        <ul>
+            <li><strong>RxNav API:</strong> Integrated for precise drug search capabilities and pharmacological identification.</li>
+            <li><strong>OpenFDA API:</strong> Utilized to fetch real-time data regarding food-drug interactions and safety warnings specific to Alzheimer's medications.</li>
+        </ul>
+    </li>
+    <li><strong>Animations & Styling:</strong> Vanilla CSS combined with <strong>Framer Motion</strong> to create advanced animated designs, smooth page transitions, and engaging micro-interactions (e.g., the heartbeat splash screen and custom interactive calendars).</li>
+    <li><strong>Backend & Authentication:</strong> <strong>Firebase</strong> Authentication for secure user onboarding and Firestore (NoSQL) for managing real-time patient data, medication logging, and archiving.</li>
+    <li><strong>Localization:</strong> i18next for dynamic, real-time switching between Right-to-Left (Arabic) and Left-to-Right (English) layouts, ensuring deep cultural and linguistic accessibility.</li>
+</ul>
 
 <h2>Core Features & Modules</h2>
 
@@ -24,7 +52,7 @@
 
 <h3>2. Medication Hub & Interaction Checker</h3>
 <ul>
-    <li><strong>Algorithmic Interaction Checking:</strong> A core technical feature that cross-references standard Alzheimer's medications (e.g., Donepezil, Memantine) against secondary drugs to flag potential contraindications.</li>
+    <li><strong>Algorithmic Interaction Checking:</strong> A core technical feature that cross-references standard Alzheimer's medications (e.g., Donepezil, Memantine) against secondary drugs using external APIs to flag potential contraindications.</li>
     <li><strong>Food & Drug Safety:</strong> Integrated logic to warn users about specific food interactions and optimal administration times.</li>
 </ul>
 
@@ -41,52 +69,8 @@
 
 <h3>5. Notification Engine</h3>
 <ul>
-    <li><strong>Local & Push Alerts:</strong> Integrated alert system ensuring critical medication doses and doctor appointments are never missed.</li>
+    <li><strong>Local Alerts:</strong> Integrated alert system ensuring critical medication doses and doctor appointments are never missed.</li>
 </ul>
-
-<h2>Technical Architecture & Stack</h2>
-<p>
-    The application relies on a modern, performance-optimized technology stack:
-</p>
-<ul>
-    <li><strong>Frontend Framework:</strong> React.js bootstrapped with Vite for rapid compilation and optimized build sizes.</li>
-    <li><strong>State Management & Routing:</strong> React Router for seamless single-page application navigation.</li>
-    <li><strong>UI/UX Design:</strong> Vanilla CSS utilizing Glassmorphism design principles, coupled with Framer Motion for fluid, hardware-accelerated state transitions.</li>
-    <li><strong>Backend & Authentication:</strong> Firebase Authentication for secure user onboarding and Firestore for real-time patient data and medication logging.</li>
-    <li><strong>Localization:</strong> i18next for dynamic, real-time switching between Right-to-Left (Arabic) and Left-to-Right (English) layouts.</li>
-</ul>
-
-<h2>Development Context & Freelance Execution</h2>
-<p>
-    As a solo freelance developer handling this project from concept to deployment, key responsibilities and engineering milestones included:
-</p>
-<ul>
-    <li><strong>Architecture Design:</strong> Designing a scalable component tree capable of handling complex state (medication schedules, language switching, auth state) without performance bottlenecks.</li>
-    <li><strong>Data Integration:</strong> Structuring complex medical data from research papers into queryable JSON formats for the Interaction Checker.</li>
-    <li><strong>Responsive Engineering:</strong> Guaranteeing a mobile-first approach, recognizing that caregivers primarily access tools on-the-go via smartphones.</li>
-</ul>
-
-<h2>Installation & Setup</h2>
-<p>To run this project locally for development or review:</p>
-<pre><code>
-# Clone the repository
-git clone [repository_url]
-
-# Navigate into the project directory
-cd aoun-caregiver-platform
-
-# Install dependencies
-npm install
-
-# Configure environment variables
-# Create a .env file in the root directory and add your Firebase credentials:
-VITE_FIREBASE_API_KEY=your_api_key
-VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
-VITE_FIREBASE_PROJECT_ID=your_project_id
-
-# Start the development server
-npm run dev
-</code></pre>
 
 <hr />
 <p><em>Engineered with precision to support those who support others.</em></p>
