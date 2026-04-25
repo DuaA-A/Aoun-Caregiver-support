@@ -48,10 +48,10 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (isPreviewMode) {
-      setLoading(false);
-      return;
+      const timeoutId = setTimeout(() => setLoading(false), 0);
+      return () => clearTimeout(timeoutId);
     }
-    const unsubscribe = onAuthStateChanged(auth, user => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       setLoading(false);
     });

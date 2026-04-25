@@ -12,7 +12,7 @@ const FirstAid = () => {
   }, []);
 
   return (
-    <div className="first-aid-page container">
+    <div className="first-aid-page container" dir={isRTL ? 'rtl' : 'ltr'}>
 
       {/* ── Standardized Header ─────────────────────────────────────────────────── */}
       <div className="about-header-wrapper animate-fade-in">

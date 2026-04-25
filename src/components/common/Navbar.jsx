@@ -3,18 +3,16 @@ import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import {
-  Shield,
   User,
   LogOut,
-  Activity,
   Pill,
   Menu,
   X,
-  CreditCard,
   BookOpen,
   Languages,
-  Info
+  CalendarClock,
 } from 'lucide-react';
+import NotificationBell from './NotificationBell';
 
 const Navbar = ({ onOpenAuth }) => {
   const { currentUser, logout } = useAuth();
@@ -61,6 +59,10 @@ const Navbar = ({ onOpenAuth }) => {
               <Link to="/first-aid" className="dropdown-item">{t('common.emergencyFirstAid')}</Link>
               <Link to="/myths-facts" className="dropdown-item">{t('common.mythsFacts')}</Link>
               <Link to="/special-warnings" className="dropdown-item">{t('common.specialWarnings')}</Link>
+              <Link to="/profile" className="dropdown-item dropdown-item-accent">
+                <CalendarClock size={16} style={{ display: 'inline', verticalAlign: 'middle', marginInlineEnd: 6 }} />
+                {t('common.drugSchedule')}
+              </Link>
             </div>
           </div>
           <Link to="/checker" className={`nav-link ${isActive('/checker') ? 'active' : ''}`}>
@@ -81,6 +83,7 @@ const Navbar = ({ onOpenAuth }) => {
 
           {currentUser ? (
             <div className="user-menu">
+              <NotificationBell />
               <Link to="/profile" className={`nav-link profile-link ${isActive('/profile') ? 'active' : ''}`}>
                 <User size={18} /> {t('common.myDashboard')}
               </Link>
@@ -95,10 +98,16 @@ const Navbar = ({ onOpenAuth }) => {
           )}
         </div>
 
-        {/* Mobile Toggle */}
-        <button className="mobile-toggle" onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? <X /> : <Menu />}
-        </button>
+        <div className="mobile-top-actions">
+          {currentUser && (
+            <div className="mobile-bell">
+              <NotificationBell />
+            </div>
+          )}
+          <button className="mobile-toggle" onClick={() => setIsOpen(!isOpen)}>
+            {isOpen ? <X /> : <Menu />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
@@ -112,6 +121,7 @@ const Navbar = ({ onOpenAuth }) => {
             <Link to="/special-warnings" onClick={() => setIsOpen(false)}>{t('common.specialWarnings')}</Link>
           </div>
           <Link to="/checker" onClick={() => setIsOpen(false)}>{t('common.interactionChecker')}</Link>
+          <Link to="/profile" onClick={() => setIsOpen(false)}>{t('common.drugSchedule')}</Link>
           <Link to="/about" onClick={() => setIsOpen(false)}>{t('common.aboutTeam')}</Link>
           
           <button onClick={toggleLanguage} className="mobile-lang-btn">
@@ -176,11 +186,13 @@ const Navbar = ({ onOpenAuth }) => {
         }
 
         .logo-main {
-          font-size: 1.4rem;
+          font-size: 1.85rem;
           font-weight: 800;
-          letter-spacing: -0.02em;
-          color: var(--primary);
+          letter-spacing: -0.04em;
+          color: #0a2540;
+          font-family: 'Plus Jakarta Sans', 'Tajawal', 'Cairo', system-ui, sans-serif;
         }
+        [dir="rtl"] .logo-main { font-size: 2rem; letter-spacing: 0.02em; }
 
         .logo-sub {
           font-size: 0.9rem;
@@ -226,7 +238,7 @@ const Navbar = ({ onOpenAuth }) => {
         .lang-toggle-btn:hover { background: rgba(126, 34, 206, 0.05); color: var(--primary); }
         .lang-code { font-size: 0.8rem; }
 
-        .user-menu { display: flex; align-items: center; gap: 1.5rem; }
+        .user-menu { display: flex; align-items: center; gap: 1rem; }
         .btn-icon {
           background: none; border: none; color: var(--text-muted); cursor: pointer;
           display: flex; align-items: center; justify-content: center;
@@ -246,6 +258,7 @@ const Navbar = ({ onOpenAuth }) => {
         
         .dropdown-item { padding: 10px 16px; color: var(--text-main); text-decoration: none; font-weight: 600; border-radius: 8px; transition: background 0.2s; }
         .dropdown-item:hover { background: rgba(126, 34, 206, 0.05); color: var(--primary); }
+        .dropdown-item-accent { border-top: 1px solid var(--border); margin-top: 4px; padding-top: 12px !important; font-weight: 800; }
         
         .mobile-education-links { display: flex; flex-direction: column; gap: 1rem; border-left: 2px solid var(--border); padding-left: 1rem; margin-top: 0.5rem; margin-bottom: 0.5rem; }
         .mobile-menu[dir="rtl"] .mobile-education-links { border-left: none; border-right: 2px solid var(--border); padding-left: 0; padding-right: 1rem; }
@@ -266,8 +279,11 @@ const Navbar = ({ onOpenAuth }) => {
         .btn-white { background: white; color: var(--primary); }
         .btn-white:hover { background: #f8f9fa; transform: translateY(-2px); }
 
+        .mobile-top-actions { display: none; align-items: center; gap: 0.5rem; }
+        .mobile-bell { display: flex; align-items: center; }
         @media (max-width: 900px) {
           .nav-links { display: none; }
+          .mobile-top-actions { display: flex; }
           .mobile-toggle { display: block; }
           .navbar-transparent.mobile-toggle { color: white; }
           .mobile-menu {

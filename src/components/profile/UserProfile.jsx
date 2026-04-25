@@ -1,22 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import { db, isPreviewMode } from '../../firebase/config';
 import { doc, getDoc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { 
-  User, 
-  History, 
   Pill, 
   LogOut, 
-  ChevronRight, 
   Shield,
   Plus,
   Trash2,
-  Calendar,
-  Activity
+  Loader2,
 } from 'lucide-react';
 import CaregiverCalendar from '../dashboard/CaregiverCalendar';
 import BehaviorLog from '../dashboard/BehaviorLog';
+import DrugSchedulePanel from '../dashboard/DrugSchedulePanel';
 import { useNavigate } from 'react-router-dom';
 import { getRxCUI } from '../../services/rxnav';
 
@@ -31,13 +28,8 @@ const UserProfile = () => {
   const [addingMed, setAddingMed] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (currentUser) {
-      fetchUserData();
-    }
-  }, [currentUser]);
-
-  const fetchUserData = async () => {
+  const fetchUserData = useCallback(async () => {
+    if (!currentUser) return;
     setLoading(true);
     try {
       if (isPreviewMode) {
@@ -55,7 +47,11 @@ const UserProfile = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentUser]);
+
+  useEffect(() => {
+    void fetchUserData();
+  }, [fetchUserData]);
 
   const handleAddMed = async (e) => {
     e.preventDefault();
@@ -115,31 +111,52 @@ const UserProfile = () => {
     );
   }
 
+  if (loading) {
+    return (
+      <div className="container section-padding text-center" dir={isRTL ? 'rtl' : 'ltr'} style={{ paddingTop: '4rem' }}>
+        <Loader2 size={40} className="profile-loading-spin" />
+        <p className="mt-4" style={{ color: 'var(--text-muted)' }}>{t('auth.processing')}</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="profile-page container section-padding animate-fade-in" dir={isRTL ? 'rtl' : 'ltr'}>
-      <div className="dashboard-grid">
-        {/* Sidebar */}
+    <div className="profile-page animate-fade-in" dir={isRTL ? 'rtl' : 'ltr'}>
+      <div className="container section-padding">
+        <header className="dash-hero">
+          <div>
+            <p className="dash-kicker">{t('dashboard.welcomeKicker')}</p>
+            <h1 className="dash-title">{t('dashboard.welcomeTitle', { name: currentUser.displayName || currentUser.email.split('@')[0] })}</h1>
+            <p className="dash-sub">{t('dashboard.welcomeSub')}</p>
+          </div>
+          <div className="dash-hero-badges">
+            <div className="dash-stat-pill">
+              <Pill size={20} />
+              <div>
+                <span className="num">{medications.length}</span>
+                <span className="lab">{t('dashboard.drugsArchive')}</span>
+              </div>
+            </div>
+            {isPreviewMode && <span className="badge badge-warning">{t('dashboard.previewMode')}</span>}
+          </div>
+        </header>
+
+        <div className="dashboard-grid">
         <aside className="profile-sidebar">
           <div className="profile-card glass-card">
             <div className="avatar">{currentUser.email[0].toUpperCase()}</div>
             <h2>{currentUser.displayName || currentUser.email.split('@')[0]}</h2>
             <p className="email">{currentUser.email}</p>
-            {isPreviewMode && <span className="badge badge-warning">{t('dashboard.previewMode')}</span>}
-            <div className="profile-stats">
-              <div className="stat">
-                <strong>{medications.length}</strong>
-                <span>{t('dashboard.drugsArchive')}</span>
-              </div>
+            <div className="profile-actions">
+              <button type="button" onClick={logout} className="btn-dash-logout">
+                <LogOut size={18} /> {t('dashboard.logout')}
+              </button>
             </div>
-            <button onClick={logout} className="btn btn-ghost full-width logout-btn">
-              <LogOut size={18} /> {t('dashboard.logout')}
-            </button>
           </div>
         </aside>
 
-        {/* Main */}
         <main className="dashboard-main">
-
+          <DrugSchedulePanel currentUser={currentUser} t={t} />
 
           <div className="dashboard-top-widgets grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
             <CaregiverCalendar />
@@ -174,23 +191,29 @@ const UserProfile = () => {
             </div>
           </section>
         </main>
+        </div>
       </div>
 
       <style>{`
-        .profile-page { padding-top: 2rem; padding-bottom: 8rem; }
-        .dashboard-grid { display: grid; grid-template-columns: 280px 1fr; gap: 3rem; }
-        .profile-sidebar { position: sticky; top: 100px; height: fit-content; }
-        .profile-card { padding: 3rem 2rem; text-align: center; }
-        .avatar { width: 64px; height: 64px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 1.5rem; font-weight: 800; }
-        .profile-card h2 { font-size: 1.25rem; margin-bottom: 0.25rem; }
-        .email { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem; }
-        .badge-warning { background: #fffbeb; color: #92400e; font-size: 0.7rem; padding: 4px 8px; border-radius: 4px; font-weight: 700; margin-bottom: 2rem; display: inline-block; }
-        
-        .profile-stats { display: flex; justify-content: space-around; padding: 1.5rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin: 1.5rem 0; }
-        .stat { display: flex; flex-direction: column; gap: 4px; }
-        .stat strong { font-size: 1.15rem; }
-        .stat span { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
-        .logout-btn { color: #c0392b !important; }
+        .profile-page { padding-top: 1rem; padding-bottom: 5rem; background: linear-gradient(180deg, rgba(10, 37, 64, 0.03) 0%, transparent 32%); }
+        .dash-hero { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 1.5rem; margin-bottom: 2.5rem; padding: 1.5rem 0; border-bottom: 1px solid var(--border, rgba(0,0,0,0.06)); }
+        .dash-kicker { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 800; color: #7c3aed; margin: 0 0 0.5rem; }
+        .dash-title { font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 800; color: #0a2540; margin: 0; line-height: 1.25; font-family: 'Plus Jakarta Sans', 'Tajawal', sans-serif; }
+        .dash-sub { margin: 0.5rem 0 0; color: #64748b; font-size: 1rem; max-width: 52ch; line-height: 1.5; }
+        .dash-hero-badges { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+        .dash-stat-pill { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid var(--border, rgba(0,0,0,0.08)); border-radius: 16px; padding: 12px 18px; box-shadow: 0 4px 20px rgba(10, 37, 64, 0.06); }
+        .dash-stat-pill .num { display: block; font-size: 1.4rem; font-weight: 800; color: #0a2540; }
+        .dash-stat-pill .lab { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: #64748b; font-weight: 700; }
+        .dashboard-grid { display: grid; grid-template-columns: 280px 1fr; gap: 2rem; align-items: start; }
+        .profile-sidebar { position: sticky; top: 96px; height: fit-content; }
+        .profile-card { padding: 1.75rem; text-align: center; }
+        .avatar { width: 72px; height: 72px; background: linear-gradient(135deg, #7c3aed, #4f46e5); color: white; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.75rem; font-weight: 800; box-shadow: 0 8px 24px rgba(79, 70, 229, 0.25); }
+        .profile-card h2 { font-size: 1.1rem; margin-bottom: 0.2rem; color: #0a2540; }
+        .email { font-size: 0.8rem; color: #64748b; margin-bottom: 0; }
+        .profile-actions { margin-top: 1.25rem; }
+        .btn-dash-logout { width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border-radius: 12px; border: 1px solid #fecdd3; background: #fff1f2; color: #be123c; font-weight: 700; cursor: pointer; }
+        .btn-dash-logout:hover { background: #ffe4e6; }
+        .badge-warning { background: #fffbeb; color: #92400e; font-size: 0.7rem; padding: 6px 10px; border-radius: 8px; font-weight: 700; }
 
         .dashboard-main { display: flex; flex-direction: column; gap: 4rem; }
         .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
@@ -214,8 +237,10 @@ const UserProfile = () => {
         .mb-8 { margin-bottom: 2rem; }
         
         @media (min-width: 1024px) {
-          .lg\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+          .lg\\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         }
+        .profile-loading-spin { animation: spin 0.9s linear infinite; color: var(--primary); }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         .items-center { align-items: center; }
         .justify-between { justify-content: space-between; }
@@ -244,7 +269,9 @@ const UserProfile = () => {
 
         @media (max-width: 900px) {
           .dashboard-grid { grid-template-columns: 1fr; }
-          .profile-sidebar { position: relative; top: 0; }
+          .profile-sidebar { position: relative; top: 0; order: 2; }
+          .dashboard-main { order: 1; }
+          .dash-hero { flex-direction: column; align-items: flex-start; }
         }
       `}</style>
     </div>

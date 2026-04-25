@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Brain, Coffee, Smile, Moon, Save, Loader2 } from 'lucide-react';
-import { motion } from 'framer-motion';
-
 const BehaviorLog = () => {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
@@ -19,7 +17,7 @@ const BehaviorLog = () => {
     setSaving(true);
     setTimeout(() => {
       setSaving(false);
-      alert(isRTL ? 'تم حفظ السجل بنجاح!' : 'Log saved successfully!');
+      alert(t('dashboard.logSaved'));
     }, 1000);
   };
 

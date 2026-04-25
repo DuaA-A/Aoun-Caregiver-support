@@ -7,6 +7,7 @@
     "mythsFacts": "Myths & Facts",
     "specialWarnings": "Special Warnings",
     "interactionChecker": "Interaction Checker",
+    "drugSchedule": "Drug schedule",
     "aboutTeam": "About the Team",
     "myDashboard": "My Dashboard",
     "signIn": "Sign In",
@@ -15,6 +16,16 @@
     "checkDrugs": "Check Drugs",
     "viewHistory": "View History",
     "registerNow": "Register Now"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "empty": "No reminders right now. Add medicines and times in your dashboard.",
+    "markAllRead": "Mark all read",
+    "markRead": "Mark read",
+    "markTaken": "Mark as taken",
+    "taken": "Recorded as taken",
+    "doseTitle": "Time to take: {{name}} ({{time}})",
+    "openDashboard": "Open full dashboard"
   },
   "firstAid": {
     "subtitle": "CARE & CALM",
@@ -192,7 +203,7 @@
     "tabSafety": "Safety Analyzer",
     "tabArchive": "Care Archive",
     "buildTitle": "Patient Regimen",
-    "buildDesc": "Add medications below. We will cross-reference them with standard AD treatments.",
+    "buildDesc": "Add any drug you plan to take (for example tramadol or paracetamol). We compare it with the Alzheimer medicines on your dashboard schedule, or with common AD therapies if the schedule is empty.",
     "slotText": "Drug {{index}}",
     "required": "(Required)",
     "optional": "(Optional)",
@@ -224,13 +235,44 @@
       "maxDrugs": "Max {{max}} drugs.",
       "alreadyAdded": "Already added.",
       "notFound": "Not found.",
+      "weakMatch": "Added by name — RxNorm did not return a code; interaction search may rely on curated data only.",
       "network": "Network error.",
       "addOne": "Add at least one drug.",
       "apiDown": "System unavailable."
-    }
+    },
+    "regimenFromSchedule": "Compared with scheduled medicines: {{list}}.",
+    "regimenBaseline": "No medicines on your schedule yet — comparing with common AD therapies: {{list}}.",
+    "offlineNameOnly": "Local / curated only",
+    "sourceRxnav": "RxNorm interaction data loaded.",
+    "sourceRxnavEmpty": "RxNorm returned no pairs for this combination — showing curated or label data only.",
+    "sourceRxnavShort": "Not enough drug codes for RxNorm — curated guidance only.",
+    "sourceLocal": "Curated entries: {{n}}",
+    "firstAidTitle": "If side effects or overdose are suspected",
+    "firstAidFallback": "Stop further doses of the new medicine unless a clinician tells you otherwise, call local emergency services if the person is very drowsy, confused, not breathing normally, or collapses. Bring all medication boxes to the hospital. Pregnancy and children need urgent clinician advice before any change.",
+    "faGeneral": "General:",
+    "faToxicity": "Possible toxicity / overdose:",
+    "faPregnancy": "Pregnancy:",
+    "faPediatric": "Children:"
+  },
+  "schedule": {
+    "title": "Medication schedule & reminders",
+    "subtitle": "Add each Alzheimer medicine and the times it should be taken. The dashboard shows the next dose and optional browser notifications.",
+    "nextDose": "Next dose",
+    "markTaken": "Mark as taken",
+    "empty": "No scheduled medicines yet. Add the first drug and a time above.",
+    "drugPlaceholder": "e.g. Donepezil 5 mg",
+    "notifyEnable": "Enable reminders",
+    "notifyOn": "Reminders on",
+    "saving": "Saving…",
+    "adherenceWeek": "Last 7 days: {{taken}} / {{expected}} doses marked taken ({{pct}}%).",
+    "addTime": "Add time",
+    "addAnotherTime": "Add another time"
   },
   "dashboard": {
     "secureTitle": "Caregiver Dashboard",
+    "welcomeKicker": "Your care space",
+    "welcomeTitle": "Hi, {{name}}",
+    "welcomeSub": "Manage medication times, log doses, and follow daily mood and activity here.",
     "secureDesc": "Access the patient's behavior logs and medication schedule.",
     "returnHome": "Home",
     "previewMode": "Preview",
@@ -238,7 +280,10 @@
     "myMeds": "Active Medications",
     "addPlaceholder": "Add drug...",
     "noMeds": "No medications listed.",
-    "logout": "Logout"
+    "logout": "Logout",
+    "calendarTitle": "Caregiver calendar",
+    "nextDoseLabel": "Next medication dose",
+    "logSaved": "Log saved successfully."
   },
   "auth": {
     "loginTitle": "Caregiver Sign In",
@@ -314,8 +359,8 @@
     "eduDesc": "Comprehensive guides on handling agitation, wandering, and sundowning to ensure patient safety.",
     "checkerTitle": "Interaction Hub",
     "checkerDesc": "Safety tool for cross-verifying Alzheimer's prescriptions against daily medications.",
-    "archivesTitle": "Care Logs",
-    "archivesDesc": "Securely track behavior, appetite, and medication adherence in your caregiver dashboard.",
+    "archivesTitle": "Dashboard & schedule",
+    "archivesDesc": "Open your dashboard to log behavior and mark scheduled medicines as taken.",
     "ctaTitle": "Ready to enhance your care?",
     "ctaDesc": "Join Aoun today to build a safer, more organized care routine for your loved one."
   },

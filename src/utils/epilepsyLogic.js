@@ -178,8 +178,6 @@ export const QUESTIONS = [
  */
 export const analyzeResult = (answers) => {
   const { consciousness, movement_type, duration, aura, post_ictal } = answers;
-  
-  const hasMovement = (type) => Array.isArray(movement) ? movement.includes(type) : movement === type;
 
   // 1. Check for Generalized Tonic-Clonic
   if (consciousness === 'lost' && (movement_type.includes('stiffening') && movement_type.includes('jerking')) && post_ictal === 'confused') {

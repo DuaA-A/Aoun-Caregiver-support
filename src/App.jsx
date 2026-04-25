@@ -33,7 +33,7 @@ const Home = ({ onOpenAuth }) => {
         <div className="pulsing-circle" style={{ width: '150px', height: '150px', top: '40%', left: '40%', background: 'var(--accent)', animationDelay: '4s' }}></div>
 
         <div className="hero-content container">
-          <div className="hero-flex-wrapper" style={{ flexDirection: 'row' }}>
+          <div className={`hero-flex-wrapper${isRTL ? ' hero-ar' : ''}`} dir={isRTL ? 'rtl' : 'ltr'}>
             <motion.div 
               className="hero-text-side" 
               style={{ textAlign: 'start' }}
@@ -41,9 +41,18 @@ const Home = ({ onOpenAuth }) => {
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.8, cubicBezier: [0.16, 1, 0.3, 1], delay: 0.2 }}
             >
+              <span className="hero-badge-pill">{t('home.heroBadge')}</span>
               <h1 className="hero-title">
-                {t('home.heroTitle').split(' ').slice(0, -3).join(' ')} <br />
-                <span className="text-glow italic" style={{ color: 'var(--text-main)' }}>{t('home.heroTitle').split(' ').slice(-3).join(' ')}</span>
+                {isRTL ? (
+                  <>
+                    {t('home.heroTitle')}
+                  </>
+                ) : (
+                  <>
+                    {t('home.heroTitle').split(' ').slice(0, -3).join(' ')} <br />
+                    <span className="text-glow italic" style={{ color: 'var(--text-main)' }}>{t('home.heroTitle').split(' ').slice(-3).join(' ')}</span>
+                  </>
+                )}
               </h1>
               <p className="hero-description">
                 {t('home.heroDescription')}
@@ -60,7 +69,7 @@ const Home = ({ onOpenAuth }) => {
             </motion.div>
 
             <motion.div 
-              className="hero-image-side"
+              className={isRTL ? 'hero-image-side hero-image-rtl' : 'hero-image-side'}
               initial={{ x: isRTL ? -150 : 150, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.8, cubicBezier: [0.16, 1, 0.3, 1], delay: 0.3 }}
@@ -285,9 +294,16 @@ const Home = ({ onOpenAuth }) => {
           padding-top: 80px;
           overflow: hidden;
         }
-        .hero-flex-wrapper { display: flex; align-items: center; justify-content: space-between; gap: 8rem; width: 100%; min-height: calc(100vh - 80px); }
-        .hero-text-side { flex: 1; z-index: 10; text-align: start; padding-left: 1rem; }
-        .hero-image-side { flex: 1.2; display: flex; justify-content: center; align-items: center; z-index: 5; position: relative; }
+        .hero-flex-wrapper { display: flex; flex-direction: row; align-items: flex-start; justify-content: space-between; gap: clamp(2.5rem, 5vw, 5.5rem); width: 100%; min-height: calc(100vh - 80px); padding-top: 0.5rem; }
+        .hero-ar.hero-flex-wrapper { gap: clamp(3rem, 6vw, 6rem); }
+        .hero-text-side { flex: 1; z-index: 10; text-align: start; padding-inline: 0; max-width: 36rem; }
+        .hero-image-rtl { margin-top: 0.75rem; }
+        .hero-badge-pill {
+          display: inline-flex; align-items: center; padding: 6px 16px; margin-bottom: 1.25rem;
+          background: rgba(126, 34, 206, 0.1); color: var(--primary); border-radius: 30px; font-weight: 800;
+          font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid rgba(126, 34, 206, 0.2);
+        }
+        .hero-image-side { flex: 1.15; display: flex; justify-content: center; align-items: flex-start; z-index: 5; position: relative; margin-top: 0.5rem; }
         
         .hero-circles-container { position: relative; width: 100%; height: 500px; display: flex; justify-content: center; align-items: center; }
         .image-circle { position: absolute; border-radius: 50%; overflow: hidden; border: 4px solid white; box-shadow: 0 20px 40px rgba(0,0,0,0.1); background: white; }
@@ -315,7 +331,8 @@ const Home = ({ onOpenAuth }) => {
         .btn-outline-primary { border: 2px solid var(--text-main); color: var(--text-main) !important; background: transparent; text-decoration: none !important; padding: 14px 28px; border-radius: 24px; font-weight: 700; transition: all 0.3s; }
         .btn-outline-primary:hover { background: var(--text-main); color: white !important; transform: translateY(-3px); }
 
-        .hero-title { font-size: 4rem; font-weight: 900; line-height: 1.1; margin-bottom: 2rem; color: var(--text-main) !important; text-decoration: none !important; }
+        .hero-title { font-size: 4rem; font-weight: 900; line-height: 1.1; margin-bottom: 2rem; color: #0a2540 !important; text-decoration: none !important; font-family: 'Plus Jakarta Sans', 'Tajawal', system-ui, sans-serif; }
+        [dir="rtl"] .hero-title { font-size: clamp(2.2rem, 5.5vw, 3.2rem); line-height: 1.35; }
         .hero-cta-group { display: flex; gap: 1.5rem; align-items: center; }
         .hero-description { font-size: 1.2rem; line-height: 1.7; color: var(--text-muted); max-width: 600px; margin-bottom: 3rem; }
 
@@ -460,7 +477,7 @@ const Home = ({ onOpenAuth }) => {
           .hero-image-side { position: absolute; inset: 0; z-index: 0; opacity: 0.4; display: block; overflow: hidden; pointer-events: none; width: 100%; height: 100%; }
           .hero-img-container { padding: 0; border: none; background: transparent; box-shadow: none; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; padding-top: 1rem; }
           .hero-main-img { width: 100%; height: 100%; max-width: 100vw; object-fit: contain; object-position: center center; opacity: 1; transform: scale(1.1); }
-          .active-badge { display: none !important; }
+          .hero-badge-pill { margin-bottom: 1rem; font-size: 0.75rem; }
           
           .full-screen-section { padding: 4rem 0; min-height: auto; }
           .intro-text h2 { font-size: 2rem; }
@@ -553,7 +570,8 @@ const App = () => {
           display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
         }
         .splash-logo-img { width: 120px; height: auto; animation: heartbeat 1.5s infinite ease-in-out; filter: drop-shadow(0 0 30px rgba(157, 141, 241, 0.4)); }
-        .splash-logo-text { font-size: 3rem; color: white; font-weight: 900; letter-spacing: 1px; margin: 0; }
+        .splash-logo-text { font-size: 3rem; color: #0a2540; font-weight: 900; letter-spacing: 0.02em; margin: 0; font-family: 'Plus Jakarta Sans', 'Tajawal', sans-serif; }
+        .rtl-mode .splash-logo-text { font-size: 3.2rem; }
         .splash-logo-text .safe-text { color: var(--primary); }
         @keyframes heartbeat {
           0%, 100% { transform: scale(1); }

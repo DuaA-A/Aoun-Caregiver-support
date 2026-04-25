@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Calendar as CalendarIcon, Clock, Bell } from 'lucide-react';
-import { motion } from 'framer-motion';
 
 const CaregiverCalendar = () => {
   const { t, i18n } = useTranslation();
@@ -11,38 +10,48 @@ const CaregiverCalendar = () => {
   const [timeLeft, setTimeLeft] = useState('');
 
   useEffect(() => {
-    // Simulated next dose countdown
     const target = new Date();
     target.setHours(target.getHours() + 4);
-    setNextDose(target.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
 
-    const timer = setInterval(() => {
+    const tick = () => {
       const now = new Date();
+      setNextDose(target.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
       const diff = target - now;
       if (diff <= 0) {
         setTimeLeft('00:00:00');
-        clearInterval(timer);
-      } else {
-        const hours = Math.floor(diff / 3600000);
-        const mins = Math.floor((diff % 3600000) / 60000);
-        const secs = Math.floor((diff % 60000) / 1000);
-        setTimeLeft(`${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`);
+        return false;
       }
-    }, 1000);
+      const hours = Math.floor(diff / 3600000);
+      const mins = Math.floor((diff % 3600000) / 60000);
+      const secs = Math.floor((diff % 60000) / 1000);
+      setTimeLeft(`${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`);
+      return true;
+    };
 
-    return () => clearInterval(timer);
+    let intervalId;
+    const timeoutId = setTimeout(() => {
+      tick();
+      intervalId = setInterval(() => {
+        if (!tick()) clearInterval(intervalId);
+      }, 1000);
+    }, 0);
+
+    return () => {
+      clearTimeout(timeoutId);
+      clearInterval(intervalId);
+    };
   }, []);
 
   return (
     <div className="calendar-card glass-card p-6" dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="flex items-center gap-3 mb-6">
         <CalendarIcon className="text-primary" size={24} />
-        <h3 className="text-lg font-bold">Caregiver's Schedule</h3>
+        <h3 className="text-lg font-bold">{t('dashboard.calendarTitle')}</h3>
       </div>
 
       <div className="schedule-item mb-4 p-4 rounded-xl bg-blue-50 border border-blue-100">
         <div className="flex justify-between items-center mb-2">
-          <span className="text-sm font-bold text-blue-800">Next Medication Dose</span>
+          <span className="text-sm font-bold text-blue-800">{t('dashboard.nextDoseLabel')}</span>
           <span className="badge badge-primary">{nextDose}</span>
         </div>
         <div className="flex items-center gap-2 text-2xl font-black text-blue-900">

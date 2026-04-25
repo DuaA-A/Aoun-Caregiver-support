@@ -1,44 +1,56 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
-import { getRxCUI, getInteractions, BASELINE_AD_DRUGS } from '../../services/rxnav';
-import { getOpenFdaData } from '../../services/openFDA';
-import { FOOD_INTERACTIONS } from '../../utils/foodInteractions';
-import { checkLocalInteractions } from '../../services/localInteractionsDb';
-import { 
-  Pill, Search, AlertTriangle, CheckCircle2, Plus, Trash2, 
-  Loader2, Shield, Info, Coffee, RefreshCw
+import { getRxCUI, BASELINE_AD_DRUGS } from '../../services/rxnav';
+import { buildFullInteractionReport } from '../../services/drugInteractionEngine';
+import {
+  Pill,
+  Search,
+  AlertTriangle,
+  CheckCircle2,
+  Plus,
+  Trash2,
+  Loader2,
+  Shield,
+  Info,
+  Coffee,
+  RefreshCw,
+  Stethoscope,
+  Baby,
+  HeartPulse,
 } from 'lucide-react';
 import { db, isPreviewMode } from '../../firebase/config';
 import { doc, getDoc } from 'firebase/firestore';
-import '../../styles/about.css'; // Inheriting global header classes
+import '../../styles/about.css';
+
+const LS_SCHEDULE = 'preview_drug_schedule';
 
 const InteractionChecker = ({ onOpenAuth }) => {
   const { currentUser } = useAuth();
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
-  
+
   const [activeTab, setActiveTab] = useState('quick');
   const [inputDrug, setInputDrug] = useState('');
   const [medsToCheck, setMedsToCheck] = useState([]);
-  
+
   const [reportData, setReportData] = useState({
     interactions: [],
     foodWarnings: [],
-    checked: false
+    checked: false,
+    regimenNames: [],
+    meta: null,
   });
-  
+
   const [loading, setLoading] = useState(false);
   const [savedMeds, setSavedMeds] = useState([]);
+  const [scheduleRegimen, setScheduleRegimen] = useState([]);
   const [errorMsg, setErrorMsg] = useState('');
 
   const MAX_DRUGS = 4;
 
-  useEffect(() => {
-    if (currentUser) fetchSavedMeds();
-  }, [currentUser]);
-
-  const fetchSavedMeds = async () => {
+  const fetchSavedMeds = useCallback(async () => {
+    if (!currentUser) return;
     try {
       if (isPreviewMode) {
         setSavedMeds(JSON.parse(localStorage.getItem('preview_meds') || '[]'));
@@ -49,30 +61,64 @@ const InteractionChecker = ({ onOpenAuth }) => {
     } catch (err) {
       console.error('Error fetching meds:', err);
     }
-  };
+  }, [currentUser]);
+
+  const fetchUserScheduleNames = useCallback(async () => {
+    if (!currentUser) {
+      setScheduleRegimen([]);
+      return [];
+    }
+    try {
+      let names = [];
+      if (isPreviewMode) {
+        const d = JSON.parse(localStorage.getItem(LS_SCHEDULE) || '{}');
+        names = (d.schedule || []).map((x) => x.name).filter(Boolean);
+      } else {
+        const snap = await getDoc(doc(db, 'user_drug_schedule', currentUser.uid));
+        if (snap.exists()) {
+          names = (snap.data().schedule || []).map((x) => x.name).filter(Boolean);
+        }
+      }
+      setScheduleRegimen(names);
+      return names;
+    } catch {
+      setScheduleRegimen([]);
+      return [];
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (currentUser) {
+      void fetchSavedMeds();
+      void fetchUserScheduleNames();
+    } else {
+      setScheduleRegimen([]);
+    }
+  }, [currentUser, fetchSavedMeds, fetchUserScheduleNames]);
 
   const addDrug = async (e, forcedDrugName = null) => {
     if (e) e.preventDefault();
     const drugName = forcedDrugName || inputDrug;
     if (!drugName.trim()) return;
-    if (medsToCheck.length >= MAX_DRUGS) return setErrorMsg(t('checker.errors.maxDrugs', { max: MAX_DRUGS }));
-    if (medsToCheck.some(m => m.name.toLowerCase() === drugName.toLowerCase())) {
+    if (medsToCheck.length >= MAX_DRUGS) {
+      return setErrorMsg(t('checker.errors.maxDrugs', { max: MAX_DRUGS }));
+    }
+    if (medsToCheck.some((m) => m.name.toLowerCase() === drugName.toLowerCase())) {
       setErrorMsg(t('checker.errors.alreadyAdded', { name: drugName }));
       return;
     }
-    
+
     setLoading(true);
     setErrorMsg('');
-    setReportData(prev => ({ ...prev, checked: false }));
+    setReportData((prev) => ({ ...prev, checked: false }));
     try {
       const rxcui = await getRxCUI(drugName);
-      if (rxcui) {
-        setMedsToCheck(prev => [...prev, { name: drugName, rxcui }]);
-        if (!forcedDrugName) setInputDrug('');
-      } else {
-        setErrorMsg(t('checker.errors.notFound', { name: drugName }));
+      setMedsToCheck((prev) => [...prev, { name: drugName.trim(), rxcui: rxcui || null }]);
+      if (!forcedDrugName) setInputDrug('');
+      if (!rxcui) {
+        setErrorMsg(t('checker.errors.weakMatch'));
       }
-    } catch (err) {
+    } catch {
       setErrorMsg(t('checker.errors.network'));
     } finally {
       setLoading(false);
@@ -80,8 +126,14 @@ const InteractionChecker = ({ onOpenAuth }) => {
   };
 
   const removeDrug = (index) => {
-    setMedsToCheck(prev => prev.filter((_, i) => i !== index));
-    setReportData({ interactions: [], foodWarnings: [], checked: false });
+    setMedsToCheck((prev) => prev.filter((_, i) => i !== index));
+    setReportData({
+      interactions: [],
+      foodWarnings: [],
+      checked: false,
+      regimenNames: [],
+      meta: null,
+    });
     setErrorMsg('');
   };
 
@@ -91,75 +143,21 @@ const InteractionChecker = ({ onOpenAuth }) => {
     }
     setLoading(true);
     setErrorMsg('');
-    
+    const regimen = await fetchUserScheduleNames();
+
     try {
-      
-      const hasADDrug = medsToCheck.some(m => 
-        BASELINE_AD_DRUGS.some(base => base.toLowerCase() === m.name.toLowerCase())
-      );
-      
-      let allDrugNames = medsToCheck.map(m => m.name);
-
-      if (!hasADDrug) {
-        // Limit to 2 baseline drugs to check implicitly
-        for (const baseDrug of BASELINE_AD_DRUGS.slice(0, 2)) { 
-          allDrugNames.push(baseDrug);
-        }
-      }
-
-      const localInteractions = checkLocalInteractions(allDrugNames);
-      const allRxcuis = medsToCheck
-        .map((m) => m.rxcui)
-        .filter(Boolean);
-      const apiInteractions = allRxcuis.length >= 2 ? await getInteractions(allRxcuis) : [];
-      
-      const userMedNamesLower = medsToCheck.map(m => m.name.toLowerCase());
-      const localRelevantInteractions = localInteractions.filter(inter => {
-        if (!hasADDrug) {
-           const drgALower = inter.drugA.toLowerCase();
-           const drgBLower = inter.drugB.toLowerCase();
-           return userMedNamesLower.some(umed => drgALower.includes(umed) || drgBLower.includes(umed));
-        }
-        return true;
+      const report = await buildFullInteractionReport({
+        queryMeds: medsToCheck,
+        scheduledMedNames: regimen,
       });
-
-      const mergedInteractions = Array.from(
-        new Map(
-          [...apiInteractions, ...localRelevantInteractions].map((inter) => {
-            const key = [inter.drugA, inter.drugB].map((v) => v.toLowerCase().trim()).sort().join('::');
-            return [key, inter];
-          })
-        ).values()
-      );
-
-      let foodWarnings = [];
-      for (const med of medsToCheck) {
-        const medNameLower = med.name.toLowerCase();
-        if (FOOD_INTERACTIONS[medNameLower]) {
-          foodWarnings.push({
-            drug: med.name,
-            ...FOOD_INTERACTIONS[medNameLower],
-            source: 'Verified Clinical Baseline'
-          });
-        }
-        const fdaData = await getOpenFdaData(med.name);
-        if (fdaData && fdaData.foodRules) {
-          foodWarnings.push({
-            drug: med.name,
-            avoidFoods: fdaData.foodRules,
-            timing: "As directed",
-            instructions: fdaData.dosAndDonts || "Follow FDA label guidelines.",
-            source: 'FDA Label'
-          });
-        }
-      }
 
       setReportData({
-        interactions: mergedInteractions,
-        foodWarnings: foodWarnings,
-        checked: true
+        interactions: report.interactions,
+        foodWarnings: report.foodWarnings,
+        checked: true,
+        regimenNames: report.regimenNames,
+        meta: report.meta,
       });
-      
     } catch (err) {
       console.error(err);
       setErrorMsg(t('checker.errors.apiDown'));
@@ -182,40 +180,86 @@ const InteractionChecker = ({ onOpenAuth }) => {
     return 'sev-low';
   };
 
+  const renderFirstAid = (inter) => {
+    const fa = inter.firstAid;
+    if (!fa) {
+      return (
+        <div className="first-aid-box">
+          <h5><Stethoscope size={16} /> {t('checker.firstAidTitle')}</h5>
+          <p>{t('checker.firstAidFallback')}</p>
+        </div>
+      );
+    }
+    return (
+      <div className="first-aid-box">
+        <h5><Stethoscope size={16} /> {t('checker.firstAidTitle')}</h5>
+        <p><strong>{t('checker.faGeneral')}</strong> {fa.general}</p>
+        <p><strong>{t('checker.faToxicity')}</strong> {fa.toxicity}</p>
+        <p><strong><HeartPulse size={14} style={{ verticalAlign: 'middle' }} /> {t('checker.faPregnancy')}</strong> {fa.pregnancy}</p>
+        <p><strong><Baby size={14} style={{ verticalAlign: 'middle' }} /> {t('checker.faPediatric')}</strong> {fa.pediatric}</p>
+      </div>
+    );
+  };
+
+  const regimenLabel =
+    scheduleRegimen.length > 0
+      ? t('checker.regimenFromSchedule', { list: scheduleRegimen.join(', ') })
+      : t('checker.regimenBaseline', { list: BASELINE_AD_DRUGS.join(', ') });
+
   return (
     <div className="checker-page container" dir={isRTL ? 'rtl' : 'ltr'}>
-
-      {/* ── Standardized Header ─────────────────────────────────────────────────── */}
       <div className="about-header-wrapper animate-fade-in">
         <div style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 10 }}>
-            <span className="about-subtitle">{t('checker.subtitle')}</span>
-            <h1 className="about-title">{t('checker.title')}</h1>
-            <p className="about-desc">{t('checker.desc')}</p>
-            
-            <div className="tab-controls mt-6">
-              <button className={`tab-btn ${activeTab === 'quick' ? 'active' : ''}`} onClick={() => setActiveTab('quick')}>{t('checker.tabSafety')}</button>
-              <button className={`tab-btn ${activeTab === 'saved' ? 'active' : ''}`} onClick={() => setActiveTab('saved')}>{t('checker.tabArchive')}</button>
-            </div>
+          <span className="about-subtitle">{t('checker.subtitle')}</span>
+          <h1 className="about-title">{t('checker.title')}</h1>
+          <p className="about-desc">{t('checker.desc')}</p>
+
+          <div className="tab-controls mt-6">
+            <button
+              type="button"
+              className={`tab-btn ${activeTab === 'quick' ? 'active' : ''}`}
+              onClick={() => setActiveTab('quick')}
+            >
+              {t('checker.tabSafety')}
+            </button>
+            <button
+              type="button"
+              className={`tab-btn ${activeTab === 'saved' ? 'active' : ''}`}
+              onClick={() => setActiveTab('saved')}
+            >
+              {t('checker.tabArchive')}
+            </button>
+          </div>
         </div>
       </div>
 
       <div className="checker-body mt-8">
         {activeTab === 'quick' ? (
           <div className="quick-check-layout">
-             
-             {/* Left Column: Input */}
-             <div className="checker-input-area glass-card">
-               <h2>{t('checker.buildTitle')}</h2>
-               <p className="subtitle">{t('checker.buildDesc')}</p>
-               
-               <div className="multi-drug-slots mt-6">
+            <div className="checker-input-area glass-card">
+              <h2>{t('checker.buildTitle')}</h2>
+              <p className="subtitle">{t('checker.buildDesc')}</p>
+
+              <div className="regimen-hint glass-pill">
+                <Info size={16} />
+                <span>{regimenLabel}</span>
+              </div>
+
+              <div className="multi-drug-slots mt-6">
                 {[...Array(MAX_DRUGS)].map((_, index) => (
                   <div key={index} className={`drug-slot ${medsToCheck[index] ? 'filled' : 'empty'}`}>
                     {medsToCheck[index] ? (
                       <>
                         <Pill size={20} className="slot-icon" />
                         <span className="slot-name">{medsToCheck[index].name}</span>
-                        <button onClick={() => removeDrug(index)} className="slot-remove"><Trash2 size={18} /></button>
+                        {!medsToCheck[index].rxcui && (
+                          <span className="slot-warn" title={t('checker.offlineNameOnly')}>
+                            RxNorm
+                          </span>
+                        )}
+                        <button type="button" onClick={() => removeDrug(index)} className="slot-remove">
+                          <Trash2 size={18} />
+                        </button>
                       </>
                     ) : (
                       <span className="slot-empty-text">
@@ -224,171 +268,194 @@ const InteractionChecker = ({ onOpenAuth }) => {
                     )}
                   </div>
                 ))}
-               </div>
+              </div>
 
-               {medsToCheck.length < MAX_DRUGS && (
-                 <form onSubmit={(e) => addDrug(e)} className="drug-search-form mt-4">
-                   <Search className="search-icon" size={20} />
-                   <input 
-                     type="text" 
-                     className="drug-input"
-                     placeholder={t('checker.placeholder')}
-                     value={inputDrug}
-                     disabled={loading}
-                     onChange={(e) => setInputDrug(e.target.value)}
-                   />
-                   <button type="submit" disabled={loading || !inputDrug.trim()} className="btn-add">
-                     {loading ? <Loader2 size={18} className="spinner" /> : <Plus size={18} />}
-                   </button>
-                 </form>
-               )}
+              {medsToCheck.length < MAX_DRUGS && (
+                <form onSubmit={(e) => addDrug(e)} className="drug-search-form mt-4">
+                  <Search className="search-icon" size={20} />
+                  <input
+                    type="text"
+                    className="drug-input"
+                    placeholder={t('checker.placeholder')}
+                    value={inputDrug}
+                    disabled={loading}
+                    onChange={(e) => setInputDrug(e.target.value)}
+                  />
+                  <button type="submit" disabled={loading || !inputDrug.trim()} className="btn-add">
+                    {loading ? <Loader2 size={18} className="spinner" /> : <Plus size={18} />}
+                  </button>
+                </form>
+              )}
 
-               {errorMsg && (
-                  <div className="error-alert mt-4">
-                    <AlertTriangle size={16} /> {errorMsg}
+              {errorMsg && (
+                <div className="error-alert mt-4">
+                  <AlertTriangle size={16} /> {errorMsg}
+                </div>
+              )}
+
+              {medsToCheck.length > 0 && (
+                <button type="button" className="btn-generate-report mt-6" onClick={checkInteractions} disabled={loading}>
+                  {loading ? (
+                    <>
+                      <RefreshCw className="spinner" size={20} /> {t('checker.analysing')}
+                    </>
+                  ) : (
+                    t('checker.generateBtn')
+                  )}
+                </button>
+              )}
+            </div>
+
+            <div className="checker-results">
+              {loading ? (
+                <div className="loader-skeletons">
+                  <div className="skeleton s-small"></div>
+                  <div className="skeleton s-med"></div>
+                  <div className="skeleton s-large"></div>
+                </div>
+              ) : reportData.checked ? (
+                <div className="interactions-container animate-fade-in">
+                  {reportData.meta && (
+                    <div className="source-banner glass-card">
+                      {reportData.meta.rxnavUsed ? (
+                        <span className="ok">{t('checker.sourceRxnav')}</span>
+                      ) : reportData.meta.rxnavAttempted ? (
+                        <span className="warn">{t('checker.sourceRxnavEmpty')}</span>
+                      ) : (
+                        <span className="warn">{t('checker.sourceRxnavShort')}</span>
+                      )}
+                      {reportData.meta.localPairs > 0 && (
+                        <span className="muted"> · {t('checker.sourceLocal', { n: reportData.meta.localPairs })}</span>
+                      )}
+                    </div>
+                  )}
+
+                  <div className="interaction-report glass-card border-top-purple">
+                    <div className="report-header">
+                      <Pill className="header-icon purple" />
+                      <h3>{t('checker.apiInteractions')}</h3>
+                    </div>
+
+                    {reportData.interactions.length === 0 ? (
+                      <div className="clear-status">
+                        <CheckCircle2 size={32} className="status-icon green" />
+                        <p>{t('checker.noInteractions')}</p>
+                      </div>
+                    ) : (
+                      <div className="report-list">
+                        {reportData.interactions.map((inter, idx) => (
+                          <div key={idx} className={`interaction-card ${getSeverityClass(inter.severity)}`}>
+                            <div className="card-icon-wrap">{getSeverityIcon(inter.severity)}</div>
+                            <div className="card-content">
+                              <span className={`severity-badge ${getSeverityClass(inter.severity)}`}>
+                                {t('checker.riskLevel', { level: inter.severity })}
+                              </span>
+                              <h4>
+                                {inter.drugA} + {inter.drugB}
+                              </h4>
+                              <div className="card-details">
+                                <p>
+                                  <strong>{t('checker.description')}</strong> {inter.description}
+                                </p>
+                                <p className="physician-note">
+                                  <strong>{t('checker.note')}</strong> {inter.recommendation}
+                                </p>
+                                {renderFirstAid(inter)}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
-               )}
 
-               {medsToCheck.length > 0 && (
-                 <button 
-                   className="btn-generate-report mt-6"
-                   onClick={checkInteractions}
-                   disabled={loading}
-                 >
-                   {loading ? <><RefreshCw className="spinner" size={20} /> {t('checker.analysing')}</> : t('checker.generateBtn')}
-                 </button>
-               )}
-             </div>
+                  <div className="interaction-report glass-card border-top-amber mt-6">
+                    <div className="report-header">
+                      <Coffee className="header-icon amber" />
+                      <h3>{t('checker.foodAlerts')}</h3>
+                    </div>
 
-             {/* Right Column: Output */}
-             <div className="checker-results">
-               {loading ? (
-                 <div className="loader-skeletons">
-                   <div className="skeleton s-small"></div>
-                   <div className="skeleton s-med"></div>
-                   <div className="skeleton s-large"></div>
-                 </div>
-               ) : reportData.checked ? (
-                 <div className="interactions-container animate-fade-in">
-                    
-                    {/* Drug vs Drug */}
-                    <div className="interaction-report glass-card border-top-purple">
-                      <div className="report-header">
-                        <Pill className="header-icon purple" />
-                        <h3>{t('checker.apiInteractions')}</h3>
+                    {reportData.foodWarnings.length === 0 ? (
+                      <div className="clear-status">
+                        <Info size={32} className="status-icon muted" />
+                        <p>{t('checker.noFoodWarnings')}</p>
                       </div>
-                      
-                      {reportData.interactions.length === 0 ? (
-                        <div className="clear-status">
-                          <CheckCircle2 size={32} className="status-icon green" />
-                          <p>{t('checker.noInteractions')}</p>
-                        </div>
-                      ) : (
-                        <div className="report-list">
-                          {reportData.interactions.map((inter, idx) => (
-                            <div key={idx} className={`interaction-card ${getSeverityClass(inter.severity)}`}>
-                              <div className="card-icon-wrap">
-                                {getSeverityIcon(inter.severity)}
-                              </div>
-                              <div className="card-content">
-                                <span className={`severity-badge ${getSeverityClass(inter.severity)}`}>
-                                  {t('checker.riskLevel', { level: inter.severity })}
-                                </span>
-                                <h4>{inter.drugA} + {inter.drugB}</h4>
-                                <div className="card-details">
-                                  <p><strong>{t('checker.description')}</strong> {inter.description}</p>
-                                  <p className="physician-note"><strong>{t('checker.note')}</strong> {inter.recommendation}</p>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
+                    ) : (
+                      <div className="report-list">
+                        {reportData.foodWarnings.map((warning, idx) => (
+                          <div key={idx} className="interaction-card food-card">
+                            <h4>{warning.drug}</h4>
 
-                    {/* Food & Lifestyle */}
-                    <div className="interaction-report glass-card border-top-amber mt-6">
-                      <div className="report-header">
-                        <Coffee className="header-icon amber" />
-                        <h3>{t('checker.foodAlerts')}</h3>
+                            {warning.avoidFoods && warning.avoidFoods.length > 0 && (
+                              <div className="food-detail">
+                                <strong>{t('checker.mustAvoid')}</strong>
+                                <ul>
+                                  {warning.avoidFoods.map((f, i) => (
+                                    <li key={i}>{f}</li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                            {warning.timing && (
+                              <div className="food-detail">
+                                <strong>{t('checker.timing')}</strong>
+                                <p>{warning.timing}</p>
+                              </div>
+                            )}
+                            {warning.instructions && (
+                              <div className="food-detail">
+                                <strong>{t('checker.instruction')}</strong>
+                                <p>{warning.instructions}</p>
+                              </div>
+                            )}
+                            <div className="source-note">
+                              {t('checker.source')} {warning.source}
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                      
-                      {reportData.foodWarnings.length === 0 ? (
-                        <div className="clear-status">
-                          <Info size={32} className="status-icon muted" />
-                          <p>{t('checker.noFoodWarnings')}</p>
-                        </div>
-                      ) : (
-                        <div className="report-list">
-                          {reportData.foodWarnings.map((warning, idx) => (
-                            <div key={idx} className="interaction-card food-card">
-                              <h4>{warning.drug}</h4>
-                              
-                              {warning.avoidFoods && warning.avoidFoods.length > 0 && (
-                                <div className="food-detail">
-                                  <strong>{t('checker.mustAvoid')}</strong>
-                                  <ul>
-                                    {warning.avoidFoods.map((f, i) => <li key={i}>{f}</li>)}
-                                  </ul>
-                                </div>
-                              )}
-                              {warning.timing && (
-                                <div className="food-detail">
-                                  <strong>{t('checker.timing')}</strong>
-                                  <p>{warning.timing}</p>
-                                </div>
-                              )}
-                              {warning.instructions && (
-                                <div className="food-detail">
-                                  <strong>{t('checker.instruction')}</strong>
-                                  <p>{warning.instructions}</p>
-                                </div>
-                              )}
-                              <div className="source-note">{t('checker.source')} {warning.source}</div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                    
-                    {/* Disclaimer */}
-                    <div className="disclaimer-box mt-6">
-                      <strong>{t('checker.disclaimerTitle')}</strong> {t('checker.disclaimerDesc')}
-                    </div>
+                    )}
+                  </div>
 
-                 </div>
-               ) : (
-                 <div className="empty-state-board">
-                   <Shield size={64} className="empty-icon" />
-                   <h3>{t('checker.awaitingTitle')}</h3>
-                   <p>{t('checker.awaitingDesc')}</p>
-                 </div>
-               )}
-             </div>
+                  <div className="disclaimer-box mt-6">
+                    <strong>{t('checker.disclaimerTitle')}</strong> {t('checker.disclaimerDesc')}
+                  </div>
+                </div>
+              ) : (
+                <div className="empty-state-board">
+                  <Shield size={64} className="empty-icon" />
+                  <h3>{t('checker.awaitingTitle')}</h3>
+                  <p>{t('checker.awaitingDesc')}</p>
+                </div>
+              )}
+            </div>
           </div>
         ) : (
-          /* Saved Tab */
           <div className="glass-card padding-large">
             {!currentUser ? (
               <div className="auth-prompt">
                 <Shield size={48} className="auth-icon" />
                 <h3>{t('checker.archiveTitle')}</h3>
                 <p>{t('checker.archiveDesc')}</p>
-                <button className="btn btn-premium mt-4" onClick={onOpenAuth}>{t('checker.loginBtn')}</button>
+                <button type="button" className="btn btn-premium mt-4" onClick={onOpenAuth}>
+                  {t('checker.loginBtn')}
+                </button>
               </div>
             ) : (
               <div className="archive-view">
                 <h3>{t('checker.savedTitle')}</h3>
                 <div className="archive-grid mt-6">
-                  {savedMeds.length > 0 ? savedMeds.map((m, i) => (
-                    <div key={i} className="archive-card">
-                      <div className="archive-info">
-                        <strong>{m.name}</strong>
-                        <span>{t('checker.archivedAt', { date: new Date(m.addedAt).toLocaleDateString() })}</span>
+                  {savedMeds.length > 0 ? (
+                    savedMeds.map((m, i) => (
+                      <div key={i} className="archive-card">
+                        <div className="archive-info">
+                          <strong>{m.name}</strong>
+                          <span>{t('checker.archivedAt', { date: new Date(m.addedAt).toLocaleDateString() })}</span>
+                        </div>
+                        <Pill size={20} className="archive-card-icon" />
                       </div>
-                      <Pill size={20} className="archive-card-icon" />
-                    </div>
-                  )) : (
+                    ))
+                  ) : (
                     <div className="archive-empty">{t('checker.noSavedMeds')}</div>
                   )}
                 </div>
@@ -408,11 +475,7 @@ const InteractionChecker = ({ onOpenAuth }) => {
         .mt-6 { margin-top: 1.5rem; }
         .mt-8 { margin-top: 2rem; }
 
-        .quick-check-layout {
-          display: grid;
-          grid-template-columns: 1fr;
-          gap: 2rem;
-        }
+        .quick-check-layout { display: grid; grid-template-columns: 1fr; gap: 2rem; }
         @media (min-width: 900px) {
           .quick-check-layout { grid-template-columns: 5fr 7fr; }
         }
@@ -420,6 +483,12 @@ const InteractionChecker = ({ onOpenAuth }) => {
         .checker-input-area { padding: 2rem; }
         .checker-input-area h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; }
         .subtitle { color: var(--text-secondary); font-size: 1.05rem; }
+
+        .regimen-hint {
+          margin-top: 1rem; padding: 10px 14px; border-radius: 12px; display: flex; gap: 10px; align-items: flex-start;
+          font-size: 0.88rem; color: var(--text-main); background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2);
+        }
+        .glass-pill { }
 
         .multi-drug-slots { display: flex; flex-direction: column; gap: 0.75rem; }
         .drug-slot {
@@ -430,6 +499,7 @@ const InteractionChecker = ({ onOpenAuth }) => {
         .drug-slot.empty { border-color: var(--border); border-style: dashed; background: rgba(0,0,0,0.02); }
         .slot-icon { color: var(--primary); }
         .slot-name { flex: 1; font-weight: 700; color: var(--text-main); }
+        .slot-warn { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; color: #b45309; background: #fffbeb; padding: 2px 6px; border-radius: 6px; }
         .slot-remove { color: var(--text-muted); background: none; border: none; cursor: pointer; transition: color 0.2s; }
         .slot-remove:hover { color: #ef4444; }
         .slot-empty-text { color: var(--text-muted); padding-inline-start: 0.5rem; font-size: 0.95rem; }
@@ -450,7 +520,7 @@ const InteractionChecker = ({ onOpenAuth }) => {
         .btn-add:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .error-alert { padding: 1rem; border-radius: 8px; background: #fef2f2; color: #dc2626; display: flex; align-items: center; gap: 0.5rem; font-weight: 600; font-size: 0.9rem; border: 1px solid #fecaca; }
-        
+
         .btn-generate-report {
           width: 100%; height: 56px; background: linear-gradient(to right, var(--primary), var(--secondary));
           color: white; font-weight: 800; font-size: 1.1rem; border: none; border-radius: 12px; cursor: pointer;
@@ -461,9 +531,13 @@ const InteractionChecker = ({ onOpenAuth }) => {
         .spinner { animation: spin 1s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* Results Area */
         .checker-results { width: 100%; }
-        
+
+        .source-banner { padding: 12px 16px; margin-bottom: 1rem; font-size: 0.85rem; border-radius: 12px; }
+        .source-banner .ok { color: #15803d; font-weight: 700; }
+        .source-banner .warn { color: #b45309; font-weight: 700; }
+        .source-banner .muted { color: var(--text-muted); font-weight: 600; }
+
         .loader-skeletons { display: flex; flex-direction: column; gap: 1rem; }
         .skeleton { background: #e5e7eb; border-radius: 16px; animation: pulse 1.5s infinite; }
         .s-small { height: 100px; } .s-med { height: 150px; } .s-large { height: 250px; }
@@ -493,16 +567,22 @@ const InteractionChecker = ({ onOpenAuth }) => {
         .interaction-card.sev-high { background: #fef2f2; border-color: #ef4444; }
         .interaction-card.sev-mod { background: #fff7ed; border-color: #f97316; }
         .interaction-card.sev-low { background: #f0fdf4; border-color: #22c55e; }
-        
+
         .icon-high { color: #dc2626; } .icon-mod { color: #ea580c; } .icon-low { color: #16a34a; }
-        
+
         .card-content { flex: 1; }
         .card-content h4 { font-size: 1.25rem; font-weight: 800; margin: 0.5rem 0; color: var(--text-main); text-align: inherit; }
         .severity-badge { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; display: block; text-align: inherit; }
         .severity-badge.sev-high { color: #b91c1c; } .severity-badge.sev-mod { color: #c2410c; } .severity-badge.sev-low { color: #15803d; }
-        
+
         .card-details p { margin: 0 0 0.5rem 0; color: var(--text-secondary); line-height: 1.5; font-size: 0.95rem; text-align: inherit; }
         .physician-note { background: rgba(255,255,255,0.6); padding: 0.75rem; border-radius: 8px; margin-top: 0.5rem !important; text-align: inherit; }
+
+        .first-aid-box {
+          margin-top: 1rem; padding: 1rem; border-radius: 10px; background: rgba(30, 58, 95, 0.06); border: 1px solid rgba(30, 58, 95, 0.12);
+        }
+        .first-aid-box h5 { margin: 0 0 0.5rem; display: flex; align-items: center; gap: 8px; font-size: 0.95rem; color: #1e3a5f; }
+        .first-aid-box p { margin: 0 0 0.45rem; font-size: 0.88rem; color: var(--text-main); line-height: 1.45; }
 
         .food-card { flex-direction: column; background: #fffbeb !important; border-color: #fcd34d !important; gap: 0.5rem; }
         .food-card h4 { font-size: 1.25rem; font-weight: 800; color: #92400e; margin: 0 0 0.5rem 0; border-bottom: 1px solid #fde68a; padding-bottom: 0.5rem; text-align: inherit; }
@@ -519,7 +599,7 @@ const InteractionChecker = ({ onOpenAuth }) => {
         .auth-icon { color: var(--primary); margin-bottom: 1rem; }
         .auth-prompt h3 { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; }
         .auth-prompt p { color: var(--text-secondary); margin-bottom: 1.5rem; }
-        
+
         .archive-view h3 { font-size: 1.8rem; font-weight: 800; margin-bottom: 1.5rem; text-align: inherit; }
         .archive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
         .archive-card { padding: 1.5rem; border: 1px solid var(--border); border-radius: 12px; background: white; display: flex; align-items: center; justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s; }
