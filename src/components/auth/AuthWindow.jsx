@@ -37,8 +37,8 @@ const AuthWindow = ({ onClose }) => {
   };
 
   return (
-    <div className="auth-overlay" dir={isRTL ? 'rtl' : 'ltr'}>
-      <div className="auth-modal glass-card animate-fade-in">
+    <div className="auth-overlay" dir={isRTL ? 'rtl' : 'ltr'} onClick={onClose}>
+      <div className="auth-modal glass-card animate-fade-in" onClick={(e) => e.stopPropagation()}>
         <button className="btn-close" onClick={onClose}><X size={20} /></button>
         
         <div className="auth-header">
@@ -53,7 +53,7 @@ const AuthWindow = ({ onClose }) => {
 
         <form onSubmit={handleSubmit} className="auth-form">
           {!isLogin && (
-            <>
+            <div className="signup-grid">
               <div className="input-group">
                 <User className="input-icon" size={18} />
                 <input 
@@ -95,13 +95,13 @@ const AuthWindow = ({ onClose }) => {
                 <input 
                   type="text" 
                   className="input-field" 
-                  placeholder="Emergency Contact Phone" 
+                  placeholder="Emergency Phone" 
                   value={emergencyContact}
                   onChange={(e) => setEmergencyContact(e.target.value)}
                   required
                 />
               </div>
-            </>
+            </div>
           )}
           <div className="input-group">
             <Mail className="input-icon" size={18} />
@@ -154,10 +154,13 @@ const AuthWindow = ({ onClose }) => {
           z-index: 2000;
         }
         .auth-modal {
-          width: 440px;
-          padding: 3.5rem 2.5rem;
+          width: 600px;
+          max-width: 95%;
+          padding: 3rem 2.5rem;
           position: relative;
           background: white;
+          max-height: 90vh;
+          overflow-y: auto;
         }
         .btn-close {
           position: absolute;
@@ -197,7 +200,17 @@ const AuthWindow = ({ onClose }) => {
         .auth-form {
           display: flex;
           flex-direction: column;
-          gap: 1.25rem;
+          gap: 1rem;
+        }
+        .signup-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1rem;
+        }
+        @media (max-width: 640px) {
+          .signup-grid {
+            grid-template-columns: 1fr;
+          }
         }
         .input-group {
           position: relative;

@@ -130,6 +130,7 @@ const DrugSchedulePanel = ({ currentUser, t }) => {
   const [saving, setSaving] = useState(false);
   const [name, setName] = useState('');
   const [time, setTime] = useState('09:00');
+  const [frequency, setFrequency] = useState('daily');
   const [notifyOn, setNotifyOn] = useState(false);
   const [tick, setTick] = useState(0);
   const notifiedRef = React.useRef(null);
@@ -208,11 +209,11 @@ const DrugSchedulePanel = ({ currentUser, t }) => {
       typeof crypto !== 'undefined' && crypto.randomUUID
         ? crypto.randomUUID()
         : `e-${Date.now()}`;
-    const entry = { id, name: name.trim(), times: [time] };
-    const next = [...schedule, entry];
-    setSchedule(next);
+    const entry = { id, name: name.trim(), times: [time], frequency };
+    const nextSchedule = [...schedule, entry];
+    setSchedule(nextSchedule);
     setName('');
-    await persist(next, adherence);
+    await persist(nextSchedule, adherence);
     if (!isPreviewMode && currentUser) {
       await getRxCUI(name.trim());
     }
@@ -321,7 +322,16 @@ const DrugSchedulePanel = ({ currentUser, t }) => {
           placeholder={t('schedule.drugPlaceholder')}
           className="dsp-input"
         />
-        <input type="time" value={time} onChange={(e) => setTime(e.target.value)} className="dsp-time" />
+        <select 
+          value={frequency} 
+          onChange={(e) => setFrequency(e.target.value)} 
+          className="dsp-select"
+          aria-label={t('schedule.frequency', 'Frequency')}
+        >
+          <option value="daily">{t('schedule.daily', 'Daily')}</option>
+          <option value="weekly">{t('schedule.weekly', 'Weekly')}</option>
+          <option value="custom">{t('schedule.custom', 'Custom')}</option>
+        </select>
         <button type="submit" className="dsp-add" disabled={!name.trim()}>
           <Plus size={18} />
         </button>
@@ -332,7 +342,10 @@ const DrugSchedulePanel = ({ currentUser, t }) => {
         {schedule.map((row) => (
           <li key={row.id} className="dsp-item">
             <div className="dsp-item-head">
-              <strong>{row.name}</strong>
+              <div className="dsp-item-name-group">
+                <strong>{row.name}</strong>
+                <span className="dsp-freq-badge">{row.frequency || 'daily'}</span>
+              </div>
               <button type="button" className="dsp-del" onClick={() => removeEntry(row.id)} aria-label="remove">
                 <Trash2 size={16} />
               </button>
@@ -391,12 +404,15 @@ const DrugSchedulePanel = ({ currentUser, t }) => {
         .dsp-form { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 1rem; }
         .dsp-input { flex: 1 1 140px; min-height: 44px; border-radius: 12px; border: 1.5px solid var(--border); padding: 0 12px; font-weight: 600; }
         .dsp-time { min-height: 44px; border-radius: 12px; border: 1.5px solid var(--border); padding: 0 8px; }
+        .dsp-select { min-height: 44px; border-radius: 12px; border: 1.5px solid var(--border); padding: 0 12px; background: white; font-weight: 600; cursor: pointer; }
         .dsp-add { width: 44px; height: 44px; border-radius: 12px; border: none; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         .dsp-muted { color: var(--text-muted); }
         .dsp-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
         .dsp-empty { padding: 1rem; text-align: center; color: var(--text-muted); font-size: 0.9rem; border: 1px dashed var(--border); border-radius: 12px; }
         .dsp-item { border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; background: rgba(255,255,255,0.65); }
         .dsp-item-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .dsp-item-name-group { display: flex; align-items: center; gap: 8px; }
+        .dsp-freq-badge { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(126,34,206,0.1); color: var(--primary); padding: 2px 8px; border-radius: 6px; font-weight: 800; }
         .dsp-del { border: none; background: none; color: var(--text-muted); cursor: pointer; padding: 4px; }
         .dsp-del:hover { color: #ef4444; }
         .dsp-times { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }

@@ -113,6 +113,25 @@ export const NotificationProvider = ({ children }) => {
       if (has) return { ...it, taken: true, read: true };
       return it;
     });
+
+    // Browser Notification Logic
+    if (Notification.permission === 'granted') {
+      const newDues = merged.filter(it => it.type === 'dose_due' && !it.read && !it.taken && !byId.has(it.id));
+      for (const d of newDues) {
+        try {
+          const n = new Notification('Aoun Medication Reminder', {
+            body: `It's time for your drug: ${d.drugName}. Click to mark as taken.`,
+            icon: '/logo.png',
+            tag: d.id,
+          });
+          n.onclick = () => {
+            window.focus();
+            window.location.hash = '#/profile';
+          };
+        } catch (e) { console.error(e); }
+      }
+    }
+
     const sorted = merged.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
     setItems(sorted);
     await saveInboxItems(currentUser.uid, sorted);

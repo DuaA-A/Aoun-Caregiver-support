@@ -140,7 +140,8 @@ const NotificationBell = () => {
         .notif-empty { padding: 1.5rem; text-align: center; color: #94a3b8; font-size: 0.9rem; }
         .notif-item { display: flex; gap: 12px; padding: 12px; border-radius: 12px; margin-bottom: 4px; border: 1px solid transparent; }
         .notif-item.unread { background: #f0f9ff; border-color: #bae6fd; }
-        .notif-item.done { opacity: 0.85; }
+        .notif-item.done { background: #f0fdf4; border-color: #bbf7d0; opacity: 1; }
+        .notif-item.done .notif-ico { color: #16a34a; }
         .notif-ico { color: #7c3aed; flex-shrink: 0; margin-top: 2px; }
         .notif-body { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 0; text-align: start; }
         .notif-body strong { font-size: 0.9rem; line-height: 1.35; color: #0a2540; }

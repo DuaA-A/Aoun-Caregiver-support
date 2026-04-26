@@ -93,35 +93,40 @@ const Navbar = ({ onOpenAuth }) => {
               </button>
             </div>
           ) : (
-            <button onClick={onOpenAuth} className="btn btn-primary btn-sm">
+            <button onClick={onOpenAuth} className="btn btn-premium-glow btn-sm animated-cta">
               {t('common.signIn')}
             </button>
           )}
         </div>
 
         <div className="mobile-top-actions">
-          {currentUser && (
-            <div className="mobile-bell">
-              <NotificationBell />
-            </div>
-          )}
-          <button className="mobile-toggle" onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? <X /> : <Menu />}
+          <button className="mobile-toggle" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle Menu">
+            {isOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
-      </div>
 
-      {/* Mobile Menu */}
+        </div>
+
+
+      {/* Mobile Menu Overlay with Backdrop */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div 
-            className="mobile-menu-overlay"
-            initial={{ opacity: 0, x: isRTL ? '100%' : '-100%' }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: isRTL ? '100%' : '-100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            dir={isRTL ? 'rtl' : 'ltr'}
-          >
+          <>
+            <motion.div 
+              className="mobile-menu-backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsOpen(false)}
+            />
+            <motion.div 
+              className="mobile-menu-overlay"
+              initial={{ y: '-110%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '-110%' }}
+              transition={{ type: 'spring', damping: 28, stiffness: 180 }}
+              dir={isRTL ? 'rtl' : 'ltr'}
+            >
             <div className="mobile-menu-header">
               <Link to="/" className="nav-logo" onClick={() => setIsOpen(false)}>
                 <img src="/logo.png" alt="Aoun Logo" className="logo-img" />
@@ -169,14 +174,19 @@ const Navbar = ({ onOpenAuth }) => {
                 )}
               </div>
             </div>
-          </motion.div>
+            <div className="mobile-menu-wave">
+                <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                  <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" className="shape-fill"></path>
+                </svg>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
 
       <style>{`
         .navbar {
-          height: 80px;
-          width: 100%;
+          height: 60px;
           display: flex;
           align-items: center;
           z-index: 1000;
@@ -184,6 +194,9 @@ const Navbar = ({ onOpenAuth }) => {
           position: fixed;
           top: 0;
           left: 0;
+          right: 0;
+          width: 100vw !important;
+          max-width: 100vw !important;
         }
 
         .navbar-transparent {
@@ -191,10 +204,68 @@ const Navbar = ({ onOpenAuth }) => {
           border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
+        .navbar-transparent {
+          background: transparent !important;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          box-shadow: none;
+        }
+        
         .navbar-scrolled {
-          background: rgba(255, 255, 255, 0.9) !important;
-          backdrop-filter: blur(12px);
+          background-color: #f0f7ff !important;
+          backdrop-filter: blur(15px);
           box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+          border-bottom: none !important;
+        }
+
+        .navbar-scrolled::after {
+          content: "";
+          position: absolute;
+          bottom: -39px; /* Wave depth */
+          left: 0;
+          width: 100%;
+          height: 40px;
+          background-color: transparent;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath fill='%23f0f7ff' d='M0,50 C200,100 400,0 600,50 C800,100 1000,0 1200,50 V0 H0 Z' /%3E%3C/svg%3E");
+          background-size: 100% 100%;
+          background-repeat: no-repeat;
+        }
+
+
+        .navbar-wave-bg svg {
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+        .navbar-wave-bg .shape-fill {
+          fill: white;
+          transition: fill 0.4s ease;
+        }
+
+        .animated-cta {
+          background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent)) !important;
+          background-size: 200% 200% !important;
+          animation: gradient-move 3s ease infinite !important;
+          border: none !important;
+          color: #1e3a5f !important; /* Darker text for readability on light gradient */
+          font-weight: 800;
+          box-shadow: 0 4px 15px rgba(162, 210, 255, 0.4);
+        }
+
+        @keyframes gradient-move {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+
+        .nav-link {
+          color: #0f172a !important;
+          font-weight: 700;
+        }
+        .navbar-transparent .nav-link {
+          color: #0f172a !important;
+        }
+        .nav-link:hover {
+          color: var(--primary) !important;
         }
 
         .navbar-scrolled::after {
@@ -337,14 +408,44 @@ const Navbar = ({ onOpenAuth }) => {
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
+            width: 100%;
+            max-width: 100vw;
+            bottom: auto;
             background: white;
             z-index: 2000;
             display: flex;
             flex-direction: column;
-            padding: 2rem;
-            overflow-y: auto;
+            padding: 2rem 2rem 5rem 2rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+          }
+          [dir="rtl"] .mobile-menu-overlay { left: 0; right: 0; }
+
+          .mobile-menu-wave {
+            position: absolute;
+            bottom: -60px;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            overflow: hidden;
+            line-height: 0;
+            transform: rotate(180deg);
+          }
+          .mobile-menu-wave svg {
+            position: relative;
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 60px;
+          }
+          .mobile-menu-wave .shape-fill {
+            fill: white;
+          }
+
+          .mobile-menu-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 37, 64, 0.45);
+            backdrop-filter: blur(14px);
+            z-index: 1999;
           }
 
           .mobile-menu-header {
@@ -444,7 +545,7 @@ const Navbar = ({ onOpenAuth }) => {
           }
           
           .btn-block { width: 100%; }
-        }
+
 
       `}</style>
     </nav>

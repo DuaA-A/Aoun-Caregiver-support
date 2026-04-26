@@ -15,7 +15,7 @@ const AboutAlzheimer = () => {
   return (
     <div className="about-alzheimer-page container" dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="about-header-wrapper animate-fade-in">
-        <div style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 10 }}>
+        <div style={{ maxWidth: '750px', margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 10 }}>
             <span className="about-subtitle">{t('aboutAlzheimer.subtitle')}</span>
             <h1 className="about-title">{t('aboutAlzheimer.title')}</h1>
             <p className="about-desc">{t('aboutAlzheimer.desc')}</p>

@@ -23,8 +23,10 @@
     "markRead": "مقروء",
     "markTaken": "تسجيل كمأخوذ",
     "taken": "تم تسجيله كمأخوذ",
-    "doseTitle": "حان موعد: {{name}} ({{time}})",
-    "openDashboard": "فتح لوحة التحكم"
+    "doseTitle": "وقت تناول: {{name}} ({{time}})",
+    "openDashboard": "فتح لوحة التحكم بالكامل",
+    "guestTitle": "استخدم رفيقك للعناية",
+    "guestDesc": "انضم إلى عون مجانًا لفتح منبهات الأدوية الذكية، وتتبع الجرعات، وتنبيهات السلامة في الوقت الفعلي. رحلة العناية الخاصة بك أصبحت أسهل."
   },
   "firstAid": {
     "subtitle": "رعاية وهدوء",
@@ -269,10 +271,14 @@
     "drugPlaceholder": "مثال: دونيبيزيل ٥ مجم",
     "notifyEnable": "تفعيل التذكيرات",
     "notifyOn": "التذكيرات مفعّلة",
-    "saving": "جاري الحفظ…",
-    "adherenceWeek": "آخر ٧ أيام: {{taken}} / {{expected}} جرعة مُعلَمة كمأخوذة ({{pct}}٪).",
+    "saving": "جاري الحفظ...",
+    "adherenceWeek": "آخر 7 أيام: {{taken}} / {{expected}} جرعة تم تناولها ({{pct}}%).",
     "addTime": "إضافة وقت",
-    "addAnotherTime": "إضافة وقت آخر"
+    "addAnotherTime": "إضافة وقت آخر",
+    "frequency": "التكرار",
+    "daily": "يوميًا",
+    "weekly": "أسبوعيًا",
+    "custom": "مخصص"
   },
   "dashboard": {
     "secureTitle": "لوحة تحكم مقدم الرعاية",
