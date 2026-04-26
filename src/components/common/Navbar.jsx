@@ -301,15 +301,19 @@ const Navbar = ({ onOpenAuth }) => {
         }
 
         .logo-main {
-          font-size: 1.85rem;
-          font-weight: 800;
-          letter-spacing: -0.04em;
-          background: linear-gradient(135deg, var(--primary), var(--secondary));
+          font-size: 2.2rem;
+          font-weight: 900;
+          letter-spacing: -0.05em;
+          background: linear-gradient(135deg, #1e3a5f 0%, #3b82f6 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           font-family: 'Plus Jakarta Sans', 'Tajawal', 'Cairo', system-ui, sans-serif;
+          transition: all 0.4s ease;
         }
-        [dir="rtl"] .logo-main { font-size: 2rem; letter-spacing: 0.02em; }
+        .navbar-transparent .logo-main {
+          filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.8));
+        }
+        [dir="rtl"] .logo-main { font-size: 2.4rem; letter-spacing: 0.02em; }
 
         .logo-sub {
           font-size: 0.9rem;

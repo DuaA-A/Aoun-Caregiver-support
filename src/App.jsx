@@ -31,6 +31,9 @@ const Home = ({ onOpenAuth }) => {
         <div className="pulsing-circle" style={{ width: '300px', height: '300px', top: '10%', left: '5%', background: 'var(--primary)', animationDelay: '0s' }}></div>
         <div className="pulsing-circle" style={{ width: '200px', height: '200px', bottom: '20%', left: '15%', background: 'var(--secondary)', animationDelay: '2s' }}></div>
         <div className="pulsing-circle" style={{ width: '150px', height: '150px', top: '40%', left: '40%', background: 'var(--accent)', animationDelay: '4s' }}></div>
+        <div className="pulsing-circle" style={{ width: '250px', height: '250px', top: '-5%', right: '10%', background: 'var(--primary)', opacity: 0.1, animationDelay: '1s' }}></div>
+        <div className="pulsing-circle" style={{ width: '180px', height: '180px', bottom: '10%', right: '20%', background: 'var(--secondary)', opacity: 0.1, animationDelay: '3s' }}></div>
+        <div className="pulsing-circle" style={{ width: '120px', height: '120px', top: '20%', right: '40%', background: 'var(--accent)', opacity: 0.1, animationDelay: '5s' }}></div>
 
         <div className="hero-content container">
           <div className={`hero-flex-wrapper${isRTL ? ' hero-ar' : ''}`} dir={isRTL ? 'rtl' : 'ltr'}>
@@ -122,6 +125,9 @@ const Home = ({ onOpenAuth }) => {
                 <div className="mini-bubble bubble-3"></div>
                 <div className="mini-bubble bubble-4"></div>
                 <div className="mini-bubble bubble-5"></div>
+                <div className="mini-bubble bubble-6"></div>
+                <div className="mini-bubble bubble-7"></div>
+                <div className="mini-bubble bubble-8"></div>
               </div>
             </motion.div>
           </div>
@@ -284,7 +290,7 @@ const Home = ({ onOpenAuth }) => {
       <style>{`
         .home-container { display: flex; flex-direction: column; gap: 0rem; padding-bottom: 0rem; position: relative; }
         
-        .full-screen-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: clamp(4rem, 10vh, 8rem) 0; box-sizing: border-box; position: relative; }
+        .full-screen-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: clamp(4rem, 10vh, 8rem) 0 2rem 0; box-sizing: border-box; position: relative; }
         .bg-unified { background: linear-gradient(135deg, #f8fafc 0%, rgba(157, 141, 241, 0.15) 100%); }
         .bg-glass-blur { background: rgba(255, 255, 255, 0.3); backdrop-filter: blur(20px); }
         .text-vibrant-gradient { 
@@ -310,7 +316,7 @@ const Home = ({ onOpenAuth }) => {
           flex-direction: row; 
           align-items: center; 
           justify-content: space-between; 
-          gap: 4rem; 
+          gap: 2rem; 
           width: 100%; 
           min-height: calc(100vh - 60px); 
           padding-top: 0.5rem; 
@@ -397,7 +403,23 @@ const Home = ({ onOpenAuth }) => {
         }
         .btn-premium-outline:hover { background: var(--text-main); color: white !important; transform: translateY(-3px); }
 
-        .hero-title { font-size: clamp(2.5rem, 6vw, 4.2rem); font-weight: 900; line-height: 1.1; margin-bottom: 2rem; color: #0a2540 !important; }
+        .hero-title { 
+          font-size: clamp(3rem, 8vw, 5.2rem); 
+          font-weight: 900; 
+          line-height: 1.05; 
+          color: #1e3a5f; 
+          margin-bottom: 1.8rem; 
+          letter-spacing: -0.04em;
+          text-shadow: 0 10px 20px rgba(30, 58, 95, 0.1);
+          position: relative;
+        }
+        .hero-title .text-vibrant-gradient {
+          background: linear-gradient(135deg, #1e3a5f 0%, #3b82f6 40%, #a2d2ff 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          filter: drop-shadow(0 2px 4px rgba(59, 130, 246, 0.2));
+          display: inline-block;
+        }
         .hero-cta-group { display: flex; gap: 1.5rem; align-items: center; margin-top: 1rem; }
         .hero-description { font-size: clamp(1rem, 2vw, 1.25rem); line-height: 1.7; color: var(--text-muted); max-width: 600px; margin-bottom: 3rem; }
 
