@@ -1,10 +1,115 @@
 import { BASELINE_AD_DRUGS } from './rxnav';
 
+const createCombinations = (groupA, groupB, interactionData) => {
+  const result = [];
+  for (const a of groupA) {
+    for (const b of groupB) {
+      result.push({
+        drugs: [a, b],
+        ...interactionData
+      });
+    }
+  }
+  return result;
+};
+
+const cholinesteraseInhibitors = ['donepezil', 'rivastigmine', 'galantamine', 'aricept', 'alzepil', 'alzam', 'exelon', 'rivamer', 'reminyl'];
+const memantineGroup = ['memantine', 'ebixa', 'memixa', 'memental'];
+
+const anticholinergics = ['congestal', '123', 'buscopan', 'tryptizol', 'artane', 'chlorpheniramine', 'hyoscine', 'amitriptyline', 'trihexyphenidyl'];
+const betaBlockers = ['concor', 'bisocard', 'inderal', 'tenormin', 'lanoxin', 'digoxin'];
+const nsaids = ['brufen', 'cataflam', 'voltaren', 'ketofan', 'mobitil', 'ibuprofen'];
+const cyp450 = ['nizoral', 'fungican', 'prozac', 'philozac', 'erythrocin', 'ketoconazole', 'fluconazole', 'fluoxetine', 'erythromycin'];
+
+const dextro = ['tusskan', 'codilar', 'bronchopro', 'dextromethorphan'];
+const antacids = ['epicogel', 'maalox', 'gaviscon', 'urosolvine', 'sodium bicarbonate'];
+const otherNmda = ['pk-merz', 'amantadine', 'ketamine'];
+
+const ADDITIONAL_ENTRIES = [
+  ...createCombinations(cholinesteraseInhibitors, anticholinergics, {
+    severity: 'High',
+    description: 'Anticholinergics (Strictly Contraindicated): These drugs block acetylcholine, entirely neutralizing the Alzheimer\'s medication and causing severe confusion, urinary retention, and delirium.',
+    comment: 'Strictly contraindicated. Avoid combining.',
+    firstAid: {
+      general: 'If accidental ingestion occurs, do NOT induce vomiting. Do NOT give food or milk. Call Ain Shams Poison Control (+202 24823314) or 123/137.',
+      toxicity: 'Cholinergic Crisis: Severe nausea, vomiting, excessive salivation, sweating, pinpoint pupils, dangerously slow heartbeat, muscle weakness/seizures. Antidote: Atropine (IV).',
+      pregnancy: 'Strictly prohibited during pregnancy. Can cause fetal neurological development alteration and severe uterine contractions.',
+      pediatric: 'Strictly prohibited. Introduces severe neurodevelopment disruption, seizures, cardiac arrest, and long-term damage.'
+    }
+  }),
+  ...createCombinations(cholinesteraseInhibitors, betaBlockers, {
+    severity: 'High',
+    description: 'Beta-Blockers & Heart Medications: Combining these can lead to synergistic bradycardia (dangerously slow heart rate), leading to fainting (syncope) or heart block.',
+    comment: 'Monitor pulse and seek urgent medical attention for fainting or severe dizziness.',
+    firstAid: {
+      general: 'If accidental ingestion occurs, do NOT induce vomiting. Do NOT give food or milk. Call Ain Shams Poison Control (+202 24823314) or 123/137.',
+      toxicity: 'Cholinergic Crisis: Severe nausea, vomiting, excessive salivation, sweating, pinpoint pupils, dangerously slow heartbeat, muscle weakness/seizures. Antidote: Atropine (IV).',
+      pregnancy: 'Strictly prohibited during pregnancy. Can cause fetal neurological development alteration and severe uterine contractions.',
+      pediatric: 'Strictly prohibited. Introduces severe neurodevelopment disruption, seizures, cardiac arrest, and long-term damage.'
+    }
+  }),
+  ...createCombinations(cholinesteraseInhibitors, nsaids, {
+    severity: 'High',
+    description: 'NSAIDs: Alzheimer’s drugs increase gastric acid secretion. Taking them with NSAIDs exponentially increases the risk of severe stomach ulcers and gastrointestinal bleeding.',
+    comment: 'Use alternative pain relievers with physician advice.',
+    firstAid: {
+      general: 'If accidental ingestion occurs, do NOT induce vomiting. Do NOT give food or milk. Call Ain Shams Poison Control (+202 24823314) or 123/137.',
+      toxicity: 'Cholinergic Crisis: Severe nausea, vomiting, excessive salivation, sweating, pinpoint pupils, dangerously slow heartbeat, muscle weakness/seizures. Antidote: Atropine (IV).',
+      pregnancy: 'Strictly prohibited during pregnancy. Can cause fetal neurological development alteration and severe uterine contractions.',
+      pediatric: 'Strictly prohibited. Introduces severe neurodevelopment disruption, seizures, cardiac arrest, and long-term damage.'
+    }
+  }),
+  ...createCombinations(cholinesteraseInhibitors, cyp450, {
+    severity: 'High',
+    description: 'CYP450 Enzyme Inhibitors: These inhibit liver enzymes, preventing the clearance of Alzheimer’s drugs from the blood, leading to severe toxicity (extreme nausea, vomiting, seizures).',
+    comment: 'Requires close monitoring. May need dose adjustments.',
+    firstAid: {
+      general: 'If accidental ingestion occurs, do NOT induce vomiting. Do NOT give food or milk. Call Ain Shams Poison Control (+202 24823314) or 123/137.',
+      toxicity: 'Cholinergic Crisis: Severe nausea, vomiting, excessive salivation, sweating, pinpoint pupils, dangerously slow heartbeat, muscle weakness/seizures. Antidote: Atropine (IV).',
+      pregnancy: 'Strictly prohibited during pregnancy. Can cause fetal neurological development alteration and severe uterine contractions.',
+      pediatric: 'Strictly prohibited. Introduces severe neurodevelopment disruption, seizures, cardiac arrest, and long-term damage.'
+    }
+  }),
+  ...createCombinations(memantineGroup, dextro, {
+    severity: 'High',
+    description: 'Cough Suppressants (Dextromethorphan): Taking Memantine with Dextromethorphan can cause severe neurological reactions, including hallucinations, extreme agitation, and psychotic episodes.',
+    comment: 'Avoid this combination.',
+    firstAid: {
+      general: 'If accidental ingestion occurs, do NOT induce vomiting. Do NOT give food or milk. Call Ain Shams Poison Control (+202 24823314) or 123/137.',
+      toxicity: 'Severe neurological reactions, extreme agitation. Head to ER immediately with medication evidence.',
+      pregnancy: 'Strictly prohibited during pregnancy. Can cause fetal neurological development alteration and severe uterine contractions.',
+      pediatric: 'Strictly prohibited. Introduces severe neurodevelopment disruption, seizures, cardiac arrest, and long-term damage.'
+    }
+  }),
+  ...createCombinations(memantineGroup, antacids, {
+    severity: 'High',
+    description: 'Alkalinizing Agents (Antacids & UTI meds): Drugs that make the urine more alkaline (reduce acidity) prevent the kidneys from clearing Memantine, causing it to build up to toxic levels in the blood.',
+    comment: 'Use caution with antacids and alkalinizing agents.',
+    firstAid: {
+      general: 'If accidental ingestion occurs, do NOT induce vomiting. Do NOT give food or milk. Call Ain Shams Poison Control (+202 24823314) or 123/137.',
+      toxicity: 'Severe toxicity build up in the blood. Head to ER immediately with medication evidence.',
+      pregnancy: 'Strictly prohibited during pregnancy. Can cause fetal neurological development alteration and severe uterine contractions.',
+      pediatric: 'Strictly prohibited. Introduces severe neurodevelopment disruption, seizures, cardiac arrest, and long-term damage.'
+    }
+  }),
+  ...createCombinations(memantineGroup, otherNmda, {
+    severity: 'High',
+    description: 'Other NMDA Antagonists: Combining Memantine with Amantadine (used for Parkinson\'s) or Ketamine (anesthetic) can cause severe neurotoxicity.',
+    comment: 'Avoid combining with other NMDA antagonists.',
+    firstAid: {
+      general: 'If accidental ingestion occurs, do NOT induce vomiting. Do NOT give food or milk. Call Ain Shams Poison Control (+202 24823314) or 123/137.',
+      toxicity: 'Severe neurotoxicity. Head to ER immediately with medication evidence.',
+      pregnancy: 'Strictly prohibited during pregnancy. Can cause fetal neurological development alteration and severe uterine contractions.',
+      pediatric: 'Strictly prohibited. Introduces severe neurodevelopment disruption, seizures, cardiac arrest, and long-term damage.'
+    }
+  }),
+];
+
 /**
  * Curated Alzheimer-relevant interactions + first-aid style guidance.
  * Used as fast path and offline/API-fallback cache (not exhaustive vs RxNav).
  */
-const ENTRIES = [
+const BASE_ENTRIES = [
   {
     drugs: ['donepezil', 'tramadol'],
     severity: 'High',
@@ -142,6 +247,8 @@ const ENTRIES = [
     },
   },
 ];
+
+const ENTRIES = [...BASE_ENTRIES, ...ADDITIONAL_ENTRIES];
 
 const norm = (s) => (s || '').toLowerCase().trim();
 

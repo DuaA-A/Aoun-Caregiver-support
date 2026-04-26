@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { auth, isPreviewMode } from '../firebase/config';
+import { auth, db, isPreviewMode } from '../firebase/config';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { 
   onAuthStateChanged, 
   signInWithEmailAndPassword, 
@@ -16,26 +17,47 @@ export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const signup = async (email, password, displayName) => {
+  const signup = async (email, password, displayName, patientName, adStage, emergencyContact) => {
     if (isPreviewMode) {
       // Mock signup for preview purposes
-      const mockUser = { email, displayName, uid: 'preview-id-' + Date.now() };
+      const mockUser = { email, displayName, patientName, adStage, emergencyContact, uid: 'preview-id-' + Date.now() };
       setCurrentUser(mockUser);
       return { user: mockUser };
     }
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     await updateProfile(userCredential.user, { displayName });
+
+    // Store user data in firestore
+    await setDoc(doc(db, 'users', userCredential.user.uid), {
+      email,
+      displayName,
+      patientName,
+      adStage,
+      emergencyContact,
+      createdAt: new Date().toISOString()
+    });
+
+    const userDoc = await getDoc(doc(db, 'users', userCredential.user.uid));
+    setCurrentUser({ ...userCredential.user, ...userDoc.data() });
+
     return userCredential;
   };
 
   const login = async (email, password) => {
     if (isPreviewMode) {
       // Mock login for preview
-      const mockUser = { email, displayName: email.split('@')[0], uid: 'preview-id' };
+      const mockUser = { email, displayName: email.split('@')[0], patientName: 'John Doe', adStage: 'mild', uid: 'preview-id' };
       setCurrentUser(mockUser);
       return { user: mockUser };
     }
-    return signInWithEmailAndPassword(auth, email, password);
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const userDoc = await getDoc(doc(db, 'users', userCredential.user.uid));
+    if (userDoc.exists()) {
+      setCurrentUser({ ...userCredential.user, ...userDoc.data() });
+    } else {
+      setCurrentUser(userCredential.user);
+    }
+    return userCredential;
   };
 
   const logout = () => {
@@ -51,8 +73,22 @@ export const AuthProvider = ({ children }) => {
       const timeoutId = setTimeout(() => setLoading(false), 0);
       return () => clearTimeout(timeoutId);
     }
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        try {
+          const userDoc = await getDoc(doc(db, 'users', user.uid));
+          if (userDoc.exists()) {
+            setCurrentUser({ ...user, ...userDoc.data() });
+          } else {
+            setCurrentUser(user);
+          }
+        } catch (err) {
+          console.error("Error fetching user data", err);
+          setCurrentUser(user);
+        }
+      } else {
+        setCurrentUser(null);
+      }
       setLoading(false);
     });
     return unsubscribe;

@@ -41,16 +41,14 @@ const Home = ({ onOpenAuth }) => {
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.8, cubicBezier: [0.16, 1, 0.3, 1], delay: 0.2 }}
             >
-              <span className="hero-badge-pill">{t('home.heroBadge')}</span>
+              {/* Badge removed again as per user's earlier request */}
               <h1 className="hero-title">
                 {isRTL ? (
-                  <>
-                    {t('home.heroTitle')}
-                  </>
+                  <span className="text-vibrant-gradient">{t('home.heroTitle')}</span>
                 ) : (
                   <>
                     {t('home.heroTitle').split(' ').slice(0, -3).join(' ')} <br />
-                    <span className="text-glow italic" style={{ color: 'var(--text-main)' }}>{t('home.heroTitle').split(' ').slice(-3).join(' ')}</span>
+                    <span className="text-vibrant-gradient italic">{t('home.heroTitle').split(' ').slice(-3).join(' ')}</span>
                   </>
                 )}
               </h1>
@@ -59,10 +57,10 @@ const Home = ({ onOpenAuth }) => {
               </p>
 
               <div className="hero-cta-group">
-                <Link to="/first-aid" className="btn btn-premium">
+                <Link to="/first-aid" className="btn btn-premium-glow">
                   {t('common.emergencyFirstAid')} {isRTL ? <ChevronRight size={20} style={{ transform: 'rotate(180deg)' }} /> : <ChevronRight size={20} />}
                 </Link>
-                <Link to="/checker" className="btn btn-outline-primary">
+                <Link to="/checker" className="btn btn-premium-outline">
                   {t('common.interactionChecker')}
                 </Link>
               </div>
@@ -75,32 +73,45 @@ const Home = ({ onOpenAuth }) => {
               transition={{ duration: 0.8, cubicBezier: [0.16, 1, 0.3, 1], delay: 0.3 }}
             >
               <div className="hero-circles-container">
-                {/* Main Circle Images */}
+                {/* Main Circle Images - More Separated and Dynamic */}
                 <motion.div 
                   className="image-circle circle-1"
-                  animate={{ y: [0, -15, 0] }}
-                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                  animate={{ 
+                    y: [0, -20, 0],
+                    rotate: [0, 5, 0]
+                  }}
+                  transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
                 >
                   <img src={homeImg1} alt="Care" />
                 </motion.div>
                 <motion.div 
                   className="image-circle circle-2"
-                  animate={{ y: [0, 15, 0] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                  animate={{ 
+                    y: [0, 20, 0],
+                    rotate: [0, -5, 0]
+                  }}
+                  transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
                 >
                   <img src={homeImg2} alt="Support" />
                 </motion.div>
                 <motion.div 
                   className="image-circle circle-3"
-                  animate={{ scale: [1, 1.05, 1] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                  animate={{ 
+                    scale: [1, 1.08, 1],
+                    x: [0, 15, 0]
+                  }}
+                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
                 >
                   <img src={homeImg3} alt="Clinical" />
                 </motion.div>
                 <motion.div 
                   className="image-circle circle-4"
-                  animate={{ y: [0, -10, 0], scale: [1, 1.02, 1] }}
-                  transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+                  animate={{ 
+                    y: [0, -15, 0],
+                    scale: [1, 1.05, 1],
+                    x: [0, -10, 0]
+                  }}
+                  transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
                 >
                   <img src={homeImg4} alt="Activity" />
                 </motion.div>
@@ -111,11 +122,6 @@ const Home = ({ onOpenAuth }) => {
                 <div className="mini-bubble bubble-3"></div>
                 <div className="mini-bubble bubble-4"></div>
                 <div className="mini-bubble bubble-5"></div>
-                <div className="mini-bubble bubble-6"></div>
-                <div className="mini-bubble bubble-7"></div>
-                <div className="mini-bubble bubble-8"></div>
-                <div className="mini-bubble bubble-9"></div>
-                <div className="mini-bubble bubble-10"></div>
               </div>
             </motion.div>
           </div>
@@ -278,10 +284,15 @@ const Home = ({ onOpenAuth }) => {
       <style>{`
         .home-container { display: flex; flex-direction: column; gap: 0rem; padding-bottom: 0rem; position: relative; }
         
-        .full-screen-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 6rem 0; box-sizing: border-box; position: relative; }
+        .full-screen-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: clamp(4rem, 10vh, 8rem) 0; box-sizing: border-box; position: relative; }
         .bg-unified { background: linear-gradient(135deg, #f8fafc 0%, rgba(157, 141, 241, 0.15) 100%); }
         .bg-glass-blur { background: rgba(255, 255, 255, 0.3); backdrop-filter: blur(20px); }
-        .text-glow { text-shadow: 0 0 15px rgba(238, 190, 241, 0.5); }
+        .text-vibrant-gradient { 
+          background: linear-gradient(135deg, #1e3a5f 0%, #3b82f6 50%, #60a5fa 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
 
         /* Active Badge */
         .active-badge { display: inline-flex; align-items: center; padding: 6px 16px; background: rgba(126, 34, 206, 0.1); color: var(--primary); border-radius: 30px; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid rgba(126, 34, 206, 0.2); }
@@ -294,197 +305,130 @@ const Home = ({ onOpenAuth }) => {
           padding-top: 80px;
           overflow: hidden;
         }
-        .hero-flex-wrapper { display: flex; flex-direction: row; align-items: flex-start; justify-content: space-between; gap: clamp(2.5rem, 5vw, 5.5rem); width: 100%; min-height: calc(100vh - 80px); padding-top: 0.5rem; }
-        .hero-ar.hero-flex-wrapper { gap: clamp(3rem, 6vw, 6rem); }
-        .hero-text-side { flex: 1; z-index: 10; text-align: start; padding-inline: 0; max-width: 36rem; }
-        .hero-image-rtl { margin-top: 0.75rem; }
-        .hero-badge-pill {
-          display: inline-flex; align-items: center; padding: 6px 16px; margin-bottom: 1.25rem;
-          background: rgba(126, 34, 206, 0.1); color: var(--primary); border-radius: 30px; font-weight: 800;
-          font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid rgba(126, 34, 206, 0.2);
+        .hero-flex-wrapper { 
+          display: flex; 
+          flex-direction: row; 
+          align-items: center; 
+          justify-content: space-between; 
+          gap: 4rem; 
+          width: 100%; 
+          min-height: calc(100vh - 80px); 
+          padding-top: 0.5rem; 
         }
-        .hero-image-side { flex: 1.15; display: flex; justify-content: center; align-items: flex-start; z-index: 5; position: relative; margin-top: 0.5rem; }
+        .hero-text-side { 
+          flex: 1; 
+          z-index: 10; 
+          text-align: start; 
+          padding-inline: 0; 
+          max-width: 48%; 
+          margin-inline-start: -40px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .hero-badge-pill {
+          display: inline-flex; align-items: center; padding: 8px 20px; margin-bottom: 2rem;
+          background: rgba(255, 255, 255, 0.4); color: var(--text-main); border-radius: 30px; font-weight: 800;
+          font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; border: 1px solid rgba(255, 255, 255, 0.5);
+          backdrop-filter: blur(10px);
+        }
+        .hero-image-side { 
+          flex: 1; 
+          display: flex; 
+          justify-content: flex-end; 
+          align-items: center; 
+          z-index: 5; 
+          position: relative; 
+          max-width: 50%;
+        }
         
-        .hero-circles-container { position: relative; width: 100%; height: 500px; display: flex; justify-content: center; align-items: center; }
-        .image-circle { position: absolute; border-radius: 50%; overflow: hidden; border: 4px solid white; box-shadow: 0 20px 40px rgba(0,0,0,0.1); background: white; }
+        .hero-circles-container { 
+          position: relative; 
+          width: 100%; 
+          max-width: 720px; 
+          height: 620px; 
+          margin-inline-end: -20px;
+        }
+        .image-circle { position: absolute; border-radius: 50%; overflow: hidden; border: 6px solid white; box-shadow: 0 30px 60px rgba(0,0,0,0.12); background: white; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .image-circle:hover { transform: scale(1.05) translateY(-10px); z-index: 10; box-shadow: 0 40px 80px rgba(0,0,0,0.2); }
         .image-circle img { width: 100%; height: 100%; object-fit: cover; }
         
-        .image-circle.circle-1 { width: 320px; height: 320px; z-index: 3; top: -20px; left: 0px; }
-        .image-circle.circle-2 { width: 350px; height: 350px; z-index: 2; top: 40px; right: -80px; }
-        .image-circle.circle-3 { width: 220px; height: 220px; z-index: 4; bottom: -40px; left: 60px; }
-        .image-circle.circle-4 { width: 160px; height: 160px; z-index: 5; top: 180px; left: -100px; }
+        /* Spread Wide Layout - Fixed to Right Half to Avoid Overlap */
+        .image-circle.circle-1 { width: 320px; height: 320px; z-index: 3; top: 0; right: 0; }
+        .image-circle.circle-2 { width: 260px; height: 260px; z-index: 2; bottom: 20px; right: 40px; }
+        .image-circle.circle-3 { width: 220px; height: 220px; z-index: 4; top: 160px; right: 260px; }
+        .image-circle.circle-4 { width: 180px; height: 180px; z-index: 5; top: 20px; right: 340px; }
+
+        /* RTL Circle Flipping */
+        [dir="rtl"] .image-circle.circle-1 { right: auto; left: 0; }
+        [dir="rtl"] .image-circle.circle-2 { right: auto; left: 40px; }
+        [dir="rtl"] .image-circle.circle-3 { right: auto; left: 260px; }
+        [dir="rtl"] .image-circle.circle-4 { right: auto; left: 340px; }
         
-        .mini-bubble { position: absolute; border-radius: 50%; opacity: 0.6; filter: blur(1px); animation: pulse-mini 4s infinite ease-in-out; }
-        @keyframes pulse-mini { 0%, 100% { transform: scale(1); opacity: 0.4; } 50% { transform: scale(1.3); opacity: 0.7; } }
-        .bubble-1 { width: 40px; height: 40px; top: -30px; left: 160px; background: var(--primary); }
-        .bubble-2 { width: 30px; height: 30px; top: -20px; right: 20px; background: var(--secondary); }
-        .bubble-3 { width: 50px; height: 50px; bottom: 80px; left: -80px; background: var(--accent); }
-        .bubble-4 { width: 25px; height: 25px; top: 320px; right: -40px; animation-delay: 1s; background: var(--primary-dark); }
-        .bubble-5 { width: 35px; height: 35px; bottom: -60px; right: 80px; animation-delay: 2s; background: var(--secondary-dark); }
-        .bubble-6 { width: 45px; height: 45px; top: 80px; left: -40px; animation-delay: 0.5s; background: var(--secondary); }
-        .bubble-7 { width: 20px; height: 20px; top: 120px; right: 100px; animation-delay: 1.5s; background: var(--primary); }
-        .bubble-8 { width: 35px; height: 35px; bottom: -15%; right: 25%; animation-delay: 0.8s; background: var(--accent); }
-        .bubble-9 { width: 18px; height: 18px; top: 45%; right: -25%; animation-delay: 2.5s; background: var(--primary-dark); }
-        .bubble-10 { width: 28px; height: 28px; top: 15%; left: -15%; animation-delay: 1.2s; background: var(--secondary-dark); }
+        .mini-bubble { position: absolute; border-radius: 50%; opacity: 0.6; filter: blur(2px); animation: pulse-mini 5s infinite ease-in-out; }
+        @keyframes pulse-mini { 0%, 100% { transform: scale(1); opacity: 0.4; } 50% { transform: scale(1.4); opacity: 0.8; } }
+        .bubble-1 { width: 60px; height: 60px; top: -40px; left: 10%; background: var(--primary); }
+        .bubble-2 { width: 40px; height: 40px; bottom: 10%; left: -5%; background: var(--secondary); }
+        .bubble-3 { width: 30px; height: 30px; top: 40%; right: -5%; background: var(--accent); }
+        .bubble-4 { width: 50px; height: 50px; top: -20px; right: 20%; background: var(--primary-dark); }
+        .bubble-5 { width: 35px; height: 35px; bottom: -30px; right: 30%; background: var(--secondary-dark); }
 
-
-        .btn-outline-primary { border: 2px solid var(--text-main); color: var(--text-main) !important; background: transparent; text-decoration: none !important; padding: 14px 28px; border-radius: 24px; font-weight: 700; transition: all 0.3s; }
-        .btn-outline-primary:hover { background: var(--text-main); color: white !important; transform: translateY(-3px); }
-
-        .hero-title { font-size: 4rem; font-weight: 900; line-height: 1.1; margin-bottom: 2rem; color: #0a2540 !important; text-decoration: none !important; font-family: 'Plus Jakarta Sans', 'Tajawal', system-ui, sans-serif; }
-        [dir="rtl"] .hero-title { font-size: clamp(2.2rem, 5.5vw, 3.2rem); line-height: 1.35; }
-        .hero-cta-group { display: flex; gap: 1.5rem; align-items: center; }
-        .hero-description { font-size: 1.2rem; line-height: 1.7; color: var(--text-muted); max-width: 600px; margin-bottom: 3rem; }
-
-        .btn-outline-white { border: 2px solid white; color: white !important; background: transparent; text-decoration: none !important; }
-        .btn-outline-white:hover { background: white; color: var(--primary) !important; }
-        .hero-cta-group a { text-decoration: none !important; }
-
-        /* Brain Flow svg */
-        .brain-flow-overlay { position: absolute; inset: -300px -600px; pointer-events: none; z-index: 3; mix-blend-mode: overlay; opacity: 0.6; }
-        .brain-flow-svg { width: 100%; height: 100%; overflow: visible; }
-        .flow-line { fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 200, 1000; animation: smoothFlow 7s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-        .flow-left { stroke: url(#waveGradient); }
-        .flow-right { stroke: url(#waveGradientColor); }
-        @keyframes smoothFlow { 0% { stroke-dashoffset: 1000; } 100% { stroke-dashoffset: 0; } }
-
-        /* Intro Epilepsy Layout */
-        .intro-epilepsy-layout { display: grid; grid-template-columns: 1.2fr 1fr; grid-template-areas: "text image" "stats image"; gap: 2rem 5rem; align-items: center; }
-        .intro-text { grid-area: text; }
-        .intro-image { grid-area: image; }
-        .intro-text h2 { font-size: 3rem; margin-bottom: 1.5rem; }
-        .intro-text p { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 1.5rem; }
-        .intro-image img { width: 100%; height: 500px; object-fit: cover; border-radius: 24px; }
-        
-        .stats-grid { grid-area: stats; display: flex; gap: 3rem; margin-top: 0 !important; }
-        .stat-item h3 { font-size: 2.5rem; color: var(--primary); margin-bottom: 0.2rem; }
-        .stat-item span { font-weight: 700; color: var(--text-muted); font-size: 0.9rem; }
-
-        /* Types Grid (Premium) */
-        .types-full-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
-        .type-card-premium { cursor: pointer; position: relative; overflow: hidden; border-radius: 24px; padding: 0 !important; }
-        .type-card-img { position: relative; height: 320px; width: 100%; background: #f8fafc; }
-        .type-card-img img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); }
-        .type-card-premium:hover .type-card-img img { transform: scale(1.05); }
-        .type-card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent); display: flex; align-items: flex-end; justify-content: center; padding: 2rem; opacity: 0; transition: opacity 0.3s; }
-        .type-card-premium:hover .type-card-overlay { opacity: 1; }
-        .view-details { color: white; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; border-bottom: 2px solid white; padding-bottom: 4px; }
-        .type-card-info { padding: 1.5rem; text-align: center; background: white; border-top: 1px solid var(--border); }
-        .type-card-info h3 { font-size: 1.25rem; margin: 0; color: var(--text-main); }
-        
-        .type-card-premium { border: 2px solid white !important; box-shadow: 0 10px 40px rgba(157, 141, 241, 0.3) !important; position: relative; z-index: 1; }
-        .type-card-premium::before { content: ''; position: absolute; inset: -4px; background: linear-gradient(135deg, var(--primary), #3b82f6); border-radius: 26px; z-index: -1; opacity: 0.2; }
-        
-        .intro-image { border: 8px solid white !important; box-shadow: 0 20px 50px rgba(157, 141, 241, 0.4) !important; position: relative; }
-        .hero-img-container { 
-          border: 4px solid rgba(255,255,255,0.3); 
-          border-radius: 30px; 
-          padding: 10px; 
-          background: rgba(255,255,255,0.05); 
-          box-shadow: 0 0 60px rgba(238, 190, 241, 0.2);
-        }
-
-        /* Empathy Section Overlay */
-        .empathy-section-wrapper { position: relative; margin-top: -8rem; z-index: 100; padding: 0 2rem; }
-        .empathy-section { padding: 4rem !important; text-align: center; max-width: 900px; margin: 0 auto; border: 2px solid rgba(126, 34, 206, 0.1) !important; }
-        
-        .highlight-section-box {
-          padding: 4rem 3rem !important;
-          max-width: 900px;
-          margin: 0 auto;
-          background: rgba(169, 204, 227, 0.2) !important; /* Calm soft blue */
-          border: 1px solid rgba(169, 204, 227, 0.5) !important;
-          border-radius: 32px !important;
-          box-shadow: 0 10px 40px rgba(169, 204, 227, 0.15) !important;
-        }
-        .highlight-section-box h2 {
-          font-size: 2.8rem;
-          color: var(--text-main);
-          margin-bottom: 1.5rem;
-        }
-        [dir="rtl"] .highlight-section-box p {
-          font-size: 1.3rem; 
-          line-height: 2.1 !important;
-          color: var(--text-main);
-          opacity: 0.9;
-        }
-        .empathy-lead { font-size: 1.4rem; font-weight: 500; line-height: 1.6; max-width: 900px; margin: 1.5rem auto 0; color: var(--text-main); }
-        .empathy-icon { color: #f43f5e; margin-bottom: 1rem; }
-
-        /* Services Grid Sync */
-        .centered-header { max-width: 800px; margin: 0 auto 4rem; text-align: center; }
-        .centered-header h2 { text-align: center; width: 100%; margin: 0 auto 1.5rem; }
-        .centered-header p { text-align: center; margin: 0 auto; }
-        .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; width: 100%; }
-        .service-card { padding: 2.5rem 1.5rem !important; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .service-icon { color: var(--primary); margin-bottom: 2rem; display: flex; justify-content: center; width: 100%; }
-        .service-card h3 { font-size: 1.5rem; margin-bottom: 1rem; }
-        .service-card p { max-width: 280px; }
-
-        /* CTA Section - Gradient Border Card */
-        .cta-border-card-wrapper { display: flex; justify-content: center; width: 100%; padding: 4rem 1.5rem; }
-        .cta-glass-card { 
-          padding: 5rem 3rem; 
-          background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
-          border: none !important; 
-          color: white;
-          max-width: 800px;
-          margin: 0 auto;
-          box-shadow: 0 20px 50px rgba(126, 34, 206, 0.25) !important;
+        .btn-premium-glow {
+          background: var(--text-main);
+          color: white !important;
+          padding: 16px 36px;
           border-radius: 30px;
-          text-align: center;
+          font-weight: 800;
+          box-shadow: 0 10px 25px rgba(30, 58, 95, 0.3);
+          transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          position: relative;
+          overflow: hidden;
         }
-        .cta-glass-card h2 { color: white !important; font-size: 2.8rem; margin-bottom: 1.5rem; font-weight: 800; }
-        .cta-glass-card p { color: rgba(255, 255, 255, 0.95) !important; font-size: 1.2rem; margin-bottom: 2.5rem; line-height: 1.6; }
-        .cta-buttons { display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 1rem; flex-wrap: wrap; }
-        .cta-buttons .btn { margin: 0 !important; }
-        .btn-white-solid { background: white; color: var(--primary); font-weight: 800; border: none; padding: 14px 28px; border-radius: 30px; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
-        .btn-white-solid:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .btn-outline-white { border: 2px solid white; color: white !important; background: transparent; padding: 14px 28px; border-radius: 30px; font-weight: 700; display: inline-flex; align-items: center; text-decoration: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .btn-white-dark { position: relative; background: white !important; color: var(--text-main) !important; border: none; padding: 14px 28px; border-radius: 30px; font-weight: 800; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); text-decoration: none; margin: 0; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s, color 0.3s; z-index: 1; overflow: hidden; }
-        .btn-white-dark::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--primary), var(--secondary)); opacity: 0; z-index: -1; transition: opacity 0.4s ease; border-radius: 30px; }
-        .btn-white-dark:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.2) !important; color: white !important; }
-        .btn-white-dark:hover::before { opacity: 1; }
-        .btn-outline-white:hover { background: white !important; color: var(--primary) !important; transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+        .btn-premium-glow:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(30, 58, 95, 0.4); background: #2a528a; }
+        
+        .btn-premium-outline {
+          border: 2px solid var(--text-main);
+          color: var(--text-main) !important;
+          padding: 16px 36px;
+          border-radius: 30px;
+          font-weight: 800;
+          transition: all 0.3s;
+          background: transparent;
+        }
+        .btn-premium-outline:hover { background: var(--text-main); color: white !important; transform: translateY(-3px); }
 
-        @media (max-width: 1000px) {
-          .intro-epilepsy-layout { grid-template-columns: 1fr; grid-template-areas: "text" "image" "stats"; gap: 2rem; }
-          .modal-body-layout { grid-template-columns: 1fr; gap: 2rem; }
-          .types-full-grid, .services-grid { grid-template-columns: 1fr; padding: 0 1rem; }
-          .type-card-img { height: 220px; }
-          .modal-content { 
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            border-radius: 32px 32px 0 0;
-            max-height: 85vh;
-            padding: 1.5rem !important;
-            margin: 0;
-          }
-          .modal-image { min-height: unset; height: auto; }
-          .modal-image img { height: auto; max-height: 250px; object-fit: contain; }
-          .modal-info { padding: 2rem 1rem; }
-          
-          .modern-hero { background: #1e1b4b; padding-top: 0; }
-          .hero-flex-wrapper { flex-direction: column; text-align: center; justify-content: stretch; height: 85vh; padding-top: 1rem; padding-bottom: 4rem; position: relative; gap: 0; }
-          .hero-text-side { padding-inline-end: 0; margin-bottom: 0; z-index: 10; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; text-align: center !important; }
-          .hero-title { font-size: 2.6rem; color: #ffffff !important; font-weight: 900; margin-top: 0; margin-bottom: auto; line-height: 1.1; }
-          .hero-description { color: #f8fafc !important; font-size: 1.05rem; font-weight: 500; margin-bottom: 2rem; max-width: 90%; }
-          .hero-cta-group { flex-direction: column; gap: 1rem; width: 100%; align-items: center; }
-          .hero-cta-group > * { width: 100%; max-width: 320px; display: flex; justify-content: center; box-sizing: border-box; }
-          .hero-image-side { position: absolute; inset: 0; z-index: 0; opacity: 0.4; display: block; overflow: hidden; pointer-events: none; width: 100%; height: 100%; }
-          .hero-img-container { padding: 0; border: none; background: transparent; box-shadow: none; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; padding-top: 1rem; }
-          .hero-main-img { width: 100%; height: 100%; max-width: 100vw; object-fit: contain; object-position: center center; opacity: 1; transform: scale(1.1); }
-          .hero-badge-pill { margin-bottom: 1rem; font-size: 0.75rem; }
-          
-          .full-screen-section { padding: 4rem 0; min-height: auto; }
-          .intro-text h2 { font-size: 2rem; }
-          .intro-image img { height: 300px; }
-          .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; width: 100%; text-align: center; justify-content: center; margin-top: 1.5rem !important; }
-          .stat-item h3 { font-size: 1.5rem; }
-          .stat-item span { font-size: 0.75rem; line-height: 1.2; display: block; }
+        .hero-title { font-size: clamp(2.5rem, 6vw, 4.2rem); font-weight: 900; line-height: 1.1; margin-bottom: 2rem; color: #0a2540 !important; }
+        .hero-cta-group { display: flex; gap: 1.5rem; align-items: center; margin-top: 1rem; }
+        .hero-description { font-size: clamp(1rem, 2vw, 1.25rem); line-height: 1.7; color: var(--text-muted); max-width: 600px; margin-bottom: 3rem; }
+
+        @media (max-width: 1024px) {
+          .hero-flex-wrapper { flex-direction: column; text-align: center; padding-top: 4rem; padding-bottom: 6rem; gap: 4rem; height: auto; min-height: 100vh; }
+          .hero-text-side { text-align: center !important; display: flex; flex-direction: column; align-items: center; max-width: 100%; }
+          .hero-image-side { width: 100%; justify-content: center; }
+          .hero-circles-container { height: 450px; max-width: 450px; margin: 0 auto; }
+          .image-circle.circle-1 { width: 220px; height: 220px; }
+          .image-circle.circle-2 { width: 180px; height: 180px; }
+          .image-circle.circle-3 { width: 150px; height: 150px; top: 150px; right: 250px; }
+          .image-circle.circle-4 { width: 120px; height: 120px; top: 20px; right: 280px; }
+          [dir="rtl"] .image-circle.circle-3 { right: auto; left: 250px; }
+          [dir="rtl"] .image-circle.circle-4 { right: auto; left: 280px; }
+          .hero-cta-group { flex-direction: column; width: 100%; }
+          .hero-cta-group > * { width: 100%; max-width: 350px; }
+        }
+
+        @media (max-width: 640px) {
+          .hero-circles-container { height: 320px; max-width: 320px; }
+          .image-circle.circle-1 { width: 160px; height: 160px; }
+          .image-circle.circle-2 { width: 130px; height: 130px; }
+          .image-circle.circle-3 { width: 110px; height: 110px; top: 110px; right: 180px; }
+          .image-circle.circle-4 { width: 90px; height: 90px; top: 10px; right: 200px; }
+          [dir="rtl"] .image-circle.circle-3 { right: auto; left: 180px; }
+          [dir="rtl"] .image-circle.circle-4 { right: auto; left: 200px; }
+          .hero-title { font-size: 2.2rem; }
+          .hero-badge-pill { font-size: 0.7rem; padding: 6px 16px; }
+          .section-spacing { padding: 4rem 0; }
+          .services-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+          .values-grid-home { grid-template-columns: 1fr; }
         }
       `}</style>
       </div>

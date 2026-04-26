@@ -26,7 +26,7 @@ const AuthWindow = ({ onClose }) => {
       if (isLogin) {
         await login(email, password);
       } else {
-        await signup(email, password, displayName);
+        await signup(email, password, displayName, patientName, adStage, emergencyContact);
       }
       onClose();
     } catch (err) {

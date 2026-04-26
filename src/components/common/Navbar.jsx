@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
 import {
   User,
@@ -111,33 +112,66 @@ const Navbar = ({ onOpenAuth }) => {
       </div>
 
       {/* Mobile Menu */}
-      {isOpen && (
-        <div className="mobile-menu animate-fade-in" dir={isRTL ? 'rtl' : 'ltr'}>
-          <div className="mobile-education-links">
-            <strong style={{ textAlign: isRTL ? 'right' : 'left' }}>{t('common.education')}</strong>
-            <Link to="/about-alzheimer" onClick={() => setIsOpen(false)}>{t('common.aboutAlzheimer')}</Link>
-            <Link to="/first-aid" onClick={() => setIsOpen(false)}>{t('common.emergencyFirstAid')}</Link>
-            <Link to="/myths-facts" onClick={() => setIsOpen(false)}>{t('common.mythsFacts')}</Link>
-            <Link to="/special-warnings" onClick={() => setIsOpen(false)}>{t('common.specialWarnings')}</Link>
-          </div>
-          <Link to="/checker" onClick={() => setIsOpen(false)}>{t('common.interactionChecker')}</Link>
-          <Link to="/profile" onClick={() => setIsOpen(false)}>{t('common.drugSchedule')}</Link>
-          <Link to="/about" onClick={() => setIsOpen(false)}>{t('common.aboutTeam')}</Link>
-          
-          <button onClick={toggleLanguage} className="mobile-lang-btn">
-            <Languages size={20} /> {i18n.language === 'ar' ? 'Switch to English' : 'تغيير للغة العربية'}
-          </button>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            className="mobile-menu-overlay"
+            initial={{ opacity: 0, x: isRTL ? '100%' : '-100%' }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: isRTL ? '100%' : '-100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            dir={isRTL ? 'rtl' : 'ltr'}
+          >
+            <div className="mobile-menu-header">
+              <Link to="/" className="nav-logo" onClick={() => setIsOpen(false)}>
+                <img src="/logo.png" alt="Aoun Logo" className="logo-img" />
+                <span className="logo-main">{isRTL ? 'عون' : 'Aoun'}</span>
+              </Link>
+              <button className="mobile-close" onClick={() => setIsOpen(false)}>
+                <X size={32} />
+              </button>
+            </div>
 
-          {currentUser ? (
-            <>
-              <Link to="/profile" onClick={() => setIsOpen(false)}>{t('common.myDashboard')}</Link>
-              <button onClick={() => { logout(); setIsOpen(false); }} className="mobile-logout-btn">{t('common.logout')}</button>
-            </>
-          ) : (
-            <button className="btn btn-mobile-signin" onClick={() => { onOpenAuth(); setIsOpen(false); }}>{t('common.signIn')}</button>
-          )}
-        </div>
-      )}
+            <div className="mobile-links-container">
+              <div className="mobile-nav-group">
+                <span className="group-label">{t('common.education')}</span>
+                <Link to="/about-alzheimer" onClick={() => setIsOpen(false)}>{t('common.aboutAlzheimer')}</Link>
+                <Link to="/first-aid" onClick={() => setIsOpen(false)}>{t('common.emergencyFirstAid')}</Link>
+                <Link to="/myths-facts" onClick={() => setIsOpen(false)}>{t('common.mythsFacts')}</Link>
+                <Link to="/special-warnings" onClick={() => setIsOpen(false)}>{t('common.specialWarnings')}</Link>
+              </div>
+              
+              <div className="mobile-nav-group">
+                <span className="group-label">Tools</span>
+                <Link to="/checker" onClick={() => setIsOpen(false)}>{t('common.interactionChecker')}</Link>
+                <Link to="/profile" onClick={() => setIsOpen(false)}>{t('common.drugSchedule')}</Link>
+                <Link to="/about" onClick={() => setIsOpen(false)}>{t('common.aboutTeam')}</Link>
+              </div>
+
+              <div className="mobile-nav-footer">
+                <button onClick={toggleLanguage} className="mobile-lang-pill">
+                  <Languages size={20} /> {i18n.language === 'ar' ? 'English' : 'العربية'}
+                </button>
+
+                {currentUser ? (
+                  <div className="mobile-user-actions">
+                    <Link to="/profile" className="mobile-dashboard-btn" onClick={() => setIsOpen(false)}>
+                      <User size={20} /> {t('common.myDashboard')}
+                    </Link>
+                    <button onClick={() => { logout(); setIsOpen(false); }} className="mobile-logout-link">
+                      <LogOut size={20} /> {t('common.logout')}
+                    </button>
+                  </div>
+                ) : (
+                  <button className="btn btn-premium btn-block" onClick={() => { onOpenAuth(); setIsOpen(false); }}>
+                    {t('common.signIn')}
+                  </button>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <style>{`
         .navbar {
@@ -160,8 +194,19 @@ const Navbar = ({ onOpenAuth }) => {
         .navbar-scrolled {
           background: rgba(255, 255, 255, 0.9) !important;
           backdrop-filter: blur(12px);
-          border-bottom: 1px solid var(--border);
           box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .navbar-scrolled::after {
+          content: '';
+          position: absolute;
+          bottom: -15px;
+          left: 0;
+          width: 100%;
+          height: 15px;
+          background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%23ffffff" opacity="0.9"/></svg>') center/cover no-repeat;
+          pointer-events: none;
+          z-index: -1;
         }
 
         .nav-content {
@@ -176,7 +221,6 @@ const Navbar = ({ onOpenAuth }) => {
           align-items: center;
           gap: 12px;
           text-decoration: none;
-          color: var(--text-main);
         }
 
         .nav-logo-text {
@@ -189,7 +233,9 @@ const Navbar = ({ onOpenAuth }) => {
           font-size: 1.85rem;
           font-weight: 800;
           letter-spacing: -0.04em;
-          color: #0a2540;
+          background: linear-gradient(135deg, var(--primary), var(--secondary));
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
           font-family: 'Plus Jakarta Sans', 'Tajawal', 'Cairo', system-ui, sans-serif;
         }
         [dir="rtl"] .logo-main { font-size: 2rem; letter-spacing: 0.02em; }
@@ -285,26 +331,121 @@ const Navbar = ({ onOpenAuth }) => {
           .nav-links { display: none; }
           .mobile-top-actions { display: flex; }
           .mobile-toggle { display: block; }
-          .navbar-transparent.mobile-toggle { color: white; }
-          .mobile-menu {
-            position: absolute; top: 80px; left: 0; right: 0; background: white;
-            padding: 2rem; display: flex; flex-direction: column; gap: 1.5rem;
-            border-bottom: 1px solid var(--border); box-shadow: var(--shadow);
-          }
-          .mobile-menu a { text-decoration: none; color: var(--text-main); font-weight: 600; }
+          .navbar-transparent .mobile-toggle { color: white; }
           
-          .btn-mobile-signin {
-            background: var(--primary);
-            color: white !important;
+          .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            overflow-y: auto;
+          }
+
+          .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+          }
+
+          .mobile-close {
+            background: none;
             border: none;
-            border-radius: 30px;
-            padding: 14px 28px;
-            font-weight: 800;
-            box-shadow: 0 8px 25px rgba(157, 141, 241, 0.4);
+            color: var(--text-main);
+            cursor: pointer;
+          }
+
+          .mobile-links-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            flex: 1;
+          }
+
+          .mobile-nav-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+          }
+
+          .group-label {
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 0.1em;
+            color: var(--text-muted);
+            font-weight: 800;
+            margin-bottom: 0.5rem;
           }
+
+          .mobile-nav-group a {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            text-decoration: none;
+          }
+
+          .mobile-nav-footer {
+            margin-top: auto;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+          }
+
+          .mobile-lang-pill {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f1f5f9;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 700;
+            color: var(--text-main);
+            width: fit-content;
+          }
+
+          .mobile-user-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+          }
+
+          .mobile-dashboard-btn {
+            background: var(--primary);
+            color: white !important;
+            padding: 14px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-weight: 800;
+          }
+
+          .mobile-logout-link {
+            background: none;
+            border: none;
+            color: var(--error);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            padding: 10px 0;
+            cursor: pointer;
+          }
+          
+          .btn-block { width: 100%; }
         }
+
       `}</style>
     </nav>
   );

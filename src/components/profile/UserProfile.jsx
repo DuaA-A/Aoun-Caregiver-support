@@ -147,6 +147,30 @@ const UserProfile = () => {
             <div className="avatar">{currentUser.email[0].toUpperCase()}</div>
             <h2>{currentUser.displayName || currentUser.email.split('@')[0]}</h2>
             <p className="email">{currentUser.email}</p>
+            
+            {(currentUser.patientName || currentUser.adStage || currentUser.emergencyContact) && (
+              <div className="patient-details">
+                {currentUser.patientName && (
+                  <div className="detail-item">
+                    <span className="label">Patient Name</span>
+                    <span className="value">{currentUser.patientName}</span>
+                  </div>
+                )}
+                {currentUser.adStage && (
+                  <div className="detail-item">
+                    <span className="label">AD Stage</span>
+                    <span className="value" style={{ textTransform: 'capitalize' }}>{currentUser.adStage}</span>
+                  </div>
+                )}
+                {currentUser.emergencyContact && (
+                  <div className="detail-item">
+                    <span className="label">Emergency Contact</span>
+                    <span className="value">{currentUser.emergencyContact}</span>
+                  </div>
+                )}
+              </div>
+            )}
+
             <div className="profile-actions">
               <button type="button" onClick={logout} className="btn-dash-logout">
                 <LogOut size={18} /> {t('dashboard.logout')}
@@ -210,6 +234,14 @@ const UserProfile = () => {
         .avatar { width: 72px; height: 72px; background: linear-gradient(135deg, #7c3aed, #4f46e5); color: white; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.75rem; font-weight: 800; box-shadow: 0 8px 24px rgba(79, 70, 229, 0.25); }
         .profile-card h2 { font-size: 1.1rem; margin-bottom: 0.2rem; color: #0a2540; }
         .email { font-size: 0.8rem; color: #64748b; margin-bottom: 0; }
+        
+        .patient-details { margin-top: 1.5rem; background: rgba(248, 250, 252, 0.5); padding: 1rem; border-radius: 12px; border: 1px solid var(--border); text-align: left; }
+        [dir="rtl"] .patient-details { text-align: right; }
+        .detail-item { display: flex; flex-direction: column; margin-bottom: 0.75rem; }
+        .detail-item:last-child { margin-bottom: 0; }
+        .detail-item .label { font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; }
+        .detail-item .value { font-size: 0.95rem; font-weight: 600; color: #0a2540; }
+
         .profile-actions { margin-top: 1.25rem; }
         .btn-dash-logout { width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border-radius: 12px; border: 1px solid #fecdd3; background: #fff1f2; color: #be123c; font-weight: 700; cursor: pointer; }
         .btn-dash-logout:hover { background: #ffe4e6; }

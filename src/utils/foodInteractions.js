@@ -1,23 +1,23 @@
 export const FOOD_INTERACTIONS = {
   "donepezil": {
-    avoidFoods: ["Alcohol"],
+    avoidFoods: ["Alcohol", "Caffeine"],
     timing: "Take at bedtime",
-    instructions: "Take Donepezil in the evening, just before going to sleep. It can be taken with or without food. Avoid alcohol as it may increase the risk of side effects like dizziness."
+    instructions: "Alcohol is strictly forbidden. It severely depresses the CNS, negates effects, and increases liver toxicity. Avoid high intake of caffeine (tea, coffee, energy drinks) as it exacerbates insomnia and agitation commonly caused by Alzheimer's drugs."
   },
   "rivastigmine": {
-    avoidFoods: ["Alcohol"],
+    avoidFoods: ["Alcohol", "Caffeine"],
     timing: "Take with food",
-    instructions: "Should be taken with a full meal (breakfast and dinner). This helps reduce stomach upset and gastrointestinal side effects."
+    instructions: "Should be taken with a full meal. Alcohol is strictly forbidden. It severely depresses the CNS, negates effects, and increases liver toxicity. Avoid high intake of caffeine (tea, coffee, energy drinks) as it exacerbates insomnia and agitation."
   },
   "galantamine": {
-    avoidFoods: ["Alcohol"],
+    avoidFoods: ["Alcohol", "Grapefruit", "Grapefruit Juice", "Caffeine"],
     timing: "Take with food",
-    instructions: "Take with morning and evening meals. Ensure you drink plenty of fluids throughout the day."
+    instructions: "Take with morning and evening meals. Grapefruit/Grapefruit juice specifically blocks the CYP3A4 liver enzyme leading to toxic buildup in bloodstream. Alcohol is strictly forbidden. Avoid high intake of caffeine as it exacerbates insomnia and agitation."
   },
   "memantine": {
-    avoidFoods: [],
+    avoidFoods: ["Alcohol", "Caffeine"],
     timing: "With or without food",
-    instructions: "Can be taken with or without food. Consistency in timing is important for maintaining stable blood levels."
+    instructions: "Can be taken with or without food. Alcohol is strictly forbidden. It severely depresses the CNS, negates effects, and increases liver toxicity. Avoid high intake of caffeine (tea, coffee, energy drinks) as it exacerbates insomnia and agitation."
   },
   "aduhelm": {
     avoidFoods: [],
@@ -25,3 +25,18 @@ export const FOOD_INTERACTIONS = {
     instructions: "Monitor for ARIA-E (edema) and ARIA-H (hemorrhage) as seen in clinical data."
   }
 };
+
+// Add aliases for common Egyptian brand names
+const aliases = {
+  "donepezil": ["aricept", "alzepil", "alzam"],
+  "rivastigmine": ["exelon", "rivamer"],
+  "galantamine": ["reminyl"],
+  "memantine": ["ebixa", "memixa", "memental"]
+};
+
+for (const [generic, brands] of Object.entries(aliases)) {
+  for (const brand of brands) {
+    FOOD_INTERACTIONS[brand] = FOOD_INTERACTIONS[generic];
+  }
+}
+
