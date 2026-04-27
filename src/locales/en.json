@@ -189,7 +189,7 @@
         },
         {
           "title": "GI Sensitivity",
-          "content": "Cholinesterase inhibitors (Donepezil, Rivastigmine) frequently cause nausea and vomiting, which can lead to weight loss and dehydration in the elderly."
+          "content": "Cholinesterase inhibitors (Rivastigmine, Galantamine) frequently cause nausea and vomiting, which can lead to weight loss and dehydration in the elderly."
         },
         {
           "title": "Cardiovascular Effects",
@@ -209,7 +209,7 @@
     "slotText": "Drug {{index}}",
     "required": "(Required)",
     "optional": "(Optional)",
-    "placeholder": "e.g. Donepezil",
+    "placeholder": "e.g. Rivastigmine",
     "analysing": "Analyzing...",
     "generateBtn": "Check Interactions",
     "awaitingTitle": "Ready for Analysis",
@@ -266,7 +266,7 @@
     "nextDose": "Next dose",
     "markTaken": "Mark as taken",
     "empty": "No scheduled medicines yet. Add the first drug and a time above.",
-    "drugPlaceholder": "e.g. Donepezil 5 mg",
+    "drugPlaceholder": "e.g. Memantine 5 mg",
     "notifyEnable": "Enable reminders",
     "notifyOn": "Reminders on",
     "saving": "Saving…",
@@ -292,7 +292,16 @@
     "noMeds": "No medications listed.",
     "logout": "Logout",
     "calendarTitle": "Caregiver calendar",
-    "nextDoseLabel": "Next medication dose",
+    "calendarSubtitle": "Track daily tasks",
+    "upcomingTasks": "Upcoming Tasks",
+    "nextDoseLabel": "Next dose",
+    "behaviorLogTitle": "Daily Behavior Log",
+    "behaviorLogSubtitle": "Track patient wellbeing",
+    "confusionLevel": "Confusion Level",
+    "appetite": "Appetite",
+    "generalMood": "General Mood",
+    "sleepHours": "Sleep Hours",
+    "saveLog": "Save Log",
     "logSaved": "Log saved successfully."
   },
   "auth": {
@@ -347,7 +356,7 @@
       { "id": 1, "name": "Toka Gamal", "role": "Researcher", "bio": "Focuses on AD pathophysiology and emerging therapeutics." },
       { "id": 2, "name": "Khalid Mohamed", "role": "Researcher", "bio": "Specializes in clinical diagnosis and medication compliance." },
       { "id": 3, "name": "Yassi boules", "role": "Researcher", "bio": "Researched neurotransmitter pathology and cholinergic deficit." },
-      { "id": 4, "name": "Youssef Asaad", "role": "Researcher", "bio": "Focuses on pharmacological agents like Donepezil and Memantine." },
+      { "id": 4, "name": "Youssef Asaad", "role": "Researcher", "bio": "Focuses on pharmacological agents like Memantine and Rivastigmine." },
       { "id": 5, "name": "Ibrahim Hassan", "role": "Researcher", "bio": "Specializes in neuroinflammation and amyloid-beta pathology." },
       { "id": 6, "name": "Thomas Adly", "role": "Researcher", "bio": "Researched tau protein hyperphosphorylation and tangles." },
       { "id": 7, "name": "Ziad Ibrahim", "role": "Researcher", "bio": "Focuses on AI and Machine Learning in AD management." },

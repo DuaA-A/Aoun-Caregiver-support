@@ -13,7 +13,7 @@ const createCombinations = (groupA, groupB, interactionData) => {
   return result;
 };
 
-const cholinesteraseInhibitors = ['donepezil', 'aricept', 'alzepil', 'alzam', 'rivastigmine', 'exelon', 'rivamer', 'galantamine', 'reminyl'];
+const cholinesteraseInhibitors = ['rivastigmine', 'exelon', 'rivamer', 'galantamine', 'reminyl'];
 const memantineGroup = ['memantine', 'ebixa', 'memixa', 'memental'];
 
 // 1. Anticholinergics - Critical (Level 4)
@@ -173,52 +173,6 @@ const ADDITIONAL_ENTRIES = [
  */
 const BASE_ENTRIES = [
   {
-    drugs: ['donepezil', 'tramadol'],
-    severity: 'High',
-    description:
-      'Combining opioids with cholinesterase inhibitors or in frail patients increases risk of sedation, confusion, falls, and respiratory depression.',
-    comment:
-      'Use only if a prescriber has weighed risks; start low, monitor sedation and breathing. Do not stop Alzheimer medicines abruptly without medical advice.',
-    firstAid: {
-      general:
-        'Watch for unusual sleepiness, slow or shallow breathing, hard-to-wake, or new confusion. If breathing is weak or the person is hard to arouse, call emergency services.',
-      toxicity:
-        'Suspected opioid excess: call emergency services. While waiting, keep airway clear, place on side if unconscious but breathing, and do not give food or drink.',
-      pregnancy:
-        'Pregnancy: both drug classes need obstetric review; do not combine without specialist advice.',
-      pediatric:
-        'Children are not typical Alzheimer-medication users; any use needs a pediatric specialist. Opioids carry high overdose risk in children.',
-    },
-  },
-  {
-    drugs: ['donepezil', 'paracetamol'],
-    severity: 'Minor',
-    description:
-      'No major classic interaction at usual doses; both are commonly used together under medical supervision. Paracetamol is often preferred over NSAIDs with cholinesterase inhibitors.',
-    comment:
-      'Stay within maximum daily paracetamol limits (liver risk). Ask a pharmacist if using combination cold/flu products that also contain paracetamol.',
-    firstAid: {
-      general:
-        'If accidental overdose of paracetamol is suspected (wrong dose or extra tablets), seek urgent medical care even if the person feels well — liver injury can be delayed.',
-      toxicity:
-        'Paracetamol overdose is a medical emergency. Go to the nearest emergency department; bring all medication packaging.',
-      pregnancy: 'Use lowest effective paracetamol dose for shortest time as advised by maternity care.',
-      pediatric: 'Use weight-based pediatric dosing only; never give adult tablets split without pharmacist guidance.',
-    },
-  },
-  {
-    drugs: ['donepezil', 'acetaminophen'],
-    severity: 'Minor',
-    description: 'Same considerations as paracetamol (acetaminophen).',
-    comment: 'Avoid duplicate acetaminophen from combination OTC products.',
-    firstAid: {
-      general: 'Monitor total daily acetaminophen from all sources.',
-      toxicity: 'Suspected overdose — emergency care immediately.',
-      pregnancy: 'Follow obstetric guidance on maximum daily dose.',
-      pediatric: 'Weight-based dosing only.',
-    },
-  },
-  {
     drugs: ['rivastigmine', 'ibuprofen'],
     severity: 'Moderate',
     description:
@@ -259,31 +213,6 @@ const BASE_ENTRIES = [
     },
   },
   {
-    drugs: ['donepezil', 'ketoconazole'],
-    severity: 'Moderate',
-    description: 'Strong CYP3A4 inhibition can increase donepezil exposure.',
-    comment: 'Watch for nausea, bradycardia, or fainting; dose adjustment may be needed.',
-    firstAid: {
-      general: 'Fainting or near-fainting — seek medical care.',
-      toxicity: 'Persistent vomiting with dehydration — urgent assessment.',
-      pregnancy: 'Obstetric and specialist review.',
-      pediatric: 'Specialist use only.',
-    },
-  },
-  {
-    drugs: ['donepezil', 'diphenhydramine'],
-    severity: 'Moderate',
-    description:
-      'Anticholinergic antihistamines can oppose the benefit of cholinesterase inhibitors and worsen confusion, constipation, and fall risk in dementia.',
-    comment: 'Prefer non-sedating options when allergies must be treated; ask a pharmacist for safer alternatives.',
-    firstAid: {
-      general: 'Sudden worsening confusion after a new allergy tablet — contact clinician; ensure hydration and safe mobility.',
-      toxicity: 'Hallucinations, inability to swallow, or fever with agitation — urgent evaluation.',
-      pregnancy: 'Discuss antihistamine choice with prescriber.',
-      pediatric: 'Age-appropriate allergy treatment only.',
-    },
-  },
-  {
     drugs: ['memantine', 'amantadine'],
     severity: 'Moderate',
     description: 'Additive CNS effects possible (dizziness, confusion).',
@@ -293,19 +222,6 @@ const BASE_ENTRIES = [
       toxicity: 'Severe confusion or reduced consciousness — emergency services.',
       pregnancy: 'Specialist review.',
       pediatric: 'Specialist review.',
-    },
-  },
-  {
-    drugs: ['donepezil', 'metoprolol'],
-    severity: 'Moderate',
-    description:
-      'Cholinesterase inhibitors can have vagotonic cardiac effects; beta-blockers may add bradycardia or conduction issues.',
-    comment: 'Monitor pulse; report dizziness or fainting.',
-    firstAid: {
-      general: 'If pulse is very slow or person faints, seek urgent medical care.',
-      toxicity: 'Chest pain with shortness of breath — call emergency services.',
-      pregnancy: 'Cardiology/obstetric coordinated care.',
-      pediatric: 'Pediatric cardiology if applicable.',
     },
   },
 ];

@@ -61,7 +61,7 @@ const Home = ({ onOpenAuth }) => {
                 {t('home.heroDescription')}
               </p>
 
-              <div className="hero-cta-group">
+              <div className="hero-cta-group desktop-only">
                 <Link to="/first-aid" className="btn btn-premium-glow">
                   {t('common.emergencyFirstAid')} {isRTL ? <ChevronRight size={20} style={{ transform: 'rotate(180deg)' }} /> : <ChevronRight size={20} />}
                 </Link>
@@ -131,6 +131,20 @@ const Home = ({ onOpenAuth }) => {
                 <div className="mini-bubble bubble-7"></div>
                 <div className="mini-bubble bubble-8"></div>
               </div>
+            </motion.div>
+
+            <motion.div 
+              className="hero-cta-group mobile-only"
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
+              <Link to="/first-aid" className="btn btn-premium-glow">
+                {t('common.emergencyFirstAid')} {isRTL ? <ChevronRight size={20} style={{ transform: 'rotate(180deg)' }} /> : <ChevronRight size={20} />}
+              </Link>
+              <Link to="/checker" className="btn btn-premium-outline">
+                {t('common.interactionChecker')}
+              </Link>
             </motion.div>
           </div>
         </div>
@@ -423,6 +437,7 @@ const Home = ({ onOpenAuth }) => {
           display: inline-block;
         }
         .hero-cta-group { display: flex; gap: 1.5rem; align-items: center; margin-top: 1rem; }
+        .mobile-only { display: none !important; }
         .hero-description { font-size: clamp(1rem, 2vw, 1.25rem); line-height: 1.7; color: var(--text-muted); max-width: 600px; margin-bottom: 3rem; }
 
         .section-header { margin-bottom: 3rem; }
@@ -454,6 +469,24 @@ const Home = ({ onOpenAuth }) => {
           border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto;
         }
 
+        .hero-wave {
+          position: absolute;
+          bottom: -1px;
+          left: 0;
+          width: 100%;
+          line-height: 0;
+          z-index: 5;
+        }
+        .hero-wave svg {
+          position: relative;
+          display: block;
+          width: calc(100% + 1.3px);
+          height: 100px;
+        }
+        .hero-wave .shape-fill {
+          fill: #ffffff;
+        }
+
         .cta-glass-card {
           background: linear-gradient(135deg, var(--primary), var(--secondary));
           padding: 6rem 3rem;
@@ -473,12 +506,13 @@ const Home = ({ onOpenAuth }) => {
         .btn-outline-white:hover { background: white; color: var(--primary); }
 
         @media (max-width: 1024px) {
+          .desktop-only { display: none !important; }
           .hero-flex-wrapper { 
             display: flex !important;
             flex-direction: column !important; 
             text-align: center; 
-            padding: 100px 0 2rem; 
-            gap: 1.5rem; 
+            padding: 90px 0 2rem; 
+            gap: 0.5rem; 
             height: auto; 
             min-height: 100svh;
             justify-content: flex-start;
@@ -503,31 +537,31 @@ const Home = ({ onOpenAuth }) => {
             justify-content: center; 
             align-items: center;
             flex: 0 0 auto;
-            margin: 1rem 0;
+            margin: 1rem 0; /* Reduced margin */
             padding: 0;
             z-index: 5;
           }
           .hero-circles-container { 
-            height: 300px; 
+            height: 380px; /* Reduced from 420px */
             width: 100%; 
-            max-width: 360px;
+            max-width: 420px;
             margin: 0 auto; 
             position: relative; 
           }
-          .image-circle { position: absolute; box-shadow: 0 15px 45px rgba(0,0,0,0.15); border: 4px solid white; }
-          .image-circle.circle-1 { width: 140px; height: 140px; top: 0; left: 10%; z-index: 3; }
-          .image-circle.circle-2 { width: 120px; height: 120px; bottom: 0; right: 10%; z-index: 2; }
-          .image-circle.circle-3 { width: 100px; height: 100px; top: 35%; right: 5%; z-index: 4; }
-          .image-circle.circle-4 { width: 90px; height: 90px; bottom: 30%; left: 0; z-index: 5; }
+          .image-circle { position: absolute; box-shadow: 0 20px 50px rgba(0,0,0,0.2); border: 5px solid white; }
+          .image-circle.circle-1 { width: 170px; height: 170px; top: 0; left: 5%; z-index: 3; }
+          .image-circle.circle-2 { width: 150px; height: 150px; bottom: 40px; right: 5%; z-index: 2; } /* Raised up from bottom:0 */
+          .image-circle.circle-3 { width: 120px; height: 120px; top: 20%; right: 0; z-index: 4; }
+          .image-circle.circle-4 { width: 100px; height: 100px; bottom: 30%; left: 0; z-index: 5; }
           
           /* RTL scattered positions */
-          [dir="rtl"] .image-circle.circle-1 { left: auto; right: 10%; }
-          [dir="rtl"] .image-circle.circle-2 { right: auto; left: 10%; }
-          [dir="rtl"] .image-circle.circle-3 { right: auto; left: 5%; }
+          [dir="rtl"] .image-circle.circle-1 { left: auto; right: 5%; }
+          [dir="rtl"] .image-circle.circle-2 { right: auto; left: 5%; }
+          [dir="rtl"] .image-circle.circle-3 { right: auto; left: 0; }
           [dir="rtl"] .image-circle.circle-4 { left: auto; right: 0; }
           
           .hero-description { display: none; }
-          .hero-title { font-size: 1.8rem; margin-bottom: 0.5rem; line-height: 1.1; padding: 0 10px; text-align: center; color: #1e3a5f; }
+          .hero-title { font-size: 2.3rem; margin-bottom: 0.5rem; line-height: 1.1; padding: 0 5px; text-align: center; color: #1e3a5f; }
           
           .hero-cta-group.mobile-only { 
             order: 3 !important;
@@ -536,23 +570,27 @@ const Home = ({ onOpenAuth }) => {
             justify-content: center;
             flex-wrap: wrap;
             width: 100%; 
-            gap: 0.75rem; 
-            margin-top: 1rem;
+            gap: 1rem; 
+            margin-top: 1rem; /* Reduced from 2rem to raise buttons */
             padding: 0 1rem;
           }
-          .hero-cta-group > * { flex: 1; min-width: 140px; max-width: 180px; padding: 12px 10px; font-size: 0.85rem; border-radius: 30px; }
-          .hero-wave { display: none; }
+          .hero-cta-group > * { flex: 1; min-width: 150px; max-width: 180px; padding: 14px 10px; font-size: 0.95rem; border-radius: 35px; }
+          .hero-wave { 
+            display: block; 
+            bottom: -1px; 
+            height: 60px;
+          }
+          .hero-wave .shape-fill { fill: #ffffff; }
         }
 
         @media (max-width: 640px) {
-          .hero-flex-wrapper { padding-top: 80px; gap: 1rem; }
-          .hero-circles-container { height: 260px; }
-          .image-circle.circle-1 { width: 120px; height: 120px; }
-          .image-circle.circle-2 { width: 100px; height: 100px; }
-          .image-circle.circle-3 { width: 80px; height: 80px; }
-          .image-circle.circle-4 { width: 70px; height: 70px; }
-          .hero-title { font-size: 1.6rem; }
-          .section-spacing { padding: 2rem 0; }
+          .hero-flex-wrapper { padding-top: 80px; }
+          .hero-circles-container { height: 320px; max-width: 380px; }
+          .image-circle.circle-1 { width: 150px; height: 150px; }
+          .image-circle.circle-2 { width: 130px; height: 130px; bottom: 30px; }
+          .image-circle.circle-3 { width: 100px; height: 100px; }
+          .image-circle.circle-4 { width: 90px; height: 90px; }
+          .hero-title { font-size: 2rem; }
         }
       `}</style>
       </div>
@@ -623,7 +661,7 @@ const App = () => {
 
       {/* Persistent Floating Notification FAB */}
       <div className="floating-notif-wrap">
-        <NotificationBell />
+        <NotificationBell isFAB={true} />
       </div>
 
       <style>{`

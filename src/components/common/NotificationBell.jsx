@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Bell, Check, CheckCheck, Clock, X, Pill } from 'lucide-react';
 import { useNotifications } from '../../context/NotificationContext';
 
-const NotificationBell = () => {
+const NotificationBell = ({ isFAB = false }) => {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
   const nav = useNavigate();
@@ -25,7 +25,7 @@ const NotificationBell = () => {
   const { items, unreadCount, open, setOpen, markRead, markAllRead, markTaken } = n;
 
   return (
-    <div className="notif-bell-wrap" ref={panelRef} dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className={`notif-bell-wrap ${isFAB ? 'is-fab' : ''}`} ref={panelRef} dir={isRTL ? 'rtl' : 'ltr'}>
       <button
         type="button"
         className="notif-bell"
@@ -33,12 +33,12 @@ const NotificationBell = () => {
         aria-label={t('notifications.title')}
         onClick={() => setOpen(!open)}
       >
-        <Bell size={22} strokeWidth={2} />
+        <Bell size={isFAB ? 28 : 22} strokeWidth={2} />
         {unreadCount > 0 && <span className="notif-badge">{unreadCount > 9 ? '9+' : unreadCount}</span>}
       </button>
 
       {open && (
-        <div className="notif-panel glass-card" role="dialog" aria-label={t('notifications.title')}>
+        <div className={`notif-panel glass-card ${isFAB ? 'panel-fab' : ''}`} role="dialog" aria-label={t('notifications.title')}>
           <div className="notif-head">
             <h4>{t('notifications.title')}</h4>
             <div className="notif-head-actions">
@@ -111,51 +111,87 @@ const NotificationBell = () => {
           transition: background 0.2s, color 0.2s, transform 0.15s;
         }
         .notif-bell:hover { background: rgba(10, 37, 64, 0.12); }
+        .is-fab .notif-bell {
+          width: 64px; height: 64px; border-radius: 50%;
+          background: linear-gradient(135deg, #1e3a5f, #3b82f6);
+          color: #fff;
+          box-shadow: 0 10px 30px rgba(30, 58, 95, 0.4);
+          border: 3px solid #fff;
+        }
+        .is-fab .notif-bell:hover { transform: scale(1.05); box-shadow: 0 15px 40px rgba(30, 58, 95, 0.5); }
+        
         .navbar-transparent .notif-bell { background: rgba(255,255,255,0.2); color: #fff; }
         .navbar-transparent .notif-bell:hover { background: rgba(255,255,255,0.3); }
         .navbar-scrolled .notif-bell { background: rgba(10, 37, 64, 0.06); color: #0a2540; }
+        
         .notif-badge {
           position: absolute; top: 4px; right: 4px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px;
-          background: #e11d48; color: #fff; font-size: 0.65rem; font-weight: 800; line-height: 18px; text-align: center;
+          background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 800; line-height: 18px; text-align: center;
+          border: 2px solid #fff;
         }
+        .is-fab .notif-badge { top: 10px; right: 10px; width: 22px; height: 22px; line-height: 22px; font-size: 0.75rem; }
+        
         [dir="rtl"] .notif-badge { right: auto; left: 4px; }
+        [dir="rtl"].is-fab .notif-badge { left: 10px; }
+
         .notif-panel {
-          position: absolute; top: calc(100% + 10px);
+          position: absolute; top: calc(100% + 15px);
           right: 0; width: min(400px, 96vw);
           max-height: min(70vh, 520px);
           display: flex; flex-direction: column; padding: 0;
-          background: #fff; border: 1px solid var(--border, rgba(0,0,0,0.08));
-          box-shadow: 0 20px 50px rgba(10, 37, 64, 0.18);
-          border-radius: 16px; overflow: hidden; z-index: 1002;
+          background: #fff; border: 1px solid rgba(0,0,0,0.08);
+          box-shadow: 0 20px 60px rgba(10, 37, 64, 0.2);
+          border-radius: 24px; overflow: hidden; z-index: 1002;
+          animation: notifPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          transform-origin: top right;
         }
-        [dir="rtl"] .notif-panel { right: auto; left: 0; }
-        .notif-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid var(--border, rgba(0,0,0,0.06)); gap: 8px; }
-        .notif-head h4 { margin: 0; font-size: 1.05rem; font-weight: 800; color: #0a2540; }
-        .notif-head-actions { display: flex; align-items: center; gap: 8px; }
-        .notif-text-btn { display: inline-flex; align-items: center; gap: 4px; border: none; background: none; color: #2563eb; font-size: 0.8rem; font-weight: 700; cursor: pointer; white-space: nowrap; }
-        .notif-text-btn:hover { text-decoration: underline; }
-        .notif-icon-x { border: none; background: none; color: #64748b; cursor: pointer; padding: 4px; border-radius: 8px; }
-        .notif-icon-x:hover { background: #f1f5f9; color: #0f172a; }
-        .notif-list { list-style: none; margin: 0; padding: 8px; overflow-y: auto; flex: 1; min-height: 120px; }
-        .notif-empty { padding: 1.5rem; text-align: center; color: #94a3b8; font-size: 0.9rem; }
-        .notif-item { display: flex; gap: 12px; padding: 12px; border-radius: 12px; margin-bottom: 4px; border: 1px solid transparent; }
+        
+        .panel-fab {
+          top: auto; bottom: calc(100% + 20px);
+          transform-origin: bottom right;
+        }
+        
+        [dir="rtl"] .notif-panel { right: auto; left: 0; transform-origin: top left; }
+        [dir="rtl"] .panel-fab { transform-origin: bottom left; }
+
+        @keyframes notifPop {
+          from { opacity: 0; transform: scale(0.9) translateY(10px); }
+          to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .notif-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; border-bottom: 1px solid rgba(0,0,0,0.06); background: #f8fafc; }
+        .notif-head h4 { margin: 0; font-size: 1.1rem; font-weight: 800; color: #1e293b; }
+        .notif-list { list-style: none; margin: 0; padding: 12px; overflow-y: auto; flex: 1; min-height: 120px; }
+        .notif-item { display: flex; gap: 14px; padding: 16px; border-radius: 16px; margin-bottom: 8px; transition: all 0.2s; border: 1px solid transparent; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
         .notif-item.unread { background: #f0f9ff; border-color: #bae6fd; }
-        .notif-item.done { background: #f0fdf4; border-color: #bbf7d0; opacity: 1; }
-        .notif-item.done .notif-ico { color: #16a34a; }
-        .notif-ico { color: #7c3aed; flex-shrink: 0; margin-top: 2px; }
-        .notif-body { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 0; text-align: start; }
-        .notif-body strong { font-size: 0.9rem; line-height: 1.35; color: #0a2540; }
-        .notif-sub { font-size: 0.75rem; color: #64748b; display: flex; align-items: center; gap: 4px; }
-        .notif-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
-        .notif-pill { display: inline-flex; align-items: center; gap: 4px; padding: 6px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 700; cursor: pointer; border: none; }
-        .notif-pill.mark-read { background: #f1f5f9; color: #475569; }
-        .notif-pill.mark-taken { background: linear-gradient(135deg, #7c3aed, #4f46e5); color: #fff; }
-        .notif-done-lbl { font-size: 0.75rem; color: #16a34a; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; }
-        .notif-footer { padding: 10px 14px; border-top: 1px solid var(--border, rgba(0,0,0,0.06)); text-align: center; }
-        .notif-link-dash { border: none; background: none; color: #2563eb; font-weight: 700; font-size: 0.85rem; cursor: pointer; text-decoration: underline; }
-        @media (max-width: 900px) {
-          .notif-panel { position: fixed; top: 80px; right: 8px; left: 8px; width: auto; max-height: 70vh; }
-          [dir="rtl"] .notif-panel { left: 8px; right: 8px; }
+        .notif-item:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        
+        .notif-ico { width: 40px; height: 40px; border-radius: 12px; background: #f1f5f9; color: #3b82f6; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .unread .notif-ico { background: #fff; }
+        
+        .notif-body strong { font-size: 0.95rem; color: #1e293b; line-height: 1.4; }
+        .notif-sub { font-size: 0.8rem; color: #64748b; margin-top: 4px; }
+        
+        .notif-actions { display: flex; gap: 8px; margin-top: 12px; }
+        .notif-pill { padding: 8px 14px; border-radius: 10px; font-weight: 700; transition: all 0.2s; }
+        .notif-pill.mark-taken { background: #1e3a5f; color: #fff; }
+        .notif-pill.mark-taken:hover { background: #2a528a; transform: translateY(-1px); }
+
+        .notif-footer { padding: 16px; background: #f8fafc; border-top: 1px solid rgba(0,0,0,0.06); }
+        .notif-link-dash { width: 100%; padding: 10px; border-radius: 10px; background: #fff; border: 1px solid #e2e8f0; color: #1e3a5f; transition: all 0.2s; }
+        .notif-link-dash:hover { background: #1e3a5f; color: #fff; }
+
+        @media (max-width: 768px) {
+          .panel-fab {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            left: auto;
+            width: 320px;
+            max-width: calc(100vw - 40px);
+            transform-origin: bottom right;
+          }
+          [dir="rtl"] .panel-fab { right: auto; left: 20px; transform-origin: bottom left; }
         }
       `}</style>
     </div>
