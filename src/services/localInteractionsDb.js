@@ -13,94 +13,156 @@ const createCombinations = (groupA, groupB, interactionData) => {
   return result;
 };
 
-const cholinesteraseInhibitors = ['donepezil', 'rivastigmine', 'galantamine', 'aricept', 'alzepil', 'alzam', 'exelon', 'rivamer', 'reminyl'];
+const cholinesteraseInhibitors = ['donepezil', 'aricept', 'alzepil', 'alzam', 'rivastigmine', 'exelon', 'rivamer', 'galantamine', 'reminyl'];
 const memantineGroup = ['memantine', 'ebixa', 'memixa', 'memental'];
 
-const anticholinergics = ['congestal', '123', 'buscopan', 'tryptizol', 'artane', 'chlorpheniramine', 'hyoscine', 'amitriptyline', 'trihexyphenidyl'];
-const betaBlockers = ['concor', 'bisocard', 'inderal', 'tenormin', 'lanoxin', 'digoxin'];
-const nsaids = ['brufen', 'cataflam', 'voltaren', 'ketofan', 'mobitil', 'ibuprofen'];
-const cyp450 = ['nizoral', 'fungican', 'prozac', 'philozac', 'erythrocin', 'ketoconazole', 'fluconazole', 'fluoxetine', 'erythromycin'];
+// 1. Anticholinergics - Critical (Level 4)
+const anticholinergics = [
+  'diphenhydramine', 'chlorpheniramine', 'clemastine', 'cyproheptadine', 'promethazine', 'ketotifen',
+  'oxybutynin', 'tolterodine', 'solifenacin', 'darifenacin', 'flavoxate', 'trospium',
+  'hyoscine', 'scopolamine', 'dicyclomine', 'atropine', 'mebeverine',
+  'amitriptyline', 'imipramine', 'clomipramine', 'nortriptyline',
+  'olanzapine', 'quetiapine', 'clozapine', 'chlorpromazine',
+  'trihexyphenidyl', 'benztropine',
+  // Egypt Brand Names
+  'allergyl', 'tavegyl', 'tres orix', 'fenistil', 'amydramine', 'sibelium',
+  'detrusitol', 'vesicare', 'urispas', 'spasmlyt', 'genurin',
+  'spasmocure', 'colona', 'duspatalin', 'visceralgin',
+  'tofranil', 'anafranil', 'pamelor', 'zyprexa', 'seroquel', 'parkinol',
+  'congestal', '123', 'buscopan', 'tryptizol', 'artane'
+];
 
-const dextro = ['tusskan', 'codilar', 'bronchopro', 'dextromethorphan'];
-const antacids = ['epicogel', 'maalox', 'gaviscon', 'urosolvine', 'sodium bicarbonate'];
-const otherNmda = ['pk-merz', 'amantadine', 'ketamine'];
+// 2. Bradycardic Agents - Critical (Level 4)
+const bradycardicAgents = [
+  'bisoprolol', 'propranolol', 'atenolol', 'metoprolol', 'carvedilol', 'nebivolol',
+  'digoxin', 'amiodarone', 'diltiazem', 'verapamil',
+  // Egypt Brand Names
+  'concor', 'bisocard', 'lodoz', 'inderal', 'mayocord', 'tenormin', 'blokium', 'betaloc', 'dilatrol', 'nevilob',
+  'lanoxin', 'cardixin', 'cordarone', 'altiazem', 'isoptin'
+];
+
+// 3. NSAIDs & Corticosteroids - Major (Level 3)
+const gastricIrritants = [
+  'ibuprofen', 'diclofenac', 'ketoprofen', 'naproxen', 'meloxicam', 'piroxicam', 'celecoxib', 'etoricoxib', 'aspirin',
+  'prednisolone', 'dexamethasone', 'hydrocortisone',
+  // Egypt Brand Names
+  'brufen', 'voltaren', 'cataflam', 'olfen', 'ketofan', 'naprofen', 'mobic', 'feldene', 'celebrex', 'arcoxia',
+  'hostacortin', 'solu-cortef'
+];
+
+// 4. CYP Inhibitors - Major/Moderate
+const liverInhibitors = [
+  'ketoconazole', 'itraconazole', 'fluconazole', 'voriconazole',
+  'erythromycin', 'clarithromycin', 'ciprofloxacin',
+  'fluoxetine', 'fluvoxamine', 'paroxetine', 'cimetidine',
+  // Egypt Brand Names
+  'nizoral', 'sporanox', 'diflucan', 'vfend', 'erythrocin', 'klacid', 'cipro', 'prozac', 'faverin', 'seroxat', 'tagamet'
+];
+
+// 6. Memantine Exclusives (Level 4/3)
+const nmdaCompetitors = ['dextromethorphan', 'amantadine', 'ketamine', 'methadone', 'tusskan', 'bronchopro', 'pk-merz', 'ketalar', 'codilar'];
+const urineAlkalinizers = ['sodium bicarbonate', 'potassium citrate', 'acetazolamide', 'urosolvine', 'epico-gel', 'urolite u', 'cidamez'];
+
+// 7. Cholinergic Agonists (Level 2)
+const cholinergicAgonists = ['pyridostigmine', 'neostigmine', 'pilocarpine', 'bethanechol', 'mestinon', 'prostigmin', 'salagen', 'urecholine'];
 
 const ADDITIONAL_ENTRIES = [
+  // 1. Anticholinergics
   ...createCombinations(cholinesteraseInhibitors, anticholinergics, {
-    severity: 'High',
-    description: 'Anticholinergics (Strictly Contraindicated): These drugs block acetylcholine, entirely neutralizing the Alzheimer\'s medication and causing severe confusion, urinary retention, and delirium.',
-    comment: 'Strictly contraindicated. Avoid combining.',
+    severity: 'Critical (Level 4)',
+    description: 'Mechanism: Anticholinergics block acetylcholine receptors in the brain, completely neutralizing the clinical effect of Alzheimer\'s medication.',
+    genderSpecifics: 'Females: Elderly women often use drugs for urinary incontinence (e.g., Vesicare). This interaction leads to painful urinary retention, potential sepsis, and acute delirium.',
+    comment: 'CRITICAL: Strictly contraindicated. These drugs actively erase the benefit of memory treatment.',
     firstAid: {
-      general: 'If accidental ingestion occurs, do NOT induce vomiting. Do NOT give food or milk. Call Ain Shams Poison Control (+202 24823314) or 123/137.',
-      toxicity: 'Cholinergic Crisis: Severe nausea, vomiting, excessive salivation, sweating, pinpoint pupils, dangerously slow heartbeat, muscle weakness/seizures. Antidote: Atropine (IV).',
-      pregnancy: 'Strictly prohibited during pregnancy. Can cause fetal neurological development alteration and severe uterine contractions.',
-      pediatric: 'Strictly prohibited. Introduces severe neurodevelopment disruption, seizures, cardiac arrest, and long-term damage.'
+      general: 'Stop the anticholinergic drug immediately. Cool the body if feverish.',
+      toxicity: 'RED FLAGS: Acute delirium (sudden inability to recognize family), extreme dry mouth/eyes (unable to swallow), total urinary retention > 8 hours, and high fever without sweating.',
+      emergencyProtocol: 'Hospitalization required for urinary catheterization, IV fluids, and potential Physostigmine antidote.',
+      pregnancy: 'N/A',
+      pediatric: 'N/A'
     }
   }),
-  ...createCombinations(cholinesteraseInhibitors, betaBlockers, {
-    severity: 'High',
-    description: 'Beta-Blockers & Heart Medications: Combining these can lead to synergistic bradycardia (dangerously slow heart rate), leading to fainting (syncope) or heart block.',
-    comment: 'Monitor pulse and seek urgent medical attention for fainting or severe dizziness.',
+  // 2. Bradycardic Agents
+  ...createCombinations(cholinesteraseInhibitors, bradycardicAgents, {
+    severity: 'Critical (Level 4)',
+    description: 'Mechanism: Synergistic Heart Rate Suppression. Alzheimer\'s meds stimulate the Vagus Nerve; combining with heart drugs leads to Heart Block.',
+    genderSpecifics: 'Females: Significantly higher risk of syncope-related falls leading to hip fractures (70% higher than males due to osteoporosis).',
+    comment: 'CRITICAL: Risk of sudden cardiac arrest or syncope. Monitor pulse daily.',
     firstAid: {
-      general: 'If accidental ingestion occurs, do NOT induce vomiting. Do NOT give food or milk. Call Ain Shams Poison Control (+202 24823314) or 123/137.',
-      toxicity: 'Cholinergic Crisis: Severe nausea, vomiting, excessive salivation, sweating, pinpoint pupils, dangerously slow heartbeat, muscle weakness/seizures. Antidote: Atropine (IV).',
-      pregnancy: 'Strictly prohibited during pregnancy. Can cause fetal neurological development alteration and severe uterine contractions.',
-      pediatric: 'Strictly prohibited. Introduces severe neurodevelopment disruption, seizures, cardiac arrest, and long-term damage.'
+      general: 'Lay patient flat and elevate legs to maintain cerebral blood flow. Do not give food/drink if unconscious.',
+      toxicity: 'RED FLAGS: Heart rate < 50 BPM, cold limbs, cold sweat, and full loss of consciousness (syncope).',
+      emergencyProtocol: 'Emergency ER visit for ECG and standard IV Atropine injection to restore heart rate.',
+      pregnancy: 'N/A',
+      pediatric: 'N/A'
     }
   }),
-  ...createCombinations(cholinesteraseInhibitors, nsaids, {
-    severity: 'High',
-    description: 'NSAIDs: Alzheimer’s drugs increase gastric acid secretion. Taking them with NSAIDs exponentially increases the risk of severe stomach ulcers and gastrointestinal bleeding.',
-    comment: 'Use alternative pain relievers with physician advice.',
+  // 3. NSAIDs & Corticosteroids
+  ...createCombinations(cholinesteraseInhibitors, gastricIrritants, {
+    severity: 'Major (Level 3)',
+    description: 'Mechanism: Gastric Mucosal Depletion. AD drugs increase stomach acid while these irritants block the protective mucus layer.',
+    genderSpecifics: 'Males: Elderly males who smoke or consume alcohol are at the highest risk for "silent" gastrointestinal bleeding.',
+    comment: 'WARNING: Extremely high risk of GI bleed. Preferred alternative: Paracetamol.',
     firstAid: {
-      general: 'If accidental ingestion occurs, do NOT induce vomiting. Do NOT give food or milk. Call Ain Shams Poison Control (+202 24823314) or 123/137.',
-      toxicity: 'Cholinergic Crisis: Severe nausea, vomiting, excessive salivation, sweating, pinpoint pupils, dangerously slow heartbeat, muscle weakness/seizures. Antidote: Atropine (IV).',
-      pregnancy: 'Strictly prohibited during pregnancy. Can cause fetal neurological development alteration and severe uterine contractions.',
-      pediatric: 'Strictly prohibited. Introduces severe neurodevelopment disruption, seizures, cardiac arrest, and long-term damage.'
+      general: 'Stop the irritant immediately.',
+      toxicity: 'RED FLAGS: "Coffee-ground" vomit (digested blood), tarry black stool (Melena), and sharp anemia/hypotension.',
+      emergencyProtocol: 'ER required for potential blood transfusion and IV Proton Pump Inhibitors (PPIs) to halt bleeding.',
+      pregnancy: 'N/A',
+      pediatric: 'N/A'
     }
   }),
-  ...createCombinations(cholinesteraseInhibitors, cyp450, {
-    severity: 'High',
-    description: 'CYP450 Enzyme Inhibitors: These inhibit liver enzymes, preventing the clearance of Alzheimer’s drugs from the blood, leading to severe toxicity (extreme nausea, vomiting, seizures).',
-    comment: 'Requires close monitoring. May need dose adjustments.',
+  // 4. CYP Inhibitors
+  ...createCombinations(cholinesteraseInhibitors, liverInhibitors, {
+    severity: 'Major/Moderate (Level 3/2)',
+    description: 'Mechanism: Liver Filtration Blockage. These drugs prevent the liver from clearing AD meds, causing toxic accumulation.',
+    genderSpecifics: 'Elderly: Highly susceptible to fluid shifts caused by massive glandular secretions.',
+    comment: 'WARNING: Risk of "Cholinergic Crisis". Immediate dose review required.',
     firstAid: {
-      general: 'If accidental ingestion occurs, do NOT induce vomiting. Do NOT give food or milk. Call Ain Shams Poison Control (+202 24823314) or 123/137.',
-      toxicity: 'Cholinergic Crisis: Severe nausea, vomiting, excessive salivation, sweating, pinpoint pupils, dangerously slow heartbeat, muscle weakness/seizures. Antidote: Atropine (IV).',
-      pregnancy: 'Strictly prohibited during pregnancy. Can cause fetal neurological development alteration and severe uterine contractions.',
-      pediatric: 'Strictly prohibited. Introduces severe neurodevelopment disruption, seizures, cardiac arrest, and long-term damage.'
+      general: 'Transfer to ICU immediately.',
+      toxicity: 'SLUDGE Syndrome: Excessive salivation, tearing, involuntary urination, watery diarrhea, respiratory secretions, and muscle twitches.',
+      emergencyProtocol: 'Standard ICU care with Atropine antidote and potential gastric lavage.',
+      pregnancy: 'N/A',
+      pediatric: 'N/A'
     }
   }),
-  ...createCombinations(memantineGroup, dextro, {
-    severity: 'High',
-    description: 'Cough Suppressants (Dextromethorphan): Taking Memantine with Dextromethorphan can cause severe neurological reactions, including hallucinations, extreme agitation, and psychotic episodes.',
-    comment: 'Avoid this combination.',
+  // 6. Memantine Specific - NMDA Competitors
+  ...createCombinations(memantineGroup, nmdaCompetitors, {
+    severity: 'Critical (Level 4)',
+    description: 'Mechanism: NMDA Receptor Competition. Shared receptor targets lead to central nervous system toxicity.',
+    genderSpecifics: 'Elderly: High risk of aggression, psychosis, and vivid hallucinations.',
+    comment: 'CRITICAL: Avoid dextromethorphan (cough syrup) and amantadine.',
     firstAid: {
-      general: 'If accidental ingestion occurs, do NOT induce vomiting. Do NOT give food or milk. Call Ain Shams Poison Control (+202 24823314) or 123/137.',
-      toxicity: 'Severe neurological reactions, extreme agitation. Head to ER immediately with medication evidence.',
-      pregnancy: 'Strictly prohibited during pregnancy. Can cause fetal neurological development alteration and severe uterine contractions.',
-      pediatric: 'Strictly prohibited. Introduces severe neurodevelopment disruption, seizures, cardiac arrest, and long-term damage.'
+      general: 'Discontinue and monitor for behavioral changes.',
+      toxicity: 'RED FLAGS: Psychosis, aggression, vivid hallucinations, and neurological agitation.',
+      emergencyProtocol: 'Hospital sedation (Benzodiazepines) typically required.',
+      pregnancy: 'N/A',
+      pediatric: 'N/A'
     }
   }),
-  ...createCombinations(memantineGroup, antacids, {
-    severity: 'High',
-    description: 'Alkalinizing Agents (Antacids & UTI meds): Drugs that make the urine more alkaline (reduce acidity) prevent the kidneys from clearing Memantine, causing it to build up to toxic levels in the blood.',
-    comment: 'Use caution with antacids and alkalinizing agents.',
+  // 6. Memantine Specific - Alkalinizers
+  ...createCombinations(memantineGroup, urineAlkalinizers, {
+    severity: 'Major (Level 3)',
+    description: 'Mechanism: Urinary Excretion Blockage. Alkaline urine forces Memantine back into the bloodstream.',
+    genderSpecifics: 'Dehydrated Seniors: High risk of neurotoxicity.',
+    comment: 'WARNING: Avoid antacids like sodium bicarbonate when taking Memantine.',
     firstAid: {
-      general: 'If accidental ingestion occurs, do NOT induce vomiting. Do NOT give food or milk. Call Ain Shams Poison Control (+202 24823314) or 123/137.',
-      toxicity: 'Severe toxicity build up in the blood. Head to ER immediately with medication evidence.',
-      pregnancy: 'Strictly prohibited during pregnancy. Can cause fetal neurological development alteration and severe uterine contractions.',
-      pediatric: 'Strictly prohibited. Introduces severe neurodevelopment disruption, seizures, cardiac arrest, and long-term damage.'
+      general: 'Stop the alkalinizing agent and increase hydration.',
+      toxicity: 'SYMPTOMS: Severe confusion, neurotoxicity, and slowed cognitive processing.',
+      emergencyProtocol: 'Clinical evaluation required if confusion persists.',
+      pregnancy: 'N/A',
+      pediatric: 'N/A'
     }
   }),
-  ...createCombinations(memantineGroup, otherNmda, {
-    severity: 'High',
-    description: 'Other NMDA Antagonists: Combining Memantine with Amantadine (used for Parkinson\'s) or Ketamine (anesthetic) can cause severe neurotoxicity.',
-    comment: 'Avoid combining with other NMDA antagonists.',
+  // 7. Cholinergic Agonists
+  ...createCombinations(cholinesteraseInhibitors, cholinergicAgonists, {
+    severity: 'Moderate (Level 2)',
+    description: 'Mechanism: Additive Cholinergic Effect. Both drugs increase acetylcholine, leading to a mild overdose.',
+    genderSpecifics: 'N/A',
+    comment: 'CAUTION: Monitor for excessive GI distress.',
     firstAid: {
-      general: 'If accidental ingestion occurs, do NOT induce vomiting. Do NOT give food or milk. Call Ain Shams Poison Control (+202 24823314) or 123/137.',
-      toxicity: 'Severe neurotoxicity. Head to ER immediately with medication evidence.',
-      pregnancy: 'Strictly prohibited during pregnancy. Can cause fetal neurological development alteration and severe uterine contractions.',
-      pediatric: 'Strictly prohibited. Introduces severe neurodevelopment disruption, seizures, cardiac arrest, and long-term damage.'
+      general: 'Dose adjustment required for both drugs.',
+      toxicity: 'SYMPTOMS: Persistent nausea, severe cramps, and excessive sweating.',
+      emergencyProtocol: 'Clinical review.',
+      pregnancy: 'N/A',
+      pediatric: 'N/A'
     }
   }),
 ];

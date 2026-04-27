@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import Navbar from './components/common/Navbar';
 import AuthWindow from './components/auth/AuthWindow';
+import { useAuth } from './context/AuthContext';
 import InteractionChecker from './components/checker/InteractionChecker';
 import UserProfile from './components/profile/UserProfile';
 import About from './components/about/About';
@@ -16,6 +17,7 @@ import homeImg1 from '../images/home_img.jpg';
 import homeImg2 from '../images/home_img2.webp';
 import homeImg3 from '../images/home_img3.jpg';
 import homeImg4 from '../images/home_img4.jpg';
+import NotificationBell from './components/common/NotificationBell';
 
 const Home = ({ onOpenAuth }) => {
   const { t, i18n } = useTranslation();
@@ -472,51 +474,85 @@ const Home = ({ onOpenAuth }) => {
 
         @media (max-width: 1024px) {
           .hero-flex-wrapper { 
-            flex-direction: column-reverse; 
+            display: flex !important;
+            flex-direction: column !important; 
             text-align: center; 
-            padding-top: 2rem; 
-            padding-bottom: 4rem; 
-            gap: 2rem; 
+            padding: 100px 0 2rem; 
+            gap: 1.5rem; 
             height: auto; 
-            min-height: 100vh; 
+            min-height: 100svh;
+            justify-content: flex-start;
+            align-items: center;
           }
           .hero-text-side { 
+            order: 1 !important;
             text-align: center !important; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
             max-width: 100%; 
-            margin-inline-start: 0;
+            margin: 0;
+            padding: 0 1rem;
+            flex: 0 0 auto;
+            z-index: 10;
           }
-          .hero-image-side { width: 100%; justify-content: center; }
-          .hero-circles-container { height: 400px; max-width: 400px; margin: 0 auto; }
-          .image-circle.circle-1 { width: 200px; height: 200px; }
-          .image-circle.circle-2 { width: 160px; height: 160px; }
-          .image-circle.circle-3 { width: 140px; height: 140px; top: 120px; right: 220px; }
-          .image-circle.circle-4 { width: 110px; height: 110px; top: 10px; right: 240px; }
-          [dir="rtl"] .image-circle.circle-3 { right: auto; left: 220px; }
-          [dir="rtl"] .image-circle.circle-4 { right: auto; left: 240px; }
+          .hero-image-side { 
+            order: 2 !important;
+            width: 100%; 
+            display: flex;
+            justify-content: center; 
+            align-items: center;
+            flex: 0 0 auto;
+            margin: 1rem 0;
+            padding: 0;
+            z-index: 5;
+          }
+          .hero-circles-container { 
+            height: 300px; 
+            width: 100%; 
+            max-width: 360px;
+            margin: 0 auto; 
+            position: relative; 
+          }
+          .image-circle { position: absolute; box-shadow: 0 15px 45px rgba(0,0,0,0.15); border: 4px solid white; }
+          .image-circle.circle-1 { width: 140px; height: 140px; top: 0; left: 10%; z-index: 3; }
+          .image-circle.circle-2 { width: 120px; height: 120px; bottom: 0; right: 10%; z-index: 2; }
+          .image-circle.circle-3 { width: 100px; height: 100px; top: 35%; right: 5%; z-index: 4; }
+          .image-circle.circle-4 { width: 90px; height: 90px; bottom: 30%; left: 0; z-index: 5; }
+          
+          /* RTL scattered positions */
+          [dir="rtl"] .image-circle.circle-1 { left: auto; right: 10%; }
+          [dir="rtl"] .image-circle.circle-2 { right: auto; left: 10%; }
+          [dir="rtl"] .image-circle.circle-3 { right: auto; left: 5%; }
+          [dir="rtl"] .image-circle.circle-4 { left: auto; right: 0; }
           
           .hero-description { display: none; }
-          .hero-title { font-size: 2.5rem; margin-bottom: 1.5rem; }
+          .hero-title { font-size: 1.8rem; margin-bottom: 0.5rem; line-height: 1.1; padding: 0 10px; text-align: center; color: #1e3a5f; }
           
-          .hero-cta-group { flex-direction: column; width: 100%; gap: 1rem; }
-          .hero-cta-group > * { width: 100%; max-width: 300px; padding: 12px 24px; font-size: 0.95rem; }
+          .hero-cta-group.mobile-only { 
+            order: 3 !important;
+            display: flex !important;
+            flex-direction: row !important; 
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 100%; 
+            gap: 0.75rem; 
+            margin-top: 1rem;
+            padding: 0 1rem;
+          }
+          .hero-cta-group > * { flex: 1; min-width: 140px; max-width: 180px; padding: 12px 10px; font-size: 0.85rem; border-radius: 30px; }
+          .hero-wave { display: none; }
         }
 
         @media (max-width: 640px) {
-          .hero-circles-container { height: 320px; max-width: 320px; }
-          .image-circle.circle-1 { width: 160px; height: 160px; }
-          .image-circle.circle-2 { width: 130px; height: 130px; }
-          .image-circle.circle-3 { width: 110px; height: 110px; top: 110px; right: 180px; }
-          .image-circle.circle-4 { width: 90px; height: 90px; top: 10px; right: 200px; }
-          [dir="rtl"] .image-circle.circle-3 { right: auto; left: 180px; }
-          [dir="rtl"] .image-circle.circle-4 { right: auto; left: 200px; }
-          .hero-title { font-size: 2.2rem; }
-          .hero-badge-pill { font-size: 0.7rem; padding: 6px 16px; }
-          .section-spacing { padding: 4rem 0; }
-          .services-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-          .values-grid-home { grid-template-columns: 1fr; }
+          .hero-flex-wrapper { padding-top: 80px; gap: 1rem; }
+          .hero-circles-container { height: 260px; }
+          .image-circle.circle-1 { width: 120px; height: 120px; }
+          .image-circle.circle-2 { width: 100px; height: 100px; }
+          .image-circle.circle-3 { width: 80px; height: 80px; }
+          .image-circle.circle-4 { width: 70px; height: 70px; }
+          .hero-title { font-size: 1.6rem; }
+          .section-spacing { padding: 2rem 0; }
         }
       `}</style>
       </div>
@@ -527,6 +563,7 @@ const App = () => {
   const [showAuth, setShowAuth] = useState(false);
   const [isAppLoading, setIsAppLoading] = useState(true);
   const { t, i18n } = useTranslation();
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     document.documentElement.lang = i18n.language;
@@ -583,6 +620,42 @@ const App = () => {
           <p className="disclaimer">{t('footer.disclaimer')}</p>
         </div>
       </footer>
+
+      {/* Persistent Floating Notification FAB */}
+      <div className="floating-notif-wrap">
+        <NotificationBell />
+      </div>
+
+      <style>{`
+        .floating-notif-wrap {
+          position: fixed;
+          bottom: 30px;
+          right: 30px;
+          z-index: 9999999;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        [dir="rtl"] .floating-notif-wrap {
+          right: auto;
+          left: 30px;
+        }
+        .floating-notif-wrap .notif-bell {
+          width: 64px;
+          height: 64px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, #3b82f6, #1e3a5f);
+          color: white;
+          box-shadow: 0 12px 40px rgba(30, 58, 95, 0.6);
+          border: 4px solid white;
+          cursor: pointer;
+        }
+        @media (max-width: 900px) {
+          .floating-notif-wrap { bottom: 20px; right: 20px; z-index: 9999999; }
+          .floating-notif-wrap .notif-bell { width: 56px; height: 56px; }
+          [dir="rtl"] .floating-notif-wrap { right: auto; left: 20px; }
+        }
+      `}</style>
 
       <style>{`
         html, body, #root { width: 100%; margin: 0; padding: 0; overflow-x: hidden; }

@@ -22,7 +22,8 @@ const mergeInteractionsPriority = (apiList, localList) => {
     const loc = map.get(k);
     map.set(k, {
       ...r,
-      firstAid: loc?.firstAid || r.firstAid,
+      firstAid: loc?.firstAid ? { ...r.firstAid, ...loc.firstAid } : r.firstAid,
+      genderSpecifics: loc?.genderSpecifics || r.genderSpecifics,
       description: r.description || loc?.description,
       recommendation: r.recommendation || loc?.recommendation,
       severity: r.severity || loc?.severity,

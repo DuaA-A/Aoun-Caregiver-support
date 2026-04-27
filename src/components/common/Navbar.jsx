@@ -121,10 +121,10 @@ const Navbar = ({ onOpenAuth }) => {
             />
             <motion.div 
               className="mobile-menu-overlay"
-              initial={{ y: '-110%' }}
-              animate={{ y: 0 }}
-              exit={{ y: '-110%' }}
-              transition={{ type: 'spring', damping: 28, stiffness: 180 }}
+              initial={{ x: isRTL ? '-110%' : '110%' }}
+              animate={{ x: 0 }}
+              exit={{ x: isRTL ? '-110%' : '110%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 150 }}
               dir={isRTL ? 'rtl' : 'ltr'}
             >
             <div className="mobile-menu-header">
@@ -410,45 +410,31 @@ const Navbar = ({ onOpenAuth }) => {
           
           .mobile-menu-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            max-width: 100vw;
-            bottom: auto;
-            background: white;
+            top: 20px;
+            right: 20px;
+            width: 280px;
+            height: fit-content;
+            max-height: calc(100vh - 40px);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(15px);
             z-index: 2000;
             display: flex;
             flex-direction: column;
-            padding: 2rem 2rem 5rem 2rem;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.15);
+            border-radius: 24px;
+            border: 1px solid rgba(0,0,0,0.05);
+            overflow-y: auto;
           }
-          [dir="rtl"] .mobile-menu-overlay { left: 0; right: 0; }
+          [dir="rtl"] .mobile-menu-overlay { right: auto; left: 20px; box-shadow: 10px 0 30px rgba(0,0,0,0.15); }
 
-          .mobile-menu-wave {
-            position: absolute;
-            bottom: -60px;
-            left: 0;
-            width: 100%;
-            height: 60px;
-            overflow: hidden;
-            line-height: 0;
-            transform: rotate(180deg);
-          }
-          .mobile-menu-wave svg {
-            position: relative;
-            display: block;
-            width: calc(100% + 1.3px);
-            height: 60px;
-          }
-          .mobile-menu-wave .shape-fill {
-            fill: white;
-          }
+          .mobile-menu-wave { display: none; }
 
           .mobile-menu-backdrop {
             position: fixed;
             inset: 0;
-            background: rgba(10, 37, 64, 0.45);
-            backdrop-filter: blur(14px);
+            background: rgba(10, 37, 64, 0.2);
+            backdrop-filter: blur(8px);
             z-index: 1999;
           }
 
@@ -456,52 +442,66 @@ const Navbar = ({ onOpenAuth }) => {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 3rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
           }
+          .mobile-menu-header .nav-logo .logo-main { font-size: 1.5rem; }
 
           .mobile-close {
-            background: none;
+            background: rgba(0,0,0,0.05);
             border: none;
             color: var(--text-main);
             cursor: pointer;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
           }
+          .mobile-close svg { width: 20px; height: 20px; }
 
           .mobile-links-container {
             display: flex;
             flex-direction: column;
-            gap: 2.5rem;
+            gap: 1.5rem;
             flex: 1;
           }
 
           .mobile-nav-group {
             display: flex;
             flex-direction: column;
-            gap: 1.25rem;
+            gap: 0.75rem;
           }
 
           .group-label {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 0.1em;
             color: var(--text-muted);
             font-weight: 800;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
           }
 
           .mobile-nav-group a {
-            font-size: 1.25rem;
+            font-size: 1rem;
             font-weight: 700;
             color: var(--text-main);
             text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 10px;
+            transition: background 0.2s;
           }
+          .mobile-nav-group a:hover { background: rgba(0,0,0,0.05); }
 
           .mobile-nav-footer {
-            margin-top: auto;
-            padding-top: 2rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
             border-top: 1px solid var(--border);
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 1rem;
           }
 
           .mobile-lang-pill {
@@ -510,29 +510,31 @@ const Navbar = ({ onOpenAuth }) => {
             gap: 10px;
             background: #f1f5f9;
             border: none;
-            padding: 12px 24px;
-            border-radius: 30px;
+            padding: 10px 18px;
+            border-radius: 12px;
             font-weight: 700;
             color: var(--text-main);
-            width: fit-content;
+            width: 100%;
+            font-size: 0.9rem;
           }
 
           .mobile-user-actions {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 0.75rem;
           }
 
           .mobile-dashboard-btn {
             background: var(--primary);
             color: white !important;
-            padding: 14px;
+            padding: 12px;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
             font-weight: 800;
+            font-size: 0.95rem;
           }
 
           .mobile-logout-link {
@@ -542,13 +544,16 @@ const Navbar = ({ onOpenAuth }) => {
             font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 1rem;
-            padding: 10px 0;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            padding: 8px;
             cursor: pointer;
+            border: 1px solid #fee2e2;
+            border-radius: 10px;
           }
           
-          .btn-block { width: 100%; }
+          .btn-block { width: 100%; padding: 12px; font-size: 0.95rem; }
 
 
       `}</style>

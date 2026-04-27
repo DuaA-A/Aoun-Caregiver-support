@@ -182,7 +182,8 @@ const InteractionChecker = ({ onOpenAuth }) => {
 
   const renderFirstAid = (inter) => {
     const fa = inter.firstAid;
-    if (!fa) {
+    const gs = inter.genderSpecifics;
+    if (!fa && !gs) {
       return (
         <div className="first-aid-box">
           <h5><Stethoscope size={16} /> {t('checker.firstAidTitle')}</h5>
@@ -191,12 +192,48 @@ const InteractionChecker = ({ onOpenAuth }) => {
       );
     }
     return (
-      <div className="first-aid-box">
-        <h5><Stethoscope size={16} /> {t('checker.firstAidTitle')}</h5>
-        <p><strong>{t('checker.faGeneral')}</strong> {fa.general}</p>
-        <p><strong>{t('checker.faToxicity')}</strong> {fa.toxicity}</p>
-        <p><strong><HeartPulse size={14} style={{ verticalAlign: 'middle' }} /> {t('checker.faPregnancy')}</strong> {fa.pregnancy}</p>
-        <p><strong><Baby size={14} style={{ verticalAlign: 'middle' }} /> {t('checker.faPediatric')}</strong> {fa.pediatric}</p>
+      <div className="first-aid-box mt-4">
+        <h5 className="text-red-700 font-bold mb-3 flex items-center gap-2">
+          <Shield size={18} /> {t('checker.firstAidTitle')}
+        </h5>
+        <div className="space-y-3">
+          {gs && (
+            <div className="fa-row">
+              <span className="fa-tag gender">{t('checker.faGender')}</span>
+              <p className="fa-val font-bold text-purple-700">{gs}</p>
+            </div>
+          )}
+          {fa?.general && (
+            <div className="fa-row">
+              <span className="fa-tag">{t('checker.faGeneral')}</span>
+              <p className="fa-val">{fa.general}</p>
+            </div>
+          )}
+          {fa?.toxicity && (
+            <div className="fa-row">
+              <span className="fa-tag toxic">{t('checker.faToxicity')}</span>
+              <p className="fa-val text-red-600 font-black">{fa.toxicity}</p>
+            </div>
+          )}
+          {fa?.emergencyProtocol && (
+            <div className="fa-row emergency-highlight">
+              <span className="fa-tag emergency">{t('checker.faEmergency')}</span>
+              <p className="fa-val font-black text-red-900 uppercase">{fa.emergencyProtocol}</p>
+            </div>
+          )}
+          {fa?.pregnancy && (
+            <div className="fa-row">
+              <span className="fa-tag">{t('checker.faPregnancy')}</span>
+              <p className="fa-val">{fa.pregnancy}</p>
+            </div>
+          )}
+          {fa?.pediatric && (
+            <div className="fa-row">
+              <span className="fa-tag">{t('checker.faPediatric')}</span>
+              <p className="fa-val">{fa.pediatric}</p>
+            </div>
+          )}
+        </div>
       </div>
     );
   };
@@ -315,6 +352,11 @@ const InteractionChecker = ({ onOpenAuth }) => {
                 </div>
               ) : reportData.checked ? (
                 <div className="interactions-container animate-fade-in">
+                  <div className="critical-medical-disclaimer glass-card mb-6">
+                    <AlertTriangle size={24} className="text-red-600" />
+                    <p className="font-bold text-red-800">{t('checker.criticalDisclaimer')}</p>
+                  </div>
+
                   {reportData.meta && (
                     <div className="source-banner glass-card">
                       {reportData.meta.rxnavUsed ? (
@@ -593,6 +635,19 @@ const InteractionChecker = ({ onOpenAuth }) => {
         .source-note { font-size: 0.8rem; color: #d97706; border-top: 1px solid #fde68a; padding-top: 0.5rem; margin-top: 0.5rem; font-style: italic; text-align: inherit; }
 
         .disclaimer-box { background: #eff6ff; border: 1px solid #bfdbfe; padding: 1.25rem; border-radius: 12px; color: #1e40af; font-size: 0.9rem; line-height: 1.6; text-align: inherit; }
+
+        .critical-medical-disclaimer { display: flex; gap: 1rem; align-items: center; padding: 1.25rem; background: #fff1f2; border: 2px solid #fecaca; border-radius: 16px; }
+        .critical-medical-disclaimer p { margin: 0; font-size: 0.95rem; line-height: 1.5; }
+
+        .fa-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; text-align: inherit; }
+        .fa-tag { font-size: 0.65rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.05em; color: #64748b; }
+        .fa-tag.gender { color: #7c3aed; }
+        .fa-tag.toxic { color: #dc2626; }
+        .fa-tag.emergency { color: #991b1b; }
+        .fa-val { margin: 0; font-size: 0.9rem; line-height: 1.45; text-align: inherit; }
+        .emergency-highlight { background: #fef2f2; padding: 12px; border-radius: 8px; border: 1px dashed #ef4444; }
+        
+        .space-y-3 > * + * { margin-top: 0.75rem; }
 
         .padding-large { padding: 3rem; }
         .auth-prompt { text-align: center; max-width: 400px; margin: 0 auto; }
