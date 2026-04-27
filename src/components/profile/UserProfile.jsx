@@ -14,7 +14,7 @@ import BehaviorLog from '../dashboard/BehaviorLog';
 import DrugSchedulePanel from '../dashboard/DrugSchedulePanel';
 import { useNavigate } from 'react-router-dom';
 
-const UserProfile = () => {
+const UserProfile = ({ onOpenAuth }) => {
   const { currentUser, logout } = useAuth();
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
@@ -49,11 +49,20 @@ const UserProfile = () => {
 
   if (!currentUser) {
     return (
-      <div className="container section-padding text-center" dir={isRTL ? 'rtl' : 'ltr'}>
-        <Shield size={64} className="icon-muted mb-4" />
-        <h1>{t('dashboard.secureTitle')}</h1>
-        <p>{t('dashboard.secureDesc')}</p>
-        <button onClick={() => navigate('/')} className="btn btn-primary mt-4">{t('dashboard.returnHome')}</button>
+      <div className="profile-unauth-screen" dir={isRTL ? 'rtl' : 'ltr'}>
+        <div className="unauth-glass-card glass-card animate-fade-in">
+          <div className="unauth-icon-box"><Shield size={48} /></div>
+          <h1 className="unauth-title">{t('dashboard.secureTitle')}</h1>
+          <p className="unauth-desc">{t('dashboard.secureDesc')}</p>
+          <div className="unauth-actions">
+            <button onClick={onOpenAuth} className="btn btn-premium">
+              <User size={18} /> {t('auth.signIn')}
+            </button>
+            <button onClick={() => navigate('/')} className="btn btn-secondary">
+              {t('dashboard.returnHome')}
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
@@ -89,7 +98,7 @@ const UserProfile = () => {
               <span className="stat-val">{medCount}</span>
               <span className="stat-lab">{t('dashboard.drugsArchive')}</span>
             </div>
-            {isPreviewMode && <div className="preview-pill">Preview Mode</div></div>
+            {isPreviewMode && <div className="preview-pill">Preview Mode</div>}
           </div>
         </header>
 
@@ -138,45 +147,69 @@ const UserProfile = () => {
       </div>
 
       <style>{`
-        .profile-page { background: #f8fafc; min-height: 100vh; padding-top: 100px; padding-bottom: 80px; }
+        .profile-page { background: #f8fafc; min-height: 100vh; padding-top: 120px; padding-bottom: 80px; }
+        
+        .profile-unauth-screen {
+          min-height: 100vh; display: flex; align-items: center; justify-content: center;
+          background: var(--bg-gradient); padding: 2rem;
+          padding-top: 100px; /* Safe offset for fixed navbar */
+        }
+        .unauth-glass-card {
+          max-width: 550px; width: 90%; padding: 4rem 2.5rem; text-align: center;
+          background: rgba(255, 255, 255, 0.85);
+          border: 1px solid rgba(255, 255, 255, 0.4);
+          overflow: hidden;
+        }
+        .unauth-icon-box {
+          width: 80px; height: 80px; border-radius: 50%; background: #eff6ff; color: #3b82f6;
+          display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem;
+        }
+        .unauth-title { font-size: 2.2rem; font-weight: 900; color: #1e3a5f; margin-bottom: 1rem; line-height: 1.2; }
+        .unauth-desc { font-size: 1.1rem; color: #64748b; line-height: 1.6; margin-bottom: 2rem; padding: 0 1rem; }
+        .unauth-actions { display: flex; flex-direction: column; gap: 1rem; align-items: stretch; }
+        .unauth-actions .btn { width: 100%; }
+        .rotate-180 { transform: rotate(180deg); }
         
         .profile-header-new {
           display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
-          padding: 2.5rem; border-radius: 30px; gap: 2rem;
-          background: linear-gradient(135deg, #ffffff, #f0f7ff);
-          box-shadow: 0 10px 40px rgba(0,0,0,0.03);
-          border: 1px solid rgba(255,255,255,0.8);
+          padding: 3rem; border-radius: 32px; gap: 2rem;
+          background: rgba(255, 255, 255, 0.8);
+          backdrop-filter: blur(20px);
+          box-shadow: 0 20px 60px rgba(30, 58, 95, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.5);
         }
-        .profile-hero-info { display: flex; align-items: center; gap: 1.5rem; }
+        .profile-hero-info { display: flex; align-items: center; gap: 2rem; }
         .profile-avatar-large {
-          width: 90px; height: 90px; border-radius: 24px;
+          width: 100px; height: 100px; border-radius: 28px;
           background: linear-gradient(135deg, #3b82f6, #1e3a5f);
-          color: white; font-size: 2.5rem; font-weight: 900;
+          color: white; font-size: 2.8rem; font-weight: 900;
           display: flex; align-items: center; justify-content: center;
           box-shadow: 0 15px 35px rgba(30, 58, 95, 0.2);
+          border: 4px solid white;
         }
         .profile-text-group { display: flex; flex-direction: column; }
-        .profile-kicker { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: #3b82f6; font-weight: 800; margin-bottom: 4px; }
-        .profile-name { font-size: 2.2rem; font-weight: 900; color: #1e293b; margin: 0; line-height: 1.1; }
-        .profile-email { font-size: 0.95rem; color: #64748b; margin-top: 4px; }
+        .profile-kicker { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; color: #3b82f6; font-weight: 800; margin-bottom: 6px; opacity: 0.8; }
+        .profile-name { font-size: 2.5rem; font-weight: 900; color: #1e293b; margin: 0; line-height: 1; letter-spacing: -0.02em; }
+        .profile-email { font-size: 1rem; color: #64748b; margin-top: 8px; font-weight: 500; }
         
-        .profile-header-stats { display: flex; gap: 1.5rem; align-items: center; }
-        .stat-item { text-align: center; background: white; padding: 12px 24px; border-radius: 18px; border: 1px solid rgba(0,0,0,0.05); min-width: 120px; }
-        .stat-val { display: block; font-size: 1.8rem; font-weight: 900; color: #1e3a5f; }
-        .stat-lab { font-size: 0.7rem; text-transform: uppercase; color: #64748b; font-weight: 700; }
-        .preview-pill { background: #fff7ed; color: #c2410c; padding: 6px 14px; border-radius: 12px; font-weight: 800; font-size: 0.75rem; border: 1px solid #ffedd5; }
+        .profile-header-stats { display: flex; gap: 1rem; align-items: center; }
+        .stat-item { text-align: center; background: white; padding: 15px 30px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
+        .stat-val { display: block; font-size: 2rem; font-weight: 900; color: #1e3a5f; line-height: 1; margin-bottom: 4px; }
+        .stat-lab { font-size: 0.75rem; text-transform: uppercase; color: #94a3b8; font-weight: 700; letter-spacing: 0.05em; }
+        .preview-pill { background: #eff6ff; color: #3b82f6; padding: 8px 16px; border-radius: 12px; font-weight: 800; font-size: 0.8rem; border: 1px solid #dbeafe; }
 
         .profile-main-grid { display: grid; grid-template-columns: 320px 1fr; gap: 2rem; }
         
-        .card-head { padding: 1.25rem 1.5rem; border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .card-head h3 { margin: 0; font-size: 1rem; font-weight: 800; color: #1e293b; display: flex; align-items: center; gap: 10px; }
+        .info-card { border-radius: 24px; overflow: hidden; background: white; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
+        .card-head { padding: 1.5rem; border-bottom: 1px solid #f1f5f9; background: #f8fafc; }
+        .card-head h3 { margin: 0; font-size: 1.1rem; font-weight: 800; color: #1e293b; display: flex; align-items: center; gap: 12px; }
         
         .card-body { padding: 1.5rem; }
-        .p-detail { margin-bottom: 1.25rem; }
+        .p-detail { margin-bottom: 1.5rem; }
         .p-detail:last-child { margin-bottom: 0; }
-        .p-label { display: block; font-size: 0.7rem; text-transform: uppercase; color: #94a3b8; font-weight: 800; letter-spacing: 0.05em; margin-bottom: 4px; }
-        .p-value { font-size: 1rem; font-weight: 700; color: #334155; }
-        .stage-tag { color: #3b82f6; text-transform: capitalize; }
+        .p-label { display: block; font-size: 0.75rem; text-transform: uppercase; color: #94a3b8; font-weight: 800; letter-spacing: 0.08em; margin-bottom: 6px; }
+        .p-value { font-size: 1.1rem; font-weight: 700; color: #334155; }
+        .stage-tag { color: #3b82f6; text-transform: capitalize; padding: 4px 10px; background: #eff6ff; border-radius: 8px; font-size: 0.9rem; }
         
         .logout-btn-premium {
           width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;

@@ -125,14 +125,16 @@ const NotificationBell = ({ isFAB = false }) => {
         .navbar-scrolled .notif-bell { background: rgba(10, 37, 64, 0.06); color: #0a2540; }
         
         .notif-badge {
-          position: absolute; top: 4px; right: 4px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px;
+          position: absolute; top: -5px; right: -5px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px;
           background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 800; line-height: 18px; text-align: center;
           border: 2px solid #fff;
+          z-index: 10;
         }
-        .is-fab .notif-badge { top: 10px; right: 10px; width: 22px; height: 22px; line-height: 22px; font-size: 0.75rem; }
+        .is-fab .notif-badge { top: 0px; right: 0px; width: 22px; height: 22px; line-height: 22px; font-size: 0.75rem; }
         
-        [dir="rtl"] .notif-badge { right: auto; left: 4px; }
-        [dir="rtl"].is-fab .notif-badge { left: 10px; }
+        [dir="rtl"] .notif-badge { right: auto; left: -5px; }
+        /* Keep badge on right for FAB even in RTL */
+        [dir="rtl"].is-fab .notif-badge { left: auto; right: 0px; }
 
         .notif-panel {
           position: absolute; top: calc(100% + 15px);
@@ -152,7 +154,8 @@ const NotificationBell = ({ isFAB = false }) => {
         }
         
         [dir="rtl"] .notif-panel { right: auto; left: 0; transform-origin: top left; }
-        [dir="rtl"] .panel-fab { transform-origin: bottom left; }
+        /* Keep panel anchored to right for FAB even in RTL */
+        [dir="rtl"] .panel-fab { right: 0; left: auto; transform-origin: bottom right; }
 
         @keyframes notifPop {
           from { opacity: 0; transform: scale(0.9) translateY(10px); }
@@ -191,7 +194,7 @@ const NotificationBell = ({ isFAB = false }) => {
             max-width: calc(100vw - 40px);
             transform-origin: bottom right;
           }
-          [dir="rtl"] .panel-fab { right: auto; left: 20px; transform-origin: bottom left; }
+          [dir="rtl"] .panel-fab { right: 0; left: auto; transform-origin: bottom right; }
         }
       `}</style>
     </div>

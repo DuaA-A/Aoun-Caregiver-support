@@ -307,7 +307,7 @@ const Home = ({ onOpenAuth }) => {
         .home-container { display: flex; flex-direction: column; gap: 0rem; padding-bottom: 0rem; position: relative; }
         
         .full-screen-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: clamp(4rem, 10vh, 8rem) 0 2rem 0; box-sizing: border-box; position: relative; }
-        .bg-unified { background: linear-gradient(135deg, #f8fafc 0%, rgba(157, 141, 241, 0.15) 100%); }
+        .bg-unified { background: linear-gradient(180deg, #f8fafc 0%, #edf2f7 100%); }
         .bg-glass-blur { background: rgba(255, 255, 255, 0.3); backdrop-filter: blur(20px); }
         .text-vibrant-gradient { 
           background: linear-gradient(135deg, #1e3a5f 0%, #3b82f6 50%, #60a5fa 100%);
@@ -647,7 +647,7 @@ const App = () => {
           <Route path="/myths-facts" element={<MythsFacts />} />
           <Route path="/special-warnings" element={<SpecialWarnings />} />
           <Route path="/checker" element={<InteractionChecker onOpenAuth={() => setShowAuth(true)} />} />
-          <Route path="/profile" element={<UserProfile />} />
+          <Route path="/profile" element={<UserProfile onOpenAuth={() => setShowAuth(true)} />} />
           <Route path="/about" element={<About />} />
         </Routes>
       </main>
@@ -674,10 +674,7 @@ const App = () => {
           align-items: center;
           justify-content: center;
         }
-        [dir="rtl"] .floating-notif-wrap {
-          right: auto;
-          left: 30px;
-        }
+        /* Notification icon stays on right even in RTL per user request */
         .floating-notif-wrap .notif-bell {
           width: 64px;
           height: 64px;
@@ -691,17 +688,16 @@ const App = () => {
         @media (max-width: 900px) {
           .floating-notif-wrap { bottom: 20px; right: 20px; z-index: 9999999; }
           .floating-notif-wrap .notif-bell { width: 56px; height: 56px; }
-          [dir="rtl"] .floating-notif-wrap { right: auto; left: 20px; }
         }
       `}</style>
 
       <style>{`
         html, body, #root { width: 100%; margin: 0; padding: 0; overflow-x: hidden; }
-        .app-container { min-height: 100vh; display: flex; flex-direction: column; position: relative; width: 100%; overflow-x: hidden; }
+        .app-container { min-height: 100vh; display: flex; flex-direction: column; position: relative; width: 100%; overflow-x: hidden; background-color: #f8fafc; }
         .main-content { flex: 1; padding-top: 60px; width: 100%; position: relative; z-index: 1; margin-bottom: 0; }
         .dark-footer { 
-          margin-top: 100px; 
-          padding: 3rem 2rem; 
+          margin-top: 0; 
+          padding: 6rem 2rem 3rem; 
           text-align: center; 
           background-color: #1c3a4f; 
           color: white; 
