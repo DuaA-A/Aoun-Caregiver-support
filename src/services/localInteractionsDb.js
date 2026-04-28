@@ -46,22 +46,59 @@ const gastricIrritants = [
   'ibuprofen', 'diclofenac', 'ketoprofen', 'naproxen', 'meloxicam', 'piroxicam', 'celecoxib', 'etoricoxib', 'aspirin',
   'prednisolone', 'dexamethasone', 'hydrocortisone',
   // Egypt Brand Names
-  'brufen', 'voltaren', 'cataflam', 'olfen', 'ketofan', 'naprofen', 'mobic', 'feldene', 'celebrex', 'arcoxia',
+  'brufen', 'marcofen', 'voltaren', 'cataflam', 'olfen', 'declophen',
+  'ketofan', 'ketolgin', 'naprofen', 'aleve',
+  'mobic', 'anti-cox', 'feldene', 'celebrex', 'eurox', 'arcoxia',
+  'aspirin protect', 'jusprin',
   'hostacortin', 'solu-cortef'
 ];
 
 // 4. CYP Inhibitors - Major/Moderate
 const liverInhibitors = [
   'ketoconazole', 'itraconazole', 'fluconazole', 'voriconazole',
-  'erythromycin', 'clarithromycin', 'ciprofloxacin',
-  'fluoxetine', 'fluvoxamine', 'paroxetine', 'cimetidine',
+  'erythromycin', 'clarithromycin', 'ciprofloxacin', 'levofloxacin',
+  'fluoxetine', 'fluvoxamine', 'paroxetine', 'cimetidine', 'omeprazole',
   // Egypt Brand Names
-  'nizoral', 'sporanox', 'diflucan', 'vfend', 'erythrocin', 'klacid', 'cipro', 'prozac', 'faverin', 'seroxat', 'tagamet'
+  'nizoral', 'sporanox', 'itrapex', 'diflucan', 'treflucan', 'fungican', 'vfend',
+  'erythrocin', 'klacid', 'klarimac', 'cipro', 'ciprocin', 'tavanic',
+  'prozac', 'philozac', 'faverin', 'seroxat', 'paxil', 'tagamet',
+  'losec', 'gastizole'
 ];
+
+// 4b. CYP Inducers - reduce AD drug levels (Major)
+const liverInducers = [
+  'rifampicin', 'carbamazepine', 'phenytoin', 'phenobarbital', 'valproic acid', "st. john's wort",
+  // Egypt Brand Names
+  'rimactane', 'tegretol', 'epanutin', 'sominal', 'depakine', 'convulex', 'safra'
+];
+
+// 4c. Carbapenem antibiotics (CNS toxicity risk)
+const carbapenems = [
+  'meropenem', 'imipenem', 'ertapenem',
+  'meronem', 'tienam'
+];
+
+// 5. Warfarin & Anticoagulants
+const warfarinGroup = ['warfarin', 'marevan'];
+
+// 5b. Statins (CYP3A4 substrate — toxicity risk with inhibitors)
+const statins = ['atorvastatin', 'lipitor', 'ator'];
+
+// 5c. Metoclopramide (dopamine antagonist — worsens cognition)
+const dopamineAntagonists = ['metoclopramide', 'primperan'];
+
+// 5d. Tramadol (serotonin + seizure risk)
+const tramadolGroup = ['tramadol', 'tramal', 'amadol'];
+
+// 5e. Bupropion (lowers seizure threshold)
+const bupropionGroup = ['bupropion', 'wellbutrin'];
+
+// 5f. Allopurinol (amplifes some AD drug effects)
+const allopurinolGroup = ['allopurinol', 'zyloric', 'no-uric'];
 
 // 6. Memantine Exclusives (Level 4/3)
 const nmdaCompetitors = ['dextromethorphan', 'amantadine', 'ketamine', 'methadone', 'tusskan', 'bronchopro', 'pk-merz', 'ketalar', 'codilar'];
-const urineAlkalinizers = ['sodium bicarbonate', 'potassium citrate', 'acetazolamide', 'urosolvine', 'epico-gel', 'urolite u', 'cidamez'];
+const urineAlkalinizers = ['sodium bicarbonate', 'potassium citrate', 'acetazolamide', 'urosolvine', 'epico-gel', 'epicogel', 'urolite u', 'cidamez'];
 
 // 7. Cholinergic Agonists (Level 2)
 const cholinergicAgonists = ['pyridostigmine', 'neostigmine', 'pilocarpine', 'bethanechol', 'mestinon', 'prostigmin', 'salagen', 'urecholine'];
@@ -161,6 +198,126 @@ const ADDITIONAL_ENTRIES = [
       general: 'Dose adjustment required for both drugs.',
       toxicity: 'SYMPTOMS: Persistent nausea, severe cramps, and excessive sweating.',
       emergencyProtocol: 'Clinical review.',
+      pregnancy: 'N/A',
+      pediatric: 'N/A'
+    }
+  }),
+
+  // 8. CYP Inducers — reduce AD drug plasma levels
+  ...createCombinations(cholinesteraseInhibitors, liverInducers, {
+    severity: 'Major (Level 3)',
+    description: 'Mechanism: CYP Enzyme Induction. These drugs accelerate liver metabolism of AD medications, drastically reducing their blood levels and clinical effectiveness.',
+    genderSpecifics: 'Elderly: Reduced drug efficacy may appear as sudden cognitive decline, mistaken for disease progression.',
+    comment: 'WARNING: AD medication dose may need significant increase. Regular clinical monitoring required.',
+    firstAid: {
+      general: 'Do not stop the inducer abruptly — sudden discontinuation will cause AD drug toxicity as levels spike.',
+      toxicity: 'SIGNS OF INEFFICACY: Sudden worsening memory, confusion, agitation — not an emergency but requires urgent prescriber review.',
+      emergencyProtocol: 'Clinical review and plasma drug level monitoring.',
+      pregnancy: 'N/A',
+      pediatric: 'N/A'
+    }
+  }),
+
+  // 8b. CYP Inducers + Memantine
+  ...createCombinations(memantineGroup, liverInducers, {
+    severity: 'Moderate (Level 2)',
+    description: 'Mechanism: CYP inducers may increase renal clearance of Memantine, reducing its therapeutic effect.',
+    genderSpecifics: 'N/A',
+    comment: 'CAUTION: Monitor for reduced Memantine effectiveness. Dose adjustment may be needed.',
+    firstAid: {
+      general: 'Report sudden worsening of symptoms to prescriber.',
+      toxicity: 'No direct toxicity — risk is loss of efficacy.',
+      emergencyProtocol: 'Clinical review.',
+      pregnancy: 'N/A',
+      pediatric: 'N/A'
+    }
+  }),
+
+  // 9. Carbapenems + AD drugs (CNS toxicity / valproate interaction)
+  ...createCombinations(cholinesteraseInhibitors, carbapenems, {
+    severity: 'Moderate (Level 2)',
+    description: 'Mechanism: Carbapenems can cause CNS excitability and seizures, compounding neurological burden in Alzheimer\'s patients.',
+    genderSpecifics: 'Elderly: Higher seizure susceptibility due to reduced seizure threshold.',
+    comment: 'CAUTION: Monitor neurological status closely during carbapenem therapy.',
+    firstAid: {
+      general: 'Watch for new-onset seizures, tremors, or sudden confusion during IV antibiotic treatment.',
+      toxicity: 'RED FLAGS: Seizures, myoclonus, severe agitation — emergency services required.',
+      emergencyProtocol: 'ER evaluation and EEG if seizures occur.',
+      pregnancy: 'N/A',
+      pediatric: 'N/A'
+    }
+  }),
+
+  // 10. Warfarin + NSAIDs
+  ...createCombinations(warfarinGroup, gastricIrritants, {
+    severity: 'Critical (Level 4)',
+    description: 'Mechanism: NSAIDs inhibit platelet function AND displace warfarin from protein binding, dramatically increasing bleeding risk.',
+    genderSpecifics: 'Elderly females: Higher risk of intracranial bleeding due to combined anticoagulation.',
+    comment: 'CRITICAL: Never combine warfarin with NSAIDs without strict INR monitoring. Prefer paracetamol.',
+    firstAid: {
+      general: 'Any bleeding (gums, nose, bruising, blood in urine/stool) requires urgent INR check.',
+      toxicity: 'RED FLAGS: Severe headache (intracranial bleed), black tarry stool, coughing blood — emergency services immediately.',
+      emergencyProtocol: 'ER required — Vitamin K and/or FFP reversal therapy.',
+      pregnancy: 'N/A',
+      pediatric: 'N/A'
+    }
+  }),
+
+  // 10b. Warfarin + CYP Inhibitors
+  ...createCombinations(warfarinGroup, liverInhibitors, {
+    severity: 'Critical (Level 4)',
+    description: 'Mechanism: CYP2C9 inhibition by these drugs blocks warfarin metabolism, causing dangerous INR elevation and spontaneous bleeding.',
+    genderSpecifics: 'Elderly: Any INR > 4 in an elderly patient is a medical emergency.',
+    comment: 'CRITICAL: Mandatory INR check within 3 days of starting any new drug alongside warfarin.',
+    firstAid: {
+      general: 'Unexpected bruising or bleeding — check INR same day.',
+      toxicity: 'RED FLAGS: Spontaneous bleeding from any site — emergency services.',
+      emergencyProtocol: 'ER: Vitamin K IV and/or FFP.',
+      pregnancy: 'N/A',
+      pediatric: 'N/A'
+    }
+  }),
+
+  // 11. Metoclopramide + AD drugs (dopamine antagonism worsens cognition)
+  ...createCombinations(cholinesteraseInhibitors, dopamineAntagonists, {
+    severity: 'Moderate (Level 2)',
+    description: 'Mechanism: Metoclopramide crosses the blood-brain barrier and blocks dopamine receptors, worsening cognitive symptoms and increasing Parkinsonism risk in Alzheimer\'s patients.',
+    genderSpecifics: 'Elderly females: Higher risk of tardive dyskinesia with prolonged use.',
+    comment: 'CAUTION: Avoid long-term use. Prefer domperidone (does not cross BBB) for nausea in AD patients.',
+    firstAid: {
+      general: 'Watch for new rigidity, shuffling gait, or facial grimacing.',
+      toxicity: 'Prolonged use can cause irreversible movement disorders (tardive dyskinesia).',
+      emergencyProtocol: 'Discontinue and refer to neurologist.',
+      pregnancy: 'N/A',
+      pediatric: 'N/A'
+    }
+  }),
+
+  // 12. Tramadol + AD drugs (serotonin syndrome + seizure risk)
+  ...createCombinations(cholinesteraseInhibitors, tramadolGroup, {
+    severity: 'Major (Level 3)',
+    description: 'Mechanism: Tramadol lowers seizure threshold and has serotonergic activity. Cholinesterase inhibitors further increase CNS excitability.',
+    genderSpecifics: 'Elderly: Significantly reduced tramadol clearance increases toxicity risk.',
+    comment: 'WARNING: Use lowest effective tramadol dose for shortest duration. Monitor for seizures and confusion.',
+    firstAid: {
+      general: 'Agitation, muscle twitching, sweating, or rapid heart rate — stop tramadol and seek urgent care.',
+      toxicity: 'RED FLAGS: Seizures, high fever, severe muscle rigidity — emergency services (Serotonin Syndrome protocol).',
+      emergencyProtocol: 'ER: Benzodiazepines for seizures, Cyproheptadine for serotonin syndrome.',
+      pregnancy: 'N/A',
+      pediatric: 'N/A'
+    }
+  }),
+
+  // 13. Bupropion + AD drugs (lowers seizure threshold)
+  ...createCombinations(cholinesteraseInhibitors, bupropionGroup, {
+    severity: 'Major (Level 3)',
+    description: 'Mechanism: Bupropion lowers the seizure threshold dose-dependently. Combined with cholinergic stimulation from AD drugs, the risk of seizures is significantly elevated.',
+    genderSpecifics: 'Elderly: Pre-existing cortical atrophy in Alzheimer\'s increases seizure vulnerability.',
+    comment: 'WARNING: Avoid in patients with prior seizures. Use minimum effective bupropion dose.',
+    firstAid: {
+      general: 'New twitching, jerking, or loss of consciousness — emergency services immediately.',
+      toxicity: 'RED FLAGS: Tonic-clonic seizure — do not restrain, protect head, call emergency services.',
+      emergencyProtocol: 'ER: IV Lorazepam or Diazepam for seizure management.',
       pregnancy: 'N/A',
       pediatric: 'N/A'
     }
