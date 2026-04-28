@@ -19,10 +19,35 @@ export const AuthProvider = ({ children }) => {
 
   const signup = async (email, password, displayName, patientName, adStage, emergencyContact) => {
     if (isPreviewMode) {
-      // Mock signup for preview purposes
-      const mockUser = { email, displayName, patientName, adStage, emergencyContact, uid: 'preview-id-' + Date.now() };
-      setCurrentUser(mockUser);
-      return { user: mockUser };
+      // Use local storage to simulate a database for preview mode
+      const dbUsers = JSON.parse(localStorage.getItem('aoun_preview_users') || '[]');
+      if (dbUsers.some(u => u.email === email)) {
+        throw new Error('Firebase: Error (auth/email-already-in-use).');
+      }
+
+      const mockUser = { email, password, displayName, patientName, adStage, emergencyContact, uid: 'preview-id-' + Date.now() };
+      dbUsers.push(mockUser);
+      localStorage.setItem('aoun_preview_users', JSON.stringify(dbUsers));
+      
+      const sessionUser = { ...mockUser };
+      delete sessionUser.password;
+      setCurrentUser(sessionUser);
+      
+      try {
+        await fetch('/api/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            to: email,
+            type: 'signup',
+            data: { displayName, patientName }
+          })
+        });
+      } catch (err) {
+        console.error('Failed to send signup email', err);
+      }
+
+      return { user: sessionUser };
     }
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     await updateProfile(userCredential.user, { displayName });
@@ -40,15 +65,51 @@ export const AuthProvider = ({ children }) => {
     const userDoc = await getDoc(doc(db, 'users', userCredential.user.uid));
     setCurrentUser({ ...userCredential.user, ...userDoc.data() });
 
+    try {
+      await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: email,
+          type: 'signup',
+          data: { displayName, patientName }
+        })
+      });
+    } catch (err) {
+      console.error('Failed to send signup email', err);
+    }
+
     return userCredential;
   };
 
   const login = async (email, password) => {
     if (isPreviewMode) {
-      // Mock login for preview
-      const mockUser = { email, displayName: email.split('@')[0], patientName: 'John Doe', adStage: 'mild', uid: 'preview-id' };
-      setCurrentUser(mockUser);
-      return { user: mockUser };
+      const dbUsers = JSON.parse(localStorage.getItem('aoun_preview_users') || '[]');
+      const user = dbUsers.find(u => u.email === email && u.password === password);
+      
+      if (!user) {
+        throw new Error('Firebase: Error (auth/invalid-credential).');
+      }
+
+      const sessionUser = { ...user };
+      delete sessionUser.password;
+      setCurrentUser(sessionUser);
+      
+      try {
+        await fetch('/api/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            to: email,
+            type: 'login',
+            data: {}
+          })
+        });
+      } catch (err) {
+        console.error('Failed to send login email', err);
+      }
+
+      return { user: sessionUser };
     }
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const userDoc = await getDoc(doc(db, 'users', userCredential.user.uid));
@@ -57,6 +118,21 @@ export const AuthProvider = ({ children }) => {
     } else {
       setCurrentUser(userCredential.user);
     }
+
+    try {
+      await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: email,
+          type: 'login',
+          data: {}
+        })
+      });
+    } catch (err) {
+      console.error('Failed to send login email', err);
+    }
+
     return userCredential;
   };
 

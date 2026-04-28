@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
 import { db, isPreviewMode } from '../../firebase/config';
 import { getRxCUI } from '../../services/rxnav';
 import {
@@ -168,43 +168,46 @@ const DrugSchedulePanel = ({ currentUser, t }) => {
     [currentUser]
   );
 
-  const refresh = useCallback(async () => {
-    setLoading(true);
-    try {
-      if (isPreviewMode || !db || !currentUser) {
-        const d = loadLocal();
-        setSchedule(d.schedule || []);
-        setAdherence(d.adherence || []);
-      } else {
-        const snap = await getDoc(doc(db, 'user_drug_schedule', currentUser.uid));
-        if (snap.exists()) {
-          const d = snap.data();
+  useEffect(() => {
+    let unsub = () => {};
+    const load = async () => {
+      setLoading(true);
+      try {
+        if (isPreviewMode || !db || !currentUser) {
+          const d = loadLocal();
           setSchedule(d.schedule || []);
           setAdherence(d.adherence || []);
+          setLoading(false);
         } else {
-          setSchedule([]);
-          setAdherence([]);
+          unsub = onSnapshot(doc(db, 'user_drug_schedule', currentUser.uid), (snap) => {
+            if (snap.exists()) {
+              const d = snap.data();
+              setSchedule(d.schedule || []);
+              setAdherence(d.adherence || []);
+            } else {
+              setSchedule([]);
+              setAdherence([]);
+            }
+            setLoading(false);
+          });
         }
+      } catch (e) {
+        console.error(e);
+        setSchedule([]);
+        setAdherence([]);
+        setLoading(false);
       }
-    } catch (e) {
-      console.error(e);
-      setSchedule([]);
-      setAdherence([]);
-    } finally {
-      setLoading(false);
-    }
-  }, [currentUser]);
-
-  useEffect(() => {
-    refresh();
-  }, [refresh, currentUser?.uid]);
+    };
+    load();
+    return () => unsub();
+  }, [currentUser?.uid]);
 
   useEffect(() => {
     const id = setInterval(() => setTick((x) => x + 1), 1000);
     return () => clearInterval(id);
   }, []);
 
-  const next = useMemo(() => computeNextDose(schedule, adherence), [schedule, adherence]);
+  const next = useMemo(() => computeNextDose(schedule, adherence), [schedule, adherence, tick]);
 
   useEffect(() => {
     if (notifyOn) notifyIfDue(next, schedule, notifiedRef);

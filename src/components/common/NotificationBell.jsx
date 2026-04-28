@@ -72,14 +72,14 @@ const NotificationBell = ({ isFAB = false }) => {
                       <button
                         type="button"
                         className="notif-pill mark-read"
-                        onClick={() => markRead(i.id)}
+                        onClick={(e) => { e.stopPropagation(); markRead(i.id); }}
                       >
                         {t('notifications.markRead')}
                       </button>
                       <button
                         type="button"
                         className="notif-pill mark-taken"
-                        onClick={() => markTaken(i)}
+                        onClick={(e) => { e.stopPropagation(); markTaken(i); }}
                       >
                         <Check size={16} />
                         {t('notifications.markTaken')}
@@ -168,18 +168,23 @@ const NotificationBell = ({ isFAB = false }) => {
         .notif-list { list-style: none; margin: 0; padding: 12px; overflow-y: auto; flex: 1; min-height: 120px; }
         .notif-item { display: flex; gap: 14px; padding: 16px; border-radius: 16px; margin-bottom: 8px; transition: all 0.2s; border: 1px solid transparent; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
         .notif-item.unread { background: #f0f9ff; border-color: #bae6fd; }
+        .notif-item.done { background: #f8fafc; border-color: #e2e8f0; opacity: 0.8; }
         .notif-item:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         
         .notif-ico { width: 40px; height: 40px; border-radius: 12px; background: #f1f5f9; color: #3b82f6; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .unread .notif-ico { background: #fff; }
+        .done .notif-ico { background: #e2e8f0; color: #94a3b8; }
         
-        .notif-body strong { font-size: 0.95rem; color: #1e293b; line-height: 1.4; }
+        .notif-body strong { font-size: 0.95rem; color: #1e293b; line-height: 1.4; transition: color 0.2s; }
+        .done .notif-body strong { color: #64748b; text-decoration: line-through; }
         .notif-sub { font-size: 0.8rem; color: #64748b; margin-top: 4px; }
         
         .notif-actions { display: flex; gap: 8px; margin-top: 12px; }
         .notif-pill { padding: 8px 14px; border-radius: 10px; font-weight: 700; transition: all 0.2s; }
         .notif-pill.mark-taken { background: #1e3a5f; color: #fff; }
         .notif-pill.mark-taken:hover { background: #2a528a; transform: translateY(-1px); }
+        
+        .notif-done-lbl { display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 700; color: #16a34a; margin-top: 8px; }
 
         .notif-footer { padding: 16px; background: #f8fafc; border-top: 1px solid rgba(0,0,0,0.06); }
         .notif-link-dash { width: 100%; padding: 10px; border-radius: 10px; background: #fff; border: 1px solid #e2e8f0; color: #1e3a5f; transition: all 0.2s; }

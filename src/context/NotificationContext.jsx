@@ -115,8 +115,9 @@ export const NotificationProvider = ({ children }) => {
     });
 
     // Browser Notification Logic
+    const newDues = merged.filter(it => it.type === 'dose_due' && !it.read && !it.taken && !byId.has(it.id));
+    
     if (Notification.permission === 'granted') {
-      const newDues = merged.filter(it => it.type === 'dose_due' && !it.read && !it.taken && !byId.has(it.id));
       for (const d of newDues) {
         try {
           const n = new Notification('Aoun Medication Reminder', {
@@ -129,6 +130,25 @@ export const NotificationProvider = ({ children }) => {
             window.location.hash = '#/profile';
           };
         } catch (e) { console.error(e); }
+      }
+    }
+
+    // Email Notification Logic
+    for (const d of newDues) {
+      if (currentUser?.email) {
+        try {
+          await fetch('/api/send-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              to: currentUser.email,
+              type: 'drug_reminder',
+              data: { drugName: d.drugName, time: d.time }
+            })
+          });
+        } catch (e) {
+          console.error('Failed to send email reminder', e);
+        }
       }
     }
 
