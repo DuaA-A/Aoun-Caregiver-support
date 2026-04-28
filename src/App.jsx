@@ -10,6 +10,7 @@ import UserProfile from './components/profile/UserProfile';
 import About from './components/about/About';
 import FirstAid from './components/education/FirstAid';
 import AboutAlzheimer from './components/education/AboutAlzheimer';
+import MentalExercises from './components/education/MentalExercises';
 import MythsFacts from './components/education/MythsFacts';
 import SpecialWarnings from './components/education/SpecialWarnings';
 import { Shield, Activity, Pill, User, ChevronRight, Heart, ClipboardList, ArrowRight, ShieldCheck, FileText, X, Info, Users } from 'lucide-react';
@@ -654,6 +655,7 @@ const App = () => {
           <Route path="/" element={<Home onOpenAuth={() => setShowAuth(true)} />} />
           <Route path="/first-aid" element={<FirstAid />} />
           <Route path="/about-alzheimer" element={<AboutAlzheimer />} />
+          <Route path="/mental-exercises" element={<MentalExercises />} />
           <Route path="/myths-facts" element={<MythsFacts />} />
           <Route path="/special-warnings" element={<SpecialWarnings />} />
           <Route path="/checker" element={<InteractionChecker onOpenAuth={() => setShowAuth(true)} />} />

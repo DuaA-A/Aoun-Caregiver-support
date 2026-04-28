@@ -58,6 +58,7 @@ const Navbar = ({ onOpenAuth }) => {
             </span>
             <div className={`nav-dropdown-content animate-fade-in glass-card ${isRTL ? 'dropdown-rtl' : ''}`}>
               <Link to="/about-alzheimer" className="dropdown-item">{t('common.aboutAlzheimer')}</Link>
+              <Link to="/mental-exercises" className="dropdown-item">{t('common.mentalExercises')}</Link>
               <Link to="/first-aid" className="dropdown-item">{t('common.emergencyFirstAid')}</Link>
               <Link to="/myths-facts" className="dropdown-item">{t('common.mythsFacts')}</Link>
               <Link to="/special-warnings" className="dropdown-item">{t('common.specialWarnings')}</Link>
@@ -148,6 +149,7 @@ const Navbar = ({ onOpenAuth }) => {
               <div className="mobile-nav-group">
                 <span className="group-label">{t('common.education')}</span>
                 <Link to="/about-alzheimer" onClick={() => setIsOpen(false)}>{t('common.aboutAlzheimer')}</Link>
+                <Link to="/mental-exercises" onClick={() => setIsOpen(false)}>{t('common.mentalExercises')}</Link>
                 <Link to="/first-aid" onClick={() => setIsOpen(false)}>{t('common.emergencyFirstAid')}</Link>
                 <Link to="/myths-facts" onClick={() => setIsOpen(false)}>{t('common.mythsFacts')}</Link>
                 <Link to="/special-warnings" onClick={() => setIsOpen(false)}>{t('common.specialWarnings')}</Link>

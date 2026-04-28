@@ -156,7 +156,7 @@ const AuthWindow = ({ onClose }) => {
         .auth-modal {
           width: 600px;
           max-width: 95%;
-          padding: 3rem 2.5rem;
+          padding: 2rem;
           position: relative;
           background: white;
           max-height: 90vh;
@@ -176,17 +176,17 @@ const AuthWindow = ({ onClose }) => {
         
         .auth-header {
           text-align: center;
-          margin-bottom: 2.5rem;
+          margin-bottom: 1.5rem;
         }
         .auth-logo {
-          width: 60px;
-          height: 60px;
+          width: 50px;
+          height: 50px;
           background: #f4f1ff;
-          border-radius: 18px;
+          border-radius: 16px;
           display: flex;
           align-items: center;
           justify-content: center;
-          margin: 0 auto 1.5rem;
+          margin: 0 auto 1rem;
           color: var(--primary);
         }
         .auth-header h2 {
@@ -200,12 +200,12 @@ const AuthWindow = ({ onClose }) => {
         .auth-form {
           display: flex;
           flex-direction: column;
-          gap: 1rem;
+          gap: 0.8rem;
         }
         .signup-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 1rem;
+          gap: 0.8rem;
         }
         @media (max-width: 640px) {
           .signup-grid {
@@ -240,7 +240,7 @@ const AuthWindow = ({ onClose }) => {
           text-align: center;
         }
         .auth-footer {
-          margin-top: 2.5rem;
+          margin-top: 1.5rem;
           text-align: center;
           font-size: 0.95rem;
           color: var(--text-muted);

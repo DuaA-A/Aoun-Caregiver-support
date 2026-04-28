@@ -3,6 +3,7 @@
     "brand": "Aoun",
     "education": "Education",
     "aboutAlzheimer": "About Alzheimer's",
+    "mentalExercises": "Mental Exercises",
     "emergencyFirstAid": "Behavioral Management",
     "mythsFacts": "Myths & Facts",
     "specialWarnings": "Special Warnings",
@@ -145,10 +146,15 @@
       }
     }
   },
+  "mentalExercises": {
+    "title": "Mental Exercises",
+    "subtitle": "Cognitive Stimulation",
+    "desc": "Discover simple, effective activities caregivers can use to help stimulate memory, improve focus, and enhance the daily life of Alzheimer's patients."
+  },
   "mythsFacts": {
-    "subtitle": "CLARITY",
-    "title": "Myths vs. Facts",
-    "desc": "Alzheimer's is often misunderstood. Let's clear up some common misconceptions.",
+    "subtitle": "Clear the Confusion",
+    "title": "Myths and Facts",
+    "desc": "Understand what is true and what is a misconception about Alzheimer's disease.",
     "mythLabel": "Myth",
     "factLabel": "Fact",
     "items": [

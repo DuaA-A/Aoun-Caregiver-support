@@ -147,7 +147,7 @@ const UserProfile = ({ onOpenAuth }) => {
       </div>
 
       <style>{`
-        .profile-page { background: #f8fafc; min-height: 100vh; padding-top: 120px; padding-bottom: 80px; }
+        .profile-page { background: #f8fafc; min-height: 100vh; padding-top: 100px; padding-bottom: 60px; }
         
         .profile-unauth-screen {
           min-height: 100vh; display: flex; align-items: center; justify-content: center;
@@ -172,7 +172,7 @@ const UserProfile = ({ onOpenAuth }) => {
         
         .profile-header-new {
           display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
-          padding: 3rem; border-radius: 32px; gap: 2rem;
+          padding: 2rem; border-radius: 28px; gap: 2rem;
           background: rgba(255, 255, 255, 0.8);
           backdrop-filter: blur(20px);
           box-shadow: 0 20px 60px rgba(30, 58, 95, 0.05);
@@ -198,14 +198,15 @@ const UserProfile = ({ onOpenAuth }) => {
         .stat-lab { font-size: 0.75rem; text-transform: uppercase; color: #94a3b8; font-weight: 700; letter-spacing: 0.05em; }
         .preview-pill { background: #eff6ff; color: #3b82f6; padding: 8px 16px; border-radius: 12px; font-weight: 800; font-size: 0.8rem; border: 1px solid #dbeafe; }
 
-        .profile-main-grid { display: grid; grid-template-columns: 320px 1fr; gap: 2rem; }
+        .profile-main-grid { display: grid; grid-template-columns: 320px 1fr; gap: 2rem; align-items: start; }
+        .profile-left-col { position: sticky; top: 100px; }
         
-        .info-card { border-radius: 24px; overflow: hidden; background: white; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
-        .card-head { padding: 1.5rem; border-bottom: 1px solid #f1f5f9; background: #f8fafc; }
+        .info-card { border-radius: 20px; overflow: hidden; background: white; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
+        .card-head { padding: 1.25rem; border-bottom: 1px solid #f1f5f9; background: #f8fafc; }
         .card-head h3 { margin: 0; font-size: 1.1rem; font-weight: 800; color: #1e293b; display: flex; align-items: center; gap: 12px; }
         
-        .card-body { padding: 1.5rem; }
-        .p-detail { margin-bottom: 1.5rem; }
+        .card-body { padding: 1.25rem; }
+        .p-detail { margin-bottom: 1rem; }
         .p-detail:last-child { margin-bottom: 0; }
         .p-label { display: block; font-size: 0.75rem; text-transform: uppercase; color: #94a3b8; font-weight: 800; letter-spacing: 0.08em; margin-bottom: 6px; }
         .p-value { font-size: 1.1rem; font-weight: 700; color: #334155; }
