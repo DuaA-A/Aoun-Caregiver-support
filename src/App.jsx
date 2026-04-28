@@ -511,7 +511,7 @@ const Home = ({ onOpenAuth }) => {
             display: flex !important;
             flex-direction: column !important; 
             text-align: center; 
-            padding: 90px 0 2rem; 
+            padding: 90px 0 calc(2rem - 15px); 
             gap: 0.5rem; 
             height: auto; 
             min-height: 100svh;
@@ -537,28 +537,42 @@ const Home = ({ onOpenAuth }) => {
             justify-content: center; 
             align-items: center;
             flex: 0 0 auto;
-            margin: 1rem 0; /* Reduced margin */
+            margin: 1.5rem 0 1rem;
             padding: 0;
             z-index: 5;
           }
+          /* Square container = the invisible big circle */
           .hero-circles-container { 
-            height: 380px; /* Reduced from 420px */
-            width: 100%; 
-            max-width: 420px;
+            width: min(95vw, 400px);
+            height: min(95vw, 400px);
             margin: 0 auto; 
             position: relative; 
           }
-          .image-circle { position: absolute; box-shadow: 0 20px 50px rgba(0,0,0,0.2); border: 5px solid white; }
-          .image-circle.circle-1 { width: 170px; height: 170px; top: 0; left: 5%; z-index: 3; }
-          .image-circle.circle-2 { width: 150px; height: 150px; bottom: 40px; right: 5%; z-index: 2; } /* Raised up from bottom:0 */
-          .image-circle.circle-3 { width: 120px; height: 120px; top: 20%; right: 0; z-index: 4; }
-          .image-circle.circle-4 { width: 100px; height: 100px; bottom: 30%; left: 0; z-index: 5; }
-          
-          /* RTL scattered positions */
-          [dir="rtl"] .image-circle.circle-1 { left: auto; right: 5%; }
-          [dir="rtl"] .image-circle.circle-2 { right: auto; left: 5%; }
-          [dir="rtl"] .image-circle.circle-3 { right: auto; left: 0; }
-          [dir="rtl"] .image-circle.circle-4 { left: auto; right: 0; }
+          .image-circle {
+            position: absolute;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 5px solid white;
+            box-shadow: 0 14px 35px rgba(0,0,0,0.18);
+          }
+          .image-circle img { width:100%; height:100%; object-fit:cover; display:block; }
+
+          /*
+            1 big central circle + 3 smaller ones overlapping its edges.
+            circle-1: hero (55% of container), centered-left
+            circle-3: top-right, overlapping circle-1
+            circle-4: bottom-left, overlapping circle-1
+            circle-2: bottom-right, overlapping circle-1
+          */
+          .image-circle.circle-1 { width:62%; height:62%; top:12%;  left:12%;  z-index:2; }
+          .image-circle.circle-3 { width:40%; height:40%; top:0%;   left:62%;  z-index:4; }
+          .image-circle.circle-4 { width:32%; height:32%; top:60%;  left:-2%;  z-index:4; }
+          .image-circle.circle-2 { width:42%; height:42%; top:50%;  left:56%;  z-index:3; }
+
+          [dir="rtl"] .image-circle.circle-1 { left:auto; right:12%; }
+          [dir="rtl"] .image-circle.circle-3 { left:auto; right:62%; }
+          [dir="rtl"] .image-circle.circle-4 { left:auto; right:-2%; }
+          [dir="rtl"] .image-circle.circle-2 { left:auto; right:56%; }
           
           .hero-description { display: none; }
           .hero-title { font-size: 2.3rem; margin-bottom: 0.5rem; line-height: 1.1; padding: 0 5px; text-align: center; color: #1e3a5f; }
@@ -571,7 +585,7 @@ const Home = ({ onOpenAuth }) => {
             flex-wrap: wrap;
             width: 100%; 
             gap: 1rem; 
-            margin-top: 1rem; /* Reduced from 2rem to raise buttons */
+            margin-top: 1rem;
             padding: 0 1rem;
           }
           .hero-cta-group > * { flex: 1; min-width: 150px; max-width: 180px; padding: 14px 10px; font-size: 0.95rem; border-radius: 35px; }
@@ -585,11 +599,7 @@ const Home = ({ onOpenAuth }) => {
 
         @media (max-width: 640px) {
           .hero-flex-wrapper { padding-top: 80px; }
-          .hero-circles-container { height: 320px; max-width: 380px; }
-          .image-circle.circle-1 { width: 150px; height: 150px; }
-          .image-circle.circle-2 { width: 130px; height: 130px; bottom: 30px; }
-          .image-circle.circle-3 { width: 100px; height: 100px; }
-          .image-circle.circle-4 { width: 90px; height: 90px; }
+          /* percentage positions already scale — nothing else needed */
           .hero-title { font-size: 2rem; }
         }
       `}</style>
@@ -668,13 +678,13 @@ const App = () => {
         .floating-notif-wrap {
           position: fixed;
           bottom: 30px;
-          right: 30px;
+          left: 30px;
+          right: auto;
           z-index: 9999999;
           display: flex;
           align-items: center;
           justify-content: center;
         }
-        /* Notification icon stays on right even in RTL per user request */
         .floating-notif-wrap .notif-bell {
           width: 64px;
           height: 64px;
@@ -686,7 +696,7 @@ const App = () => {
           cursor: pointer;
         }
         @media (max-width: 900px) {
-          .floating-notif-wrap { bottom: 20px; right: 20px; z-index: 9999999; }
+          .floating-notif-wrap { bottom: 20px; left: 20px; right: auto; z-index: 9999999; }
           .floating-notif-wrap .notif-bell { width: 56px; height: 56px; }
         }
       `}</style>

@@ -150,12 +150,13 @@ const NotificationBell = ({ isFAB = false }) => {
         
         .panel-fab {
           top: auto; bottom: calc(100% + 20px);
-          transform-origin: bottom right;
+          right: auto; left: 0;
+          transform-origin: bottom left;
         }
         
         [dir="rtl"] .notif-panel { right: auto; left: 0; transform-origin: top left; }
-        /* Keep panel anchored to right for FAB even in RTL */
-        [dir="rtl"] .panel-fab { right: 0; left: auto; transform-origin: bottom right; }
+        /* FAB is on left side so panel opens to the right regardless of RTL */
+        [dir="rtl"] .panel-fab { right: auto; left: 0; transform-origin: bottom left; }
 
         @keyframes notifPop {
           from { opacity: 0; transform: scale(0.9) translateY(10px); }
@@ -188,13 +189,13 @@ const NotificationBell = ({ isFAB = false }) => {
           .panel-fab {
             position: fixed;
             bottom: 100px;
-            right: 20px;
-            left: auto;
+            left: 20px;
+            right: auto;
             width: 320px;
             max-width: calc(100vw - 40px);
-            transform-origin: bottom right;
+            transform-origin: bottom left;
           }
-          [dir="rtl"] .panel-fab { right: 0; left: auto; transform-origin: bottom right; }
+          [dir="rtl"] .panel-fab { left: 20px; right: auto; transform-origin: bottom left; }
         }
       `}</style>
     </div>
