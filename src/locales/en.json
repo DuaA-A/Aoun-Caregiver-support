@@ -107,7 +107,7 @@
         "title": "Acetylcholine Loss",
         "description": "A significant decrease in acetylcholine synthesis and activity. This neurotransmitter is crucial for learning and memory processes. The goal of treatment is to overcome this presynaptic deficit.",
         "symptoms": ["Memory loss", "Attention deficit", "Impaired learning", "Disrupted signaling"],
-        "note": "Donepezil is a selective AChEI with a long half-life (approx. 100h in elderly), allowing once-daily dosing."
+        "note": "Rivastigmine is a selective AChEI that should be taken with a substantial meal to improve tolerance."
       },
       "inflammation": {
         "name": "Neuroinflammation",

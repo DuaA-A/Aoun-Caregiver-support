@@ -1,10 +1,4 @@
 export const FOOD_INTERACTIONS = {
-  donepezil: {
-    avoidFoods: [],
-    timing: 'Take once daily at bedtime to reduce nausea.',
-    instructions: 'Can be taken with or without food. Avoid alcohol as it increases sedation.',
-    source: 'Clinical Pharmacology / FDA',
-  },
   rivastigmine: {
     avoidFoods: ['Alcohol'],
     timing: 'MUST be taken with a full, substantial meal (Breakfast and Dinner).',
@@ -45,7 +39,6 @@ export const LIFESTYLE_WARNINGS = [
 
 // Add aliases for common Egyptian brand names
 const aliases = {
-  "donepezil": ["aricept", "alzepil", "alzam"],
   "rivastigmine": ["exelon", "rivamer"],
   "galantamine": ["reminyl"],
   "memantine": ["ebixa", "memixa", "memental"]

@@ -54,7 +54,7 @@ export const alzheimerData = {
       content: [
         {
           heading: 'Current Pharmacological Treatments',
-          text: 'Currently, there is no cure for AD, but treatments can temporarily reduce functional decline. Cholinesterase inhibitors (e.g., Donepezil, Rivastigmine) inhibit the hydrolysis of acetylcholine, increasing cholinergic neurotransmission. NMDA antagonists (e.g., Memantine) block the overactivation of glutamate receptors, protecting neurons against excitotoxicity.'
+          text: 'Currently, there is no cure for AD, but treatments can temporarily reduce functional decline. Cholinesterase inhibitors (e.g., Rivastigmine, Galantamine) inhibit the hydrolysis of acetylcholine, increasing cholinergic neurotransmission. NMDA antagonists (e.g., Memantine) block the overactivation of glutamate receptors, protecting neurons against excitotoxicity.'
         },
         {
           heading: 'Disease-Modifying Therapies (DMTs)',
@@ -66,7 +66,7 @@ export const alzheimerData = {
         }
       ],
       images: [
-        { src: '/images/education/figure4.png', caption: 'Donepezil inhibits the effect of acetylcholinesterase.' },
+        { src: '/images/education/figure4.png', caption: 'Rivastigmine inhibits the effect of acetylcholinesterase.' },
         { src: '/images/education/figure8.jpg', caption: 'Integration of AI and Machine Learning in Alzheimer’s Disease.' }
       ]
     }
@@ -126,7 +126,7 @@ export const alzheimerData = {
       content: [
         {
           heading: 'العلاجات الدوائية الحالية',
-          text: 'تشمل مثبطات الكولينستريز (مثل دونيبيزيل) ومضادات NMDA (مثل ميمانتين) التي تساعد في تخفيف الأعراض مؤقتاً.'
+          text: 'تشمل مثبطات الكولينستريز (مثل ريفاستيجمين) ومضادات NMDA (مثل ميمانتين) التي تساعد في تخفيف الأعراض مؤقتاً.'
         },
         {
           heading: 'العلاجات المعدلة للمرض',
@@ -138,7 +138,7 @@ export const alzheimerData = {
         }
       ],
       images: [
-        { src: '/images/education/figure4.png', caption: 'آلية عمل دونيبيزيل.' },
+        { src: '/images/education/figure4.png', caption: 'آلية عمل ريفاستيجمين.' },
         { src: '/images/education/figure8.jpg', caption: 'دمج الذكاء الاصطناعي في إدارة ألزهايمر.' }
       ]
     }

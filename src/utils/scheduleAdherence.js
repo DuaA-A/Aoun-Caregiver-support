@@ -32,12 +32,16 @@ export async function logDoseTaken(userId, entryId, time, dateStr) {
     return;
   }
 
-  if (!userId || !db) return;
+  if (!userId || !db) {
+    console.warn('[scheduleAdherence] Missing userId or db connection');
+    return;
+  }
   const ref = doc(db, 'user_drug_schedule', userId);
   const snap = await getDoc(ref);
   const data = snap.exists() ? snap.data() : { schedule: [], adherence: [] };
   const ad = data.adherence || [];
   const next = [...ad.filter((a) => !(a.entryId === entryId && a.date === date && a.time === time)), row];
+  console.log(`[scheduleAdherence] Updating Firestore for user ${userId}. Adherence count: ${next.length}`);
   await setDoc(ref, { ...data, adherence: next.slice(-500) }, { merge: true });
 }
 

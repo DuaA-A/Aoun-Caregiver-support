@@ -253,7 +253,7 @@ const Navbar = ({ onOpenAuth }) => {
           transform: translateY(-10px);
         }
         .navbar-scrolled .navbar-wave-bg {
-          opacity: 1;
+          opacity: ${isOpen ? '0' : '1'};
           transform: translateY(0);
         }
         .navbar-wave-bg svg {
@@ -300,7 +300,7 @@ const Navbar = ({ onOpenAuth }) => {
           left: 0;
           width: 100%;
           height: 15px;
-          background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%23ffffff" opacity="0.9"/></svg>') center/cover no-repeat;
+          background: ${isOpen ? 'none' : "url('data:image/svg+xml;utf8,<svg viewBox=\"0 0 1200 120\" preserveAspectRatio=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z\" fill=\"%23ffffff\" opacity=\"0.9\"/></svg>') center/cover no-repeat"};
           pointer-events: none;
           z-index: -1;
         }
@@ -435,31 +435,28 @@ const Navbar = ({ onOpenAuth }) => {
           
           .mobile-menu-overlay {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 280px;
+            top: 0;
+            right: 0;
+            width: 300px;
             height: fit-content;
-            max-height: calc(100vh - 40px);
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(15px);
+            max-height: 70vh;
+            background: #ffffff;
             z-index: 2000;
             display: flex;
             flex-direction: column;
             padding: 1.5rem;
-            box-shadow: -10px 0 30px rgba(0,0,0,0.15);
-            border-radius: 24px;
-            border: 1px solid rgba(0,0,0,0.05);
-            overflow-y: auto;
+            box-shadow: -10px 0 40px rgba(0,0,0,0.1);
+            border-bottom-left-radius: 30px;
+            border-left: 1px solid rgba(0,0,0,0.05);
+            overflow: hidden; /* No scrolling allowed */
           }
-          [dir="rtl"] .mobile-menu-overlay { right: auto; left: 20px; box-shadow: 10px 0 30px rgba(0,0,0,0.15); }
-
-          .mobile-menu-wave { display: none; }
+          [dir="rtl"] .mobile-menu-overlay { right: auto; left: 0; border-left: none; border-right: 1px solid rgba(0,0,0,0.05); border-bottom-left-radius: 0; border-bottom-right-radius: 30px; }
 
           .mobile-menu-backdrop {
             position: fixed;
             inset: 0;
-            background: rgba(10, 37, 64, 0.2);
-            backdrop-filter: blur(8px);
+            background: rgba(10, 37, 64, 0.15);
+            backdrop-filter: blur(4px);
             z-index: 1999;
           }
 
@@ -467,25 +464,26 @@ const Navbar = ({ onOpenAuth }) => {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1.5px solid #f1f5f9;
           }
-          .mobile-menu-header .nav-logo .logo-main { font-size: 1.5rem; }
+          .mobile-menu-header .nav-logo .logo-main { font-size: 1.4rem; }
 
           .mobile-close {
-            background: rgba(0,0,0,0.05);
+            background: #f8fafc;
             border: none;
-            color: var(--text-main);
+            color: #64748b;
             cursor: pointer;
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.2s;
           }
-          .mobile-close svg { width: 20px; height: 20px; }
+          .mobile-close:hover { background: #fee2e2; color: #ef4444; }
 
           .mobile-links-container {
             display: flex;
@@ -497,88 +495,95 @@ const Navbar = ({ onOpenAuth }) => {
           .mobile-nav-group {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
+            gap: 0.2rem;
           }
 
           .group-label {
             font-size: 0.7rem;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            color: #94a3b8;
             font-weight: 800;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.4rem;
+            padding-inline-start: 4px;
           }
 
           .mobile-nav-group a {
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 700;
-            color: var(--text-main);
+            color: #1e293b;
             text-decoration: none;
             padding: 8px 12px;
             border-radius: 10px;
-            transition: background 0.2s;
-          }
-          .mobile-nav-group a:hover { background: rgba(0,0,0,0.05); }
-
-          .mobile-nav-footer {
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-          }
-
-          .mobile-lang-pill {
+            transition: all 0.2s;
             display: flex;
             align-items: center;
             gap: 10px;
-            background: #f1f5f9;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 12px;
-            font-weight: 700;
-            color: var(--text-main);
-            width: 100%;
-            font-size: 0.9rem;
           }
+          .mobile-nav-group a:hover { background: #f1f7ff; color: #3b82f6; }
 
-          .mobile-user-actions {
+          .mobile-nav-footer {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1.5px solid #f1f5f9;
             display: flex;
             flex-direction: column;
             gap: 0.75rem;
           }
 
-          .mobile-dashboard-btn {
-            background: var(--primary);
-            color: white !important;
-            padding: 12px;
-            border-radius: 12px;
+          .mobile-lang-pill {
             display: flex;
             align-items: center;
+            gap: 8px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 10px;
+            border-radius: 12px;
+            font-weight: 700;
+            color: #1e293b;
+            font-size: 0.9rem;
+            width: 100%;
             justify-content: center;
-            gap: 10px;
-            font-weight: 800;
-            font-size: 0.95rem;
           }
 
           .mobile-logout-link {
-            background: none;
-            border: none;
-            color: var(--error);
+            background: #fff5f5;
+            border: 1px solid #fee2e2;
+            color: #ef4444;
             font-weight: 700;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
             font-size: 0.9rem;
-            padding: 8px;
+            padding: 10px;
             cursor: pointer;
-            border: 1px solid #fee2e2;
-            border-radius: 10px;
+            border-radius: 12px;
+            width: 100%;
           }
           
-          .btn-block { width: 100%; padding: 12px; font-size: 0.95rem; }
+          .mobile-user-actions {
+            margin-bottom: 0.5rem;
+          }
+          .mobile-dashboard-btn {
+            background: #1e3a5f;
+            color: white !important;
+            padding: 12px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 800;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 12px rgba(30, 58, 95, 0.2);
+          }
+
+          @media (max-height: 700px) {
+            .mobile-links-container { gap: 0.75rem; }
+            .mobile-nav-group a { padding: 6px 10px; font-size: 0.9rem; }
+            .mobile-nav-footer { margin-top: 0.75rem; }
+          }
 
 
       `}</style>

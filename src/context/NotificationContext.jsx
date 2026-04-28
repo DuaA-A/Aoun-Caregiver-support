@@ -86,16 +86,20 @@ export const NotificationProvider = ({ children }) => {
     for (const x of existing) {
       byId.set(x.id, x);
     }
+    const newlyAddedIds = new Set();
     for (const d of auto) {
       if (!byId.has(d.id)) {
-        byId.set(d.id, {
+        const newItem = {
           ...d,
           read: false,
           taken: false,
           createdAt: new Date().toISOString(),
-        });
+        };
+        byId.set(d.id, newItem);
+        newlyAddedIds.add(d.id);
       }
     }
+
     const ad = adherence || [];
     const merged = [...byId.values()].map((it) => {
       if (it.type !== 'dose_due' || it.taken) return it;
@@ -115,7 +119,7 @@ export const NotificationProvider = ({ children }) => {
     });
 
     // Browser Notification Logic
-    const newDues = merged.filter(it => it.type === 'dose_due' && !it.read && !it.taken && !byId.has(it.id));
+    const newDues = merged.filter(it => it.type === 'dose_due' && !it.read && !it.taken && newlyAddedIds.has(it.id));
     
     if (Notification.permission === 'granted') {
       for (const d of newDues) {
@@ -191,6 +195,7 @@ export const NotificationProvider = ({ children }) => {
   const markTaken = useCallback(
     async (n) => {
       if (!currentUser?.uid) return;
+      console.log(`[NotificationContext] Marking as taken: drug=${n.drugName}, time=${n.time}`);
       try {
         await logDoseTaken(currentUser.uid, n.entryId, n.time, n.dateKey);
         const next = items.map((i) =>
@@ -198,9 +203,10 @@ export const NotificationProvider = ({ children }) => {
         );
         setItems(next);
         await saveInboxItems(currentUser.uid, next);
-        void sync();
+        console.log('[NotificationContext] Successfully marked taken and saved inbox');
+        await sync();
       } catch (e) {
-        console.error(e);
+        console.error('[NotificationContext] Failed to mark as taken', e);
       }
     },
     [currentUser?.uid, items, sync]

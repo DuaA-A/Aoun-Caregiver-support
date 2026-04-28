@@ -22,6 +22,7 @@ export default function emailServicePlugin() {
           req.on('end', async () => {
             try {
               const { to, type, data } = JSON.parse(body);
+              console.log(`[Email Service] Incoming request: type=${type}, to=${to}`);
               let subject = '';
               let html = '';
 
