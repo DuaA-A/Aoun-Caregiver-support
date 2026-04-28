@@ -183,11 +183,6 @@ const Navbar = ({ onOpenAuth }) => {
                 )}
               </div>
             </div>
-            <div className="mobile-menu-wave">
-                <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                  <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" className="shape-fill"></path>
-                </svg>
-              </div>
             </motion.div>
           </>
         )}
@@ -438,18 +433,21 @@ const Navbar = ({ onOpenAuth }) => {
             top: 0;
             right: 0;
             width: 300px;
-            height: fit-content;
-            max-height: 70vh;
+            height: auto;
+            max-height: 80vh; /* Increased slightly to help fit content */
             background: #ffffff;
             z-index: 2000;
             display: flex;
             flex-direction: column;
-            padding: 1.5rem;
+            padding: 1.25rem;
             box-shadow: -10px 0 40px rgba(0,0,0,0.1);
             border-bottom-left-radius: 30px;
             border-left: 1px solid rgba(0,0,0,0.05);
-            overflow: hidden; /* No scrolling allowed */
+            overflow-y: auto; /* Changed to auto to ensure footer is reachable */
+            scrollbar-width: none; /* Hide scrollbar for clean look */
           }
+          .mobile-menu-overlay::-webkit-scrollbar { display: none; }
+          
           [dir="rtl"] .mobile-menu-overlay { right: auto; left: 0; border-left: none; border-right: 1px solid rgba(0,0,0,0.05); border-bottom-left-radius: 0; border-bottom-right-radius: 30px; }
 
           .mobile-menu-backdrop {
@@ -464,11 +462,11 @@ const Navbar = ({ onOpenAuth }) => {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.25rem;
-            padding-bottom: 0.75rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
             border-bottom: 1.5px solid #f1f5f9;
           }
-          .mobile-menu-header .nav-logo .logo-main { font-size: 1.4rem; }
+          .mobile-menu-header .nav-logo .logo-main { font-size: 1.3rem; }
 
           .mobile-close {
             background: #f8fafc;
@@ -481,39 +479,37 @@ const Navbar = ({ onOpenAuth }) => {
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s;
           }
-          .mobile-close:hover { background: #fee2e2; color: #ef4444; }
 
           .mobile-links-container {
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 1rem;
             flex: 1;
           }
 
           .mobile-nav-group {
             display: flex;
             flex-direction: column;
-            gap: 0.2rem;
+            gap: 0.1rem;
           }
 
           .group-label {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             color: #94a3b8;
             font-weight: 800;
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.25rem;
             padding-inline-start: 4px;
           }
 
           .mobile-nav-group a {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 700;
             color: #1e293b;
             text-decoration: none;
-            padding: 8px 12px;
+            padding: 7px 10px;
             border-radius: 10px;
             transition: all 0.2s;
             display: flex;
@@ -523,12 +519,12 @@ const Navbar = ({ onOpenAuth }) => {
           .mobile-nav-group a:hover { background: #f1f7ff; color: #3b82f6; }
 
           .mobile-nav-footer {
-            margin-top: 1.5rem;
+            margin-top: 1rem;
             padding-top: 1rem;
             border-top: 1.5px solid #f1f5f9;
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
+            gap: 0.5rem;
           }
 
           .mobile-lang-pill {
@@ -537,13 +533,14 @@ const Navbar = ({ onOpenAuth }) => {
             gap: 8px;
             background: #f8fafc;
             border: 1px solid #e2e8f0;
-            padding: 10px;
+            padding: 8px;
             border-radius: 12px;
             font-weight: 700;
             color: #1e293b;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             width: 100%;
             justify-content: center;
+            cursor: pointer;
           }
 
           .mobile-logout-link {
@@ -555,34 +552,35 @@ const Navbar = ({ onOpenAuth }) => {
             align-items: center;
             justify-content: center;
             gap: 8px;
-            font-size: 0.9rem;
-            padding: 10px;
+            font-size: 0.85rem;
+            padding: 8px;
             cursor: pointer;
             border-radius: 12px;
             width: 100%;
           }
           
           .mobile-user-actions {
-            margin-bottom: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
           }
           .mobile-dashboard-btn {
             background: #1e3a5f;
             color: white !important;
-            padding: 12px;
+            padding: 10px;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
             font-weight: 800;
-            font-size: 0.95rem;
-            box-shadow: 0 4px 12px rgba(30, 58, 95, 0.2);
+            font-size: 0.9rem;
           }
 
-          @media (max-height: 700px) {
-            .mobile-links-container { gap: 0.75rem; }
-            .mobile-nav-group a { padding: 6px 10px; font-size: 0.9rem; }
-            .mobile-nav-footer { margin-top: 0.75rem; }
+          @media (max-height: 650px) {
+            .mobile-links-container { gap: 0.5rem; }
+            .mobile-nav-group a { padding: 5px 8px; font-size: 0.85rem; }
+            .mobile-nav-footer { margin-top: 0.5rem; padding-top: 0.5rem; }
           }
 
 
