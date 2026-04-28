@@ -199,7 +199,14 @@ const DrugSchedulePanel = ({ currentUser, t }) => {
       }
     };
     load();
-    return () => unsub();
+
+    const handleUpdate = () => load();
+    window.addEventListener('dose-updated', handleUpdate);
+
+    return () => {
+      unsub();
+      window.removeEventListener('dose-updated', handleUpdate);
+    };
   }, [currentUser?.uid]);
 
   useEffect(() => {

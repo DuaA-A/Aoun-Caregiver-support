@@ -168,15 +168,19 @@ const InteractionChecker = ({ onOpenAuth }) => {
 
   const getSeverityIcon = (sev) => {
     const s = sev?.toLowerCase() || '';
-    if (s.includes('high') || s.includes('major')) return <AlertTriangle className="icon-high" size={24} />;
-    if (s.includes('moderate')) return <AlertTriangle className="icon-mod" size={24} />;
+    if (s.includes('high') || s.includes('major') || s.includes('critical') || s.includes('level 4') || s.includes('level 3')) {
+      return <AlertTriangle className="icon-high" size={24} />;
+    }
+    if (s.includes('moderate') || s.includes('level 2')) return <AlertTriangle className="icon-mod" size={24} />;
     return <Info className="icon-low" size={24} />;
   };
 
   const getSeverityClass = (sev) => {
     const s = sev?.toLowerCase() || '';
-    if (s.includes('high') || s.includes('major')) return 'sev-high';
-    if (s.includes('moderate')) return 'sev-mod';
+    if (s.includes('high') || s.includes('major') || s.includes('critical') || s.includes('level 4') || s.includes('level 3')) {
+      return 'sev-high';
+    }
+    if (s.includes('moderate') || s.includes('level 2')) return 'sev-mod';
     return 'sev-low';
   };
 

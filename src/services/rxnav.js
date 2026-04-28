@@ -119,31 +119,9 @@ const extractPairs = (data) => {
  * Fetch drug–drug interactions for a set of RxCUIs (RxNorm returns all pairs in the set).
  */
 export const getInteractions = async (rxcuis) => {
-  const unique = [...new Set((rxcuis || []).filter(Boolean).map(String))];
-  if (unique.length < 2) return [];
-
-  const cacheKey = unique.sort().join('+');
-  if (interactionsCache.has(cacheKey)) {
-    return interactionsCache.get(cacheKey);
-  }
-
-  try {
-    const url = `${BASE_URL}/interaction/list.json?rxcuis=${encodeURIComponent(unique.join('+'))}`;
-    const response = await fetch(url);
-    const data = await safeJson(response);
-    if (!response.ok) {
-      console.warn('RxNav interaction HTTP', response.status, data);
-      interactionsCache.set(cacheKey, []);
-      return [];
-    }
-    const interactions = extractPairs(data);
-    const uniqueInteractions = Array.from(new Set(interactions.map(JSON.stringify))).map(JSON.parse);
-    interactionsCache.set(cacheKey, uniqueInteractions);
-    return uniqueInteractions;
-  } catch (error) {
-    console.error('Error fetching API interactions:', error);
-    return [];
-  }
+  // The RxNav interaction API was discontinued in early 2024.
+  // We now rely on our local database and engine for interactions.
+  return [];
 };
 
 /**

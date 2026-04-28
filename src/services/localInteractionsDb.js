@@ -23,13 +23,14 @@ const anticholinergics = [
   'hyoscine', 'scopolamine', 'dicyclomine', 'atropine', 'mebeverine',
   'amitriptyline', 'imipramine', 'clomipramine', 'nortriptyline',
   'olanzapine', 'quetiapine', 'clozapine', 'chlorpromazine',
-  'trihexyphenidyl', 'benztropine',
-  // Egypt Brand Names
+  'trihexyphenidyl', 'benztropine', 'haloperidol',
+  // Egypt Brand Names (from PDF and common usage)
   'allergyl', 'tavegyl', 'tres orix', 'fenistil', 'amydramine', 'sibelium',
   'detrusitol', 'vesicare', 'urispas', 'spasmlyt', 'genurin',
   'spasmocure', 'colona', 'duspatalin', 'visceralgin',
   'tofranil', 'anafranil', 'pamelor', 'zyprexa', 'seroquel', 'parkinol',
-  'congestal', '123', 'buscopan', 'tryptizol', 'artane'
+  'congestal', '123', 'buscopan', 'tryptizol', 'artane',
+  'uripan', 'ditropan', 'panadol night', 'benadryl', 'comtrex', 'flurest', 'prekal', 'haldol'
 ];
 
 // 2. Bradycardic Agents - Critical (Level 4)
@@ -62,7 +63,7 @@ const liverInhibitors = [
   'nizoral', 'sporanox', 'itrapex', 'diflucan', 'treflucan', 'fungican', 'vfend',
   'erythrocin', 'klacid', 'klarimac', 'cipro', 'ciprocin', 'tavanic',
   'prozac', 'philozac', 'faverin', 'seroxat', 'paxil', 'tagamet',
-  'losec', 'gastizole'
+  'losec', 'gastizole', 'klacid', 'klarimac'
 ];
 
 // 4b. CYP Inducers - reduce AD drug levels (Major)

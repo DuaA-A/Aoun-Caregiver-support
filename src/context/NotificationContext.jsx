@@ -141,7 +141,8 @@ export const NotificationProvider = ({ children }) => {
     for (const d of newDues) {
       if (currentUser?.email) {
         try {
-          await fetch('/api/send-email', {
+          console.log(`[NotificationContext] Attempting to send email reminder for ${d.drugName} to ${currentUser.email}`);
+          const res = await fetch('/api/send-email', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -150,6 +151,8 @@ export const NotificationProvider = ({ children }) => {
               data: { drugName: d.drugName, time: d.time }
             })
           });
+          const resData = await res.json();
+          console.log('[NotificationContext] Email API response:', resData);
         } catch (e) {
           console.error('Failed to send email reminder', e);
         }
@@ -170,7 +173,18 @@ export const NotificationProvider = ({ children }) => {
     const id = setInterval(() => {
       void sync();
     }, 30_000);
-    return () => clearInterval(id);
+
+    const handleStorage = (e) => {
+      if (e.key?.includes(INBOX_KEY) || e.key?.includes('preview_drug_schedule')) {
+        void sync();
+      }
+    };
+    window.addEventListener('storage', handleStorage);
+
+    return () => {
+      clearInterval(id);
+      window.removeEventListener('storage', handleStorage);
+    };
   }, [currentUser, sync]);
 
   const unreadCount = useMemo(() => items.filter((i) => !i.read).length, [items]);
@@ -203,6 +217,10 @@ export const NotificationProvider = ({ children }) => {
         );
         setItems(next);
         await saveInboxItems(currentUser.uid, next);
+        
+        // Dispatch a custom event to notify other components (like Dashboard)
+        window.dispatchEvent(new Event('dose-updated'));
+        
         console.log('[NotificationContext] Successfully marked taken and saved inbox');
         await sync();
       } catch (e) {
