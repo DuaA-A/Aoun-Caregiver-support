@@ -20,11 +20,12 @@ export async function logDoseTaken(userId, entryId, time, dateStr) {
 
   if (isPreviewMode) {
     try {
-      const d = JSON.parse(localStorage.getItem(LS) || '{"schedule":[],"adherence":[]}');
+      const key = `${LS}_${userId}`;
+      const d = JSON.parse(localStorage.getItem(key) || '{"schedule":[],"adherence":[]}');
       const ad = d.adherence || [];
       const next = [...ad.filter((a) => !(a.entryId === entryId && a.date === date && a.time === time)), row];
       d.adherence = next.slice(-500);
-      localStorage.setItem(LS, JSON.stringify(d));
+      localStorage.setItem(key, JSON.stringify(d));
     } catch (e) {
       console.error(e);
     }
@@ -46,7 +47,7 @@ export async function logDoseTaken(userId, entryId, time, dateStr) {
 export async function loadScheduleBundle(userId) {
   if (isPreviewMode) {
     try {
-      return JSON.parse(localStorage.getItem(LS) || '{"schedule":[],"adherence":[]}');
+      return JSON.parse(localStorage.getItem(`${LS}_${userId}`) || '{"schedule":[],"adherence":[]}');
     } catch {
       return { schedule: [], adherence: [] };
     }

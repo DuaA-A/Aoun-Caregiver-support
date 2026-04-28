@@ -174,42 +174,36 @@ export const NotificationProvider = ({ children }) => {
   const markRead = useCallback(
     async (id) => {
       if (!currentUser?.uid) return;
-      setItems((prev) => {
-        const next = prev.map((i) => (i.id === id ? { ...i, read: true } : i));
-        void saveInboxItems(currentUser.uid, next);
-        return next;
-      });
+      const next = items.map((i) => (i.id === id ? { ...i, read: true } : i));
+      setItems(next);
+      await saveInboxItems(currentUser.uid, next);
     },
-    [currentUser?.uid]
+    [currentUser?.uid, items]
   );
 
   const markAllRead = useCallback(async () => {
     if (!currentUser?.uid) return;
-    setItems((prev) => {
-      const next = prev.map((i) => ({ ...i, read: true }));
-      void saveInboxItems(currentUser.uid, next);
-      return next;
-    });
-  }, [currentUser?.uid]);
+    const next = items.map((i) => ({ ...i, read: true }));
+    setItems(next);
+    await saveInboxItems(currentUser.uid, next);
+  }, [currentUser?.uid, items]);
 
   const markTaken = useCallback(
     async (n) => {
       if (!currentUser?.uid) return;
       try {
         await logDoseTaken(currentUser.uid, n.entryId, n.time, n.dateKey);
-        setItems((prev) => {
-          const next = prev.map((i) =>
-            i.id === n.id ? { ...i, read: true, taken: true, takenAt: new Date().toISOString() } : i
-          );
-          void saveInboxItems(currentUser.uid, next);
-          return next;
-        });
+        const next = items.map((i) =>
+          i.id === n.id ? { ...i, read: true, taken: true, takenAt: new Date().toISOString() } : i
+        );
+        setItems(next);
+        await saveInboxItems(currentUser.uid, next);
         void sync();
       } catch (e) {
         console.error(e);
       }
     },
-    [currentUser?.uid, sync]
+    [currentUser?.uid, items, sync]
   );
 
   const value = useMemo(

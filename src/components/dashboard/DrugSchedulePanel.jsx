@@ -18,16 +18,16 @@ import {
 
 const LS_SCHEDULE = 'preview_drug_schedule';
 
-const loadLocal = () => {
+const loadLocal = (uid) => {
   try {
-    return JSON.parse(localStorage.getItem(LS_SCHEDULE) || '{"schedule":[],"adherence":[]}');
+    return JSON.parse(localStorage.getItem(`${LS_SCHEDULE}_${uid}`) || '{"schedule":[],"adherence":[]}');
   } catch {
     return { schedule: [], adherence: [] };
   }
 };
 
-const saveLocal = (data) => {
-  localStorage.setItem(LS_SCHEDULE, JSON.stringify(data));
+const saveLocal = (uid, data) => {
+  localStorage.setItem(`${LS_SCHEDULE}_${uid}`, JSON.stringify(data));
 };
 
 const parseHHMM = (t) => {
@@ -157,7 +157,7 @@ const DrugSchedulePanel = ({ currentUser, t }) => {
       setSaving(true);
       try {
         if (isPreviewMode || !db || !currentUser) {
-          saveLocal(payload);
+          saveLocal(currentUser?.uid, payload);
         } else {
           await setDoc(doc(db, 'user_drug_schedule', currentUser.uid), payload, { merge: true });
         }
@@ -174,7 +174,7 @@ const DrugSchedulePanel = ({ currentUser, t }) => {
       setLoading(true);
       try {
         if (isPreviewMode || !db || !currentUser) {
-          const d = loadLocal();
+          const d = loadLocal(currentUser?.uid);
           setSchedule(d.schedule || []);
           setAdherence(d.adherence || []);
           setLoading(false);
