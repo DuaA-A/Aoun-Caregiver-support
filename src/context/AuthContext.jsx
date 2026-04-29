@@ -32,6 +32,7 @@ export const AuthProvider = ({ children }) => {
       const sessionUser = { ...mockUser };
       delete sessionUser.password;
       setCurrentUser(sessionUser);
+      localStorage.setItem('aoun_preview_session', JSON.stringify(sessionUser));
       
       try {
         await fetch('/api/send-email', {
@@ -94,6 +95,7 @@ export const AuthProvider = ({ children }) => {
       const sessionUser = { ...user };
       delete sessionUser.password;
       setCurrentUser(sessionUser);
+      localStorage.setItem('aoun_preview_session', JSON.stringify(sessionUser));
       
       try {
         await fetch('/api/send-email', {
@@ -139,6 +141,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     if (isPreviewMode) {
       setCurrentUser(null);
+      localStorage.removeItem('aoun_preview_session');
       return Promise.resolve();
     }
     return signOut(auth);
@@ -146,6 +149,14 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (isPreviewMode) {
+      const storedSession = localStorage.getItem('aoun_preview_session');
+      if (storedSession) {
+        try {
+          setCurrentUser(JSON.parse(storedSession));
+        } catch (e) {
+          console.error('Failed to parse preview session', e);
+        }
+      }
       const timeoutId = setTimeout(() => setLoading(false), 0);
       return () => clearTimeout(timeoutId);
     }

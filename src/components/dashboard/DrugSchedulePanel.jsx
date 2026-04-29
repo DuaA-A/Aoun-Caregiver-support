@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
 import { db, isPreviewMode } from '../../firebase/config';
 import { getRxCUI } from '../../services/rxnav';
+import { useTranslation } from 'react-i18next';
 import {
   Bell,
   BellOff,
@@ -137,6 +138,8 @@ const notifyIfDue = (next, schedule, notifiedRef) => {
 };
 
 const DrugSchedulePanel = ({ currentUser, t }) => {
+  const { i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
   const [schedule, setSchedule] = useState([]);
   const [adherence, setAdherence] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -230,10 +233,15 @@ const DrugSchedulePanel = ({ currentUser, t }) => {
 
   const addEntry = async (e) => {
     e.preventDefault();
-    if (!name.trim() || selectedTimes.length === 0) return;
+    const drugName = name.trim();
+    if (!drugName || selectedTimes.length === 0) return;
+    
+    // Check for timing conflicts
+    const conflicts = schedule.filter(s => s.times.some(t => selectedTimes.includes(t)));
+    const conflictNames = conflicts.map(c => c.name);
     
     const id = typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `e-${Date.now()}`;
-    const entry = { id, name: name.trim(), times: [...selectedTimes].sort(), frequency };
+    const entry = { id, name: drugName, times: [...selectedTimes].sort(), frequency };
     const nextSchedule = [...schedule, entry];
     
     setSchedule(nextSchedule);
@@ -242,8 +250,14 @@ const DrugSchedulePanel = ({ currentUser, t }) => {
     setFrequency('daily');
     
     await persist(nextSchedule, adherence);
+    
+    // Dispatch event for NotificationContext to catch and show the right alert
+    window.dispatchEvent(new CustomEvent('drug-added', { 
+      detail: { name: drugName, conflicts: conflictNames } 
+    }));
+    
     if (!isPreviewMode && currentUser) {
-      await getRxCUI(name.trim());
+      await getRxCUI(drugName);
     }
   };
 
