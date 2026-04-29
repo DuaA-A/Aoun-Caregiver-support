@@ -100,12 +100,14 @@ export default function emailServicePlugin() {
                 `;
               }
 
-              await transporter.sendMail({
+              console.log(`[Email Service] Attempting to send email via transporter to: ${to}`);
+              const info = await transporter.sendMail({
                 from: '"Aoun Support" <aoun.caregiver.support@gmail.com>',
                 to,
                 subject,
                 html,
               });
+              console.log('[Email Service] sendMail success:', info.messageId);
 
               res.statusCode = 200;
               res.setHeader('Content-Type', 'application/json');

@@ -1,19 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Calendar as CalendarIcon, Clock, Bell, ChevronRight, Plus } from 'lucide-react';
+import { Calendar as CalendarIcon, Clock, Bell, ChevronRight, Plus, Pill, Check } from 'lucide-react';
+import { useMemo } from 'react';
 
-const CaregiverCalendar = () => {
+const CaregiverCalendar = ({ currentUser }) => {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
   
-  const [timeLeft, setTimeLeft] = useState('03:59:02');
+  const [timeLeft, setTimeLeft] = useState('--:--:--');
+  const [schedule, setSchedule] = useState([]);
+  const [adherence, setAdherence] = useState([]);
 
-  // Static reminders for demo
-  const reminders = [
-    { id: 1, title: isRTL ? 'مشي صباحي' : 'Morning Walk', time: '10:00 AM', type: 'activity' },
-    { id: 2, title: isRTL ? 'تمارين إدراكية' : 'Cognitive Exercise', time: '02:00 PM', type: 'exercise' },
-    { id: 3, title: isRTL ? 'قياس ضغط الدم' : 'Blood Pressure Check', time: '06:00 PM', type: 'medical' },
-  ];
+  useEffect(() => {
+    const load = () => {
+      const LS_SCHEDULE = 'preview_drug_schedule';
+      try {
+        const uid = currentUser?.uid;
+        if (!uid) return;
+        const d = JSON.parse(localStorage.getItem(`${LS_SCHEDULE}_${uid}`) || '{"schedule":[],"adherence":[]}');
+        setSchedule(d.schedule || []);
+        setAdherence(d.adherence || []);
+      } catch (e) { console.error(e); }
+    };
+    load();
+    window.addEventListener('dose-updated', load);
+    const id = setInterval(load, 30000);
+    return () => {
+      window.removeEventListener('dose-updated', load);
+      clearInterval(id);
+    };
+  }, [currentUser?.uid]);
+
+  const reminders = useMemo(() => {
+    const dateStr = new Date().toISOString().slice(0, 10);
+    const list = [];
+    schedule.forEach(s => {
+      s.times?.forEach(tm => {
+        const isTaken = adherence.some(a => a.entryId === s.id && a.date === dateStr && a.time === tm && a.status === 'taken');
+        list.push({ id: `${s.id}-${tm}`, title: s.name, time: tm, type: 'medical', taken: isTaken });
+      });
+    });
+    return list.sort((a, b) => a.time.localeCompare(b.time));
+  }, [schedule, adherence]);
 
   return (
     <div className="cal-premium glass-card" dir={isRTL ? 'rtl' : 'ltr'}>
@@ -29,34 +57,29 @@ const CaregiverCalendar = () => {
       </header>
 
       <div className="cal-body">
-        {/* Next Dose Quick View */}
-        <div className="next-dose-banner">
-          <div className="banner-info">
-            <span className="banner-label">{t('dashboard.nextDoseLabel')}</span>
-            <div className="banner-time">
-              <Clock size={16} />
-              <strong>05:07 AM</strong>
+        {reminders.length > 0 ? (
+          <>
+            {/* Reminders List */}
+            <div className="reminders-stack">
+              <div className="stack-label">{t('dashboard.upcomingTasks')}</div>
+              {reminders.map(r => (
+                <div key={r.id} className={`reminder-card-new ${r.taken ? 'is-taken' : ''}`}>
+                  <div className={`reminder-indicator ${r.type}`}></div>
+                  <div className="reminder-details">
+                    <span className="r-name">{r.title}</span>
+                    <span className="r-time">{r.time} {r.taken ? `(${t('notifications.taken')})` : ''}</span>
+                  </div>
+                  {r.taken ? <Check size={18} className="r-check" /> : <ChevronRight size={18} className="r-chevron" />}
+                </div>
+              ))}
             </div>
+          </>
+        ) : (
+          <div className="cal-empty-state">
+            <Pill size={48} className="empty-ico" />
+            <p>{isRTL ? 'لا توجد جرعات مجدولة. يرجى إضافة أدوية لتحديث مواعيدك.' : 'No scheduled doses. Please add drugs to update your schedule.'}</p>
           </div>
-          <div className="banner-countdown">
-            {timeLeft}
-          </div>
-        </div>
-
-        {/* Reminders List */}
-        <div className="reminders-stack">
-          <div className="stack-label">{t('dashboard.upcomingTasks')}</div>
-          {reminders.map(r => (
-            <div key={r.id} className="reminder-card-new">
-              <div className={`reminder-indicator ${r.type}`}></div>
-              <div className="reminder-details">
-                <span className="r-name">{r.title}</span>
-                <span className="r-time">{r.time}</span>
-              </div>
-              <ChevronRight size={18} className="r-chevron" />
-            </div>
-          ))}
-        </div>
+        )}
       </div>
 
       <style>{`
@@ -102,6 +125,16 @@ const CaregiverCalendar = () => {
         .r-name { font-size: 0.9rem; font-weight: 700; color: #1e293b; }
         .r-time { font-size: 0.75rem; color: #64748b; font-weight: 600; }
         .r-chevron { color: #cbd5e1; }
+        .r-check { color: #10b981; }
+        .is-taken { opacity: 0.6; background: #f1f5f9; }
+        .is-taken .r-name { text-decoration: line-through; color: #94a3b8; }
+        
+        .cal-empty-state {
+          display: flex; flex-direction: column; align-items: center; justify-content: center;
+          padding: 3rem 1rem; text-align: center; color: #94a3b8; gap: 1rem;
+        }
+        .empty-ico { opacity: 0.2; }
+        .cal-empty-state p { font-size: 0.9rem; font-weight: 600; line-height: 1.5; max-width: 200px; }
       `}</style>
     </div>
   );

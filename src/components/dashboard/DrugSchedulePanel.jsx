@@ -319,7 +319,8 @@ const DrugSchedulePanel = ({ currentUser, t }) => {
         </div>
       ) : (
         <div className="dsp-no-dose">
-          <p>{t('schedule.empty', 'No medications scheduled')}</p>
+          <Pill size={40} className="empty-ico" />
+          <p>{isRTL ? 'لا توجد أدوية مجدولة. يرجى إضافة أدوية لتحديث الجرعات والمواعيد.' : 'No medications scheduled. Please add drugs to update the doses and schedule.'}</p>
         </div>
       )}
 

@@ -13,7 +13,6 @@ import {
   Languages,
   CalendarClock,
 } from 'lucide-react';
-import NotificationBell from './NotificationBell';
 
 const Navbar = ({ onOpenAuth }) => {
   const { currentUser, logout } = useAuth();
@@ -86,7 +85,6 @@ const Navbar = ({ onOpenAuth }) => {
 
           {currentUser ? (
             <div className="user-menu">
-              <NotificationBell />
               <Link to="/profile" className={`nav-link profile-link ${isActive('/profile') ? 'active' : ''}`}>
                 <User size={18} /> {t('common.myDashboard')}
               </Link>

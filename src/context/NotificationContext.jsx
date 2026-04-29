@@ -11,12 +11,16 @@ const INBOX_COL = 'user_inbox';
 
 const combineDateTime = (dateStr, hhmm) => {
   const [h, m] = (hhmm || '0:0').split(':').map(Number);
-  const d = new Date(`${dateStr}T00:00:00`);
-  d.setHours(h || 0, m || 0, 0, 0);
-  return d.getTime();
+  // Create date using local parts to match user's local schedule times
+  const [y, mm, d] = dateStr.split('-').map(Number);
+  const date = new Date(y, mm - 1, d, h, m, 0, 0);
+  return date.getTime();
 };
 
-const todayStr = () => new Date().toISOString().slice(0, 10);
+const todayStr = () => {
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+};
 
 function buildDueDoseKeys(schedule, adherence, now = Date.now()) {
   const dateKey = todayStr();
@@ -25,7 +29,7 @@ function buildDueDoseKeys(schedule, adherence, now = Date.now()) {
     for (const tm of e.times || []) {
       const at = combineDateTime(dateKey, tm);
       const isPast = at <= now;
-      const isRecent = now - at < 3 * 60 * 60 * 1000; // 3h window
+      const isRecent = now - at < 24 * 60 * 60 * 1000; // 24h window for reliability
       const hasTaken = (adherence || []).some(
         (a) => a.entryId === e.id && a.date === dateKey && a.time === tm && a.status === 'taken'
       );
@@ -76,11 +80,17 @@ export const NotificationProvider = ({ children }) => {
 
   const sync = useCallback(async () => {
     if (!currentUser?.uid) {
+      console.log('[NotificationContext] No user, skipping sync');
       setItems([]);
       return;
     }
+    console.log('[NotificationContext] Syncing for user:', currentUser.uid);
     const { schedule, adherence } = await loadScheduleBundle(currentUser.uid);
+    console.log(`[NotificationContext] Schedule count: ${schedule?.length}, Adherence count: ${adherence?.length}`);
+    
     const auto = buildDueDoseKeys(schedule, adherence);
+    console.log(`[NotificationContext] Due doses found by auto-logic: ${auto.length}`);
+    
     const existing = await loadInboxItems(currentUser.uid);
     const byId = new Map();
     for (const x of existing) {
@@ -97,6 +107,7 @@ export const NotificationProvider = ({ children }) => {
         };
         byId.set(d.id, newItem);
         newlyAddedIds.add(d.id);
+        console.log('[NotificationContext] Found NEW due dose:', d.id);
       }
     }
 
@@ -120,10 +131,12 @@ export const NotificationProvider = ({ children }) => {
 
     // Browser Notification Logic
     const newDues = merged.filter(it => it.type === 'dose_due' && !it.read && !it.taken && newlyAddedIds.has(it.id));
+    console.log(`[NotificationContext] Total doses to notify: ${newDues.length}`);
     
     if (Notification.permission === 'granted') {
       for (const d of newDues) {
         try {
+          console.log('[NotificationContext] Triggering browser notification for:', d.id);
           const n = new Notification('Aoun Medication Reminder', {
             body: `It's time for your drug: ${d.drugName}. Click to mark as taken.`,
             icon: '/logo.png',

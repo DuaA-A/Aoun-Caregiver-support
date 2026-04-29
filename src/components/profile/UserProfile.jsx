@@ -28,7 +28,8 @@ const UserProfile = ({ onOpenAuth }) => {
     setLoading(true);
     try {
       if (isPreviewMode) {
-        const d = JSON.parse(localStorage.getItem('preview_drug_schedule') || '{"schedule":[]}');
+        const uid = currentUser.uid;
+        const d = JSON.parse(localStorage.getItem(`preview_drug_schedule_${uid}`) || '{"schedule":[]}');
         setMedCount(d.schedule?.length || 0);
       } else {
         const snap = await getDoc(doc(db, 'user_drug_schedule', currentUser.uid));
@@ -45,6 +46,9 @@ const UserProfile = ({ onOpenAuth }) => {
 
   useEffect(() => {
     void fetchUserData();
+    const handleUpdate = () => fetchUserData();
+    window.addEventListener('dose-updated', handleUpdate);
+    return () => window.removeEventListener('dose-updated', handleUpdate);
   }, [fetchUserData]);
 
   if (!currentUser) {
@@ -135,7 +139,7 @@ const UserProfile = ({ onOpenAuth }) => {
             <div className="dashboard-content-stack">
               {/* Top Widgets Row */}
               <div className="widgets-row">
-                <CaregiverCalendar />
+                <CaregiverCalendar currentUser={currentUser} />
                 <BehaviorLog />
               </div>
 

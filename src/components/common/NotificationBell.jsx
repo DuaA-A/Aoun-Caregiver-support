@@ -56,7 +56,7 @@ const NotificationBell = ({ isFAB = false }) => {
           <ul className="notif-list">
             {items.length === 0 && <li className="notif-empty">{t('notifications.empty')}</li>}
             {items.map((i) => (
-              <li key={i.id} className={`notif-item ${!i.read ? 'unread' : ''} ${i.taken ? 'done' : ''}`}>
+              <li key={i.id} className={`notif-item ${!i.read ? 'unread' : 'read'} ${i.taken ? 'done' : ''}`} onClick={() => markRead(i.id)}>
                 <div className="notif-ico">
                   <Pill size={18} />
                 </div>
@@ -168,7 +168,8 @@ const NotificationBell = ({ isFAB = false }) => {
         .notif-list { list-style: none; margin: 0; padding: 12px; overflow-y: auto; flex: 1; min-height: 120px; }
         .notif-item { display: flex; gap: 14px; padding: 16px; border-radius: 16px; margin-bottom: 8px; transition: all 0.2s; border: 1px solid transparent; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
         .notif-item.unread { background: #f0f9ff; border-color: #bae6fd; }
-        .notif-item.done { background: #f8fafc; border-color: #e2e8f0; opacity: 0.8; }
+        .notif-item.read, .notif-item.done { background: #f1f5f9; border-color: #e2e8f0; opacity: 0.8; }
+        .notif-item.read .notif-body strong, .notif-item.done .notif-body strong { color: #94a3b8; }
         .notif-item:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         
         .notif-ico { width: 40px; height: 40px; border-radius: 12px; background: #f1f5f9; color: #3b82f6; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
