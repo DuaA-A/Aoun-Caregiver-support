@@ -29,7 +29,7 @@ function buildDueDoseKeys(schedule, adherence, now = Date.now()) {
     for (const tm of e.times || []) {
       const at = combineDateTime(dateKey, tm);
       const isPast = at <= now;
-      const isRecent = now - at < 24 * 60 * 60 * 1000; // 24h window for reliability
+      const isRecent = now - at < 60 * 60 * 1000; // 1 hour window instead of 24h
       const hasTaken = (adherence || []).some(
         (a) => a.entryId === e.id && a.date === dateKey && a.time === tm && a.status === 'taken'
       );
@@ -199,6 +199,49 @@ export const NotificationProvider = ({ children }) => {
       window.removeEventListener('storage', handleStorage);
     };
   }, [currentUser, sync]);
+
+  useEffect(() => {
+    const handleDrugAdded = async (e) => {
+      const { name, conflicts } = e.detail;
+      if (!currentUser?.uid) return;
+      
+      const newItems = [...items];
+      const timestamp = new Date().toISOString();
+      
+      // Add "Drug Added" confirmation
+      newItems.push({
+        id: `system-add-${Date.now()}`,
+        type: 'system_alert',
+        drugName: name,
+        title: i18n.language === 'ar' ? `تم إضافة ${name} إلى الجدول` : `${name} added to schedule`,
+        read: false,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        dateKey: todayStr()
+      });
+
+      // Add Conflict warning if any
+      if (conflicts && conflicts.length > 0) {
+        newItems.push({
+          id: `system-conflict-${Date.now()}`,
+          type: 'warning',
+          title: i18n.language === 'ar' ? 'تنبيه: تعارض في المواعيد' : 'Warning: Timing Conflict',
+          drugName: name,
+          desc: i18n.language === 'ar' 
+            ? `هذا الدواء يشترك في نفس الموعد مع: ${conflicts.join(', ')}`
+            : `This drug shares the same time with: ${conflicts.join(', ')}`,
+          read: false,
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          dateKey: todayStr()
+        });
+      }
+
+      setItems(newItems);
+      await saveInboxItems(currentUser.uid, newItems);
+    };
+
+    window.addEventListener('drug-added', handleDrugAdded);
+    return () => window.removeEventListener('drug-added', handleDrugAdded);
+  }, [currentUser, items, i18n.language]);
 
   const unreadCount = useMemo(() => items.filter((i) => !i.read).length, [items]);
 

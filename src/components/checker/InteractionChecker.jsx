@@ -30,6 +30,112 @@ const InteractionChecker = ({ onOpenAuth }) => {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
 
+  const translateResult = (text) => {
+    if (!text || !isRTL) return text;
+    const map = {
+      // Descriptions
+      'Mechanism: Anticholinergics block acetylcholine receptors in the brain, completely neutralizing the clinical effect of Alzheimer\'s medication.': 'الآلية: مضادات الكولين تمنع مستقبلات الأسيتيل كولين في الدماغ، مما يبطل تماماً التأثير السريري لأدوية الزهايمر.',
+      'Mechanism: Synergistic Heart Rate Suppression. Alzheimer\'s meds stimulate the Vagus Nerve; combining with heart drugs leads to Heart Block.': 'الآلية: تثبيط تآزري لضربات القلب. أدوية الزهايمر تحفز العصب الحائر؛ دمجها مع أدوية القلب يؤدي إلى توقف القلب.',
+      'Mechanism: Gastric Mucosal Depletion. AD drugs increase stomach acid while these irritants block the protective mucus layer.': 'الآلية: استنزاف الغشاء المخاطي للمعدة. أدوية الزهايمر تزيد من حموضة المعدة بينما تمنع هذه المهيجات طبقة المخاط الواقية.',
+      'Mechanism: Liver Filtration Blockage. These drugs prevent the liver from clearing AD meds, causing toxic accumulation.': 'الآلية: انسداد تنقية الكبد. هذه الأدوية تمنع الكبد من التخلص من أدوية الزهايمر، مما يسبب تراكمًا سامًا.',
+      'Mechanism: NMDA Receptor Competition. Shared receptor targets lead to central nervous system toxicity.': 'الآلية: تنافس على مستقبلات NMDA. الأهداف المشتركة للمستقبلات تؤدي إلى تسمم الجهاز العصبي المركزي.',
+      'Mechanism: Urinary Excretion Blockage. Alkaline urine forces Memantine back into the bloodstream.': 'الآلية: انسداد الإفراز البولي. البول القلوي يجبر الميمانتين على العودة إلى مجرى الدم.',
+      'Mechanism: Additive Cholinergic Effect. Both drugs increase acetylcholine, leading to a mild overdose.': 'الآلية: تأثير كوليني مضاف. كلا الدواءين يزيدان من الأسيتيل كولين، مما يؤدي لجرعة زائدة طفيفة.',
+      'Mechanism: CYP Enzyme Induction. These drugs accelerate liver metabolism of AD medications, drastically reducing their blood levels and clinical effectiveness.': 'الآلية: تحفيز إنزيمات الكبد. هذه الأدوية تسرع عملية استقلاب أدوية الزهايمر في الكبد، مما يقلل بشكل كبير من مستوياتها في الدم وفعاليتها السريرية.',
+      'Mechanism: CYP inducers may increase renal clearance of Memantine, reducing its therapeutic effect.': 'الآلية: محفزات الكبد قد تزيد من التخلص الكلوي من الميمانتين، مما يقلل من تأثيره العلاجي.',
+      'Mechanism: Carbapenems can cause CNS excitability and seizures, compounding neurological burden in Alzheimer\'s patients.': 'الآلية: الكاربابينيمات يمكن أن تسبب استثارة الجهاز العصبي المركزي وتشنجات، مما يضاعف العبء العصبي على مرضى الزهايمر.',
+      'Mechanism: Tramadol lowers seizure threshold and has serotonergic activity. Cholinesterase inhibitors further increase CNS excitability.': 'الآلية: الترامادول يقلل من عتبة التشنجات وله نشاط سيروتونيني. مثبطات الكولينستريز تزيد من استثارة الجهاز العصبي المركزي.',
+      'Mechanism: Bupropion lowers the seizure threshold dose-dependently. Combined with cholinergic stimulation from AD drugs, the risk of seizures is significantly elevated.': 'الآلية: البوبروبيون يقلل من عتبة التشنجات بشكل يعتمد على الجرعة. بالاشتراك مع التحفيز الكوليني من أدوية الزهايمر، يرتفع خطر التشنجات بشكل كبير.',
+      'Cholinesterase inhibitors can increase gastric acid; NSAIDs increase GI bleeding risk — combined risk of stomach irritation or bleeding.': 'مثبطات الكولينستريز يمكن أن تزيد من حموضة المعدة؛ المسكنات تزيد من خطر نزيف الجهاز الهضمي - خطر مشترك لتهيج المعدة أو النزيف.',
+      'Paroxetine inhibits CYP2D6 and can raise galantamine levels, increasing cholinergic side effects (nausea, vomiting, diarrhea, bradycardia).': 'الباروكستين يثبط إنزيم CYP2D6 ويمكن أن يرفع مستويات الجالانتامين، مما يزيد من الآثار الجانبية الكولينية (الغثيان، القيء، الإسهال، بطء القلب).',
+      'Urinary alkalinizers can reduce memantine clearance and increase drug levels and central nervous system side effects.': 'قلويات البول يمكن أن تقلل من التخلص من الميمانتين وتزيد من مستويات الدواء والآثار الجانبية للجهاز العصبي المركزي.',
+      'Additive CNS effects possible (dizziness, confusion).': 'تأثيرات مضافة محتملة على الجهاز العصبي المركزي (دوخة، ارتباك).',
+
+      // Recommendations / Comments
+      'CRITICAL: Strictly contraindicated. These drugs actively erase the benefit of memory treatment.': 'حرج: يمنع استخدامه قطعيًا. هذه الأدوية تبطل مفعول علاج الذاكرة تماماً.',
+      'CRITICAL: Risk of sudden cardiac arrest or syncope. Monitor pulse daily.': 'حرج: خطر التوقف المفاجئ للقلب أو الإغماء. راقب النبض يومياً.',
+      'WARNING: Extremely high risk of GI bleed. Preferred alternative: Paracetamol.': 'تحذير: خطر كبير جداً لنزيف الجهاز الهضمي. البديل المفضل: باراسيتامول.',
+      'WARNING: Risk of "Cholinergic Crisis". Immediate dose review required.': 'تحذير: خطر حدوث "أزمة كولينية". مطلوب مراجعة فورية للجرعة.',
+      'CRITICAL: Avoid dextromethorphan (cough syrup) and amantadine.': 'حرج: تجنب ديكستروميثورفان (شراب السعال) والأمانتادين.',
+      'WARNING: Avoid antacids like sodium bicarbonate when taking Memantine.': 'تحذير: تجنب مضادات الحموضة مثل بيكربونات الصوديوم عند تناول الميمانتين.',
+      'CAUTION: Monitor for excessive GI distress.': 'تنبيه: راقب وجود أي اضطرابات هضمية مفرطة.',
+      'WARNING: AD medication dose may need significant increase. Regular clinical monitoring required.': 'تحذير: قد تحتاج جرعة دواء الزهايمر إلى زيادة كبيرة. المراقبة السريرية المنتظمة مطلوبة.',
+      'CAUTION: Monitor for reduced Memantine effectiveness. Dose adjustment may be needed.': 'تنبيه: راقب تراجع فعالية الميمانتين. قد تكون هناك حاجة لتعديل الجرعة.',
+      'CAUTION: Monitor neurological status closely during carbapenem therapy.': 'تنبيه: راقب الحالة العصبية عن كثب أثناء العلاج بالكاربابينيم.',
+      'WARNING: Use lowest effective tramadol dose for shortest duration. Monitor for seizures and confusion.': 'تحذير: استخدم أقل جرعة فعالة من الترامادول ولأقصر مدة. راقب التشنجات والارتباك.',
+      'WARNING: Avoid in patients with prior seizures. Use minimum effective bupropion dose.': 'تحذير: تجنب استخدامه للمرضى الذين عانوا من تشنجات سابقة. استخدم أقل جرعة فعالة من البوبروبيون.',
+      'Prefer acetaminophen for pain if suitable. If an NSAID is necessary, use the lowest dose for the shortest time with food and clinician oversight.': 'يفضل استخدام الباراسيتامول للألم إذا كان مناسباً. إذا كان المسكن ضرورياً، استخدم أقل جرعة لأقصر وقت مع الطعام وإشراف الطبيب.',
+      'Report persistent vomiting, fainting, or very slow pulse to a clinician promptly.': 'أبلغ الطبيب فوراً عن القيء المستمر أو الإغماء أو نبض القلب البطيء جداً.',
+      'Review use of antacids and urinary alkalinizers with a pharmacist or doctor if memantine side effects appear.': 'راجع استخدام مضادات الحموضة وقلويات البول مع الصيدلي أو الطبيب إذا ظهرت آثار جانبية للميمانتين.',
+      'Avoid duplicate therapy unless neurologist-directed.': 'تجنب العلاج المكرر ما لم يوجه بذلك طبيب الأعصاب.',
+
+      // Gender Specifics
+      'Females: Elderly women often use drugs for urinary incontinence (e.g., Vesicare). This interaction leads to painful urinary retention, potential sepsis, and acute delirium.': 'الإناث: غالباً ما تستخدم النساء المسنات أدوية لسلس البول (مثل فيزيكير). هذا التفاعل يؤدي إلى احتباس بول مؤلم، وتسمم دم محتمل، وهذيان حاد.',
+      'Females: Significantly higher risk of syncope-related falls leading to hip fractures (70% higher than males due to osteoporosis).': 'الإناث: خطر أعلى بكثير للسقوط المرتبط بالإغماء مما يؤدي لكسور الورك (أعلى بنسبة 70% من الذكور بسبب هشاشة العظام).',
+      'Males: Elderly males who smoke or consume alcohol are at the highest risk for "silent" gastrointestinal bleeding.': 'الذكور: الرجال المسنون الذين يدخنون أو يستهلكون الكحول هم الأكثر عرضة لخطر نزيف الجهاز الهضمي "الصامت".',
+      'Elderly: Highly susceptible to fluid shifts caused by massive glandular secretions.': 'كبار السن: عرضة بشكل كبير لاختلال السوائل الناتج عن إفرازات غدية ضخمة.',
+      'Elderly: High risk of aggression, psychosis, and vivid hallucinations.': 'كبار السن: خطر كبير للعدوانية، الذهان، والهلوسة البصرية الواضحة.',
+      'Dehydrated Seniors: High risk of neurotoxicity.': 'كبار السن المصابون بالجفاف: خطر كبير للتسمم العصبي.',
+      'Elderly: Reduced drug efficacy may appear as sudden cognitive decline, mistaken for disease progression.': 'كبار السن: قد يظهر تراجع فعالية الدواء كتدهور معرفي مفاجئ، يُعتقد خطأً أنه تقدم في المرض.',
+      'Elderly: Higher seizure susceptibility due to reduced seizure threshold.': 'كبار السن: حساسية أعلى للتشنجات بسبب انخفاض عتبة التشنج.',
+      'Elderly: Significantly reduced tramadol clearance increases toxicity risk.': 'كبار السن: انخفاض تخلص الجسم من الترامادول بشكل كبير يزيد من خطر التسمم.',
+      'Elderly: Pre-existing cortical atrophy in Alzheimer\'s increases seizure vulnerability.': 'كبار السن: ضمور القشرة الدماغية الموجود مسبقاً في مرضى الزهايمر يزيد من الحساسية للتشنجات.',
+
+      // First Aid
+      'Stop the anticholinergic drug immediately. Cool the body if feverish.': 'توقف عن تناول الدواء المضاد للكولين فوراً. برد الجسم إذا كان محموماً.',
+      'RED FLAGS: Acute delirium (sudden inability to recognize family), extreme dry mouth/eyes (unable to swallow), total urinary retention > 8 hours, and high fever without sweating.': 'علامات الخطر: هذيان حاد (عدم القدرة المفاجئة على التعرف على الأهل)، جفاف شديد بالفم/العين، احتباس بولي كامل لأكثر من 8 ساعات، وحمى عالية بدون عرق.',
+      'Hospitalization required for urinary catheterization, IV fluids, and potential Physostigmine antidote.': 'يتطلب دخول المستشفى لتركيب قسطرة بولية، سوائل وريدية، وترياق فيزوستيجمين المحتمل.',
+      'Lay patient flat and elevate legs to maintain cerebral blood flow. Do not give food/drink if unconscious.': 'ضع المريض بشكل مسطح وارفع الساقين للحفاظ على تدفق الدم للدماغ. لا تعطِ طعاماً أو شراباً إذا كان فاقداً للوعي.',
+      'RED FLAGS: Heart rate < 50 BPM, cold limbs, cold sweat, and full loss of consciousness (syncope).': 'علامات الخطر: نبض أقل من 50، برودة الأطراف، عرق بارد، وفقدان كامل للوعي (إغماء).',
+      'Emergency ER visit for ECG and standard IV Atropine injection to restore heart rate.': 'زيارة طوارئ فورية لعمل رسم قلب وحقنة أتروبين وريدية لاستعادة معدل ضربات القلب.',
+      'Stop the irritant immediately.': 'توقف عن تناول المادة المهيجة فوراً.',
+      'RED FLAGS: "Coffee-ground" vomit (digested blood), tarry black stool (Melena), and sharp anemia/hypotension.': 'علامات الخطر: قيء يشبه "تفل القهوة" (دم مهضوم)، براز أسود قطراني، وأنيميا حادة أو انخفاض في الضغط.',
+      'ER required for potential blood transfusion and IV Proton Pump Inhibitors (PPIs) to halt bleeding.': 'مطلوب طوارئ لنقل دم محتمل وحقن وريدية لمثبطات مضخة البروتون لوقف النزيف.',
+      'Transfer to ICU immediately.': 'انقل المريض إلى العناية المركزة فوراً.',
+      'SLUDGE Syndrome: Excessive salivation, tearing, involuntary urination, watery diarrhea, respiratory secretions, and muscle twitches.': 'متلازمة SLUDGE: لعاب مفرط، دموع، تبول لا إرادي، إسهال مائي، إفرازات تنفسية، وتقلصات عضلية.',
+      'Standard ICU care with Atropine antidote and potential gastric lavage.': 'رعاية مركزة قياسية مع ترياق الأتروبين وغسيل معدة محتمل.',
+      'Discontinue and monitor for behavioral changes.': 'توقف عن الدواء وراقب التغيرات السلوكية.',
+      'RED FLAGS: Psychosis, aggression, vivid hallucinations, and neurological agitation.': 'علامات الخطر: ذهان، عدوانية، هلوسة واضحة، واضطراب عصبي.',
+      'Hospital sedation (Benzodiazepines) typically required.': 'يتطلب عادةً تهدئة في المستشفى (بنزوديازيبينات).',
+      'Stop the alkalinizing agent and increase hydration.': 'توقف عن العامل القلوي وزد من شرب السوائل.',
+      'SYMPTOMS: Severe confusion, neurotoxicity, and slowed cognitive processing.': 'الأعراض: ارتباك شديد، تسمم عصبي، وبطء في العمليات الإدراكية.',
+      'Clinical evaluation required if confusion persists.': 'مطلوب تقييم سريري إذا استمر الارتباك.',
+      'Dose adjustment required for both drugs.': 'تعديل الجرعة مطلوب لكلا الدواءين.',
+      'SYMPTOMS: Persistent nausea, severe cramps, and excessive sweating.': 'الأعراض: غثيان مستمر، تشنجات شديدة، وعرق مفرط.',
+      'Clinical review.': 'مراجعة سريرية.',
+      'Do not stop the inducer abruptly — sudden discontinuation will cause AD drug toxicity as levels spike.': 'لا توقف المحفز فجأة - التوقف المفاجئ سيسبب تسمماً بأدوية الزهايمر نتيجة ارتفاع مستوياتها.',
+      'SIGNS OF INEFFICACY: Sudden worsening memory, confusion, agitation — not an emergency but requires urgent prescriber review.': 'علامات عدم الفعالية: تدهور مفاجئ في الذاكرة، ارتباك، اضطراب - ليست حالة طوارئ ولكنها تتطلب مراجعة الطبيب.',
+      'Clinical review and plasma drug level monitoring.': 'مراجعة سريرية ومراقبة مستوى الدواء في البلازما.',
+      'Report sudden worsening of symptoms to prescriber.': 'أبلغ الطبيب عن التدهور المفاجئ في الأعراض.',
+      'No direct toxicity — risk is loss of efficacy.': 'لا يوجد تسمم مباشر - الخطر هو فقدان الفعالية.',
+      'Watch for new-onset seizures, tremors, or sudden confusion during IV antibiotic treatment.': 'راقب ظهور تشنجات جديدة، رعشة، أو ارتباك مفاجئ أثناء العلاج بالمضاد الحيوي الوريدي.',
+      'RED FLAGS: Seizures, myoclonus, severe agitation — emergency services required.': 'علامات الخطر: تشنجات، رمع عضلي، اضطراب حاد - مطلوب خدمات الطوارئ.',
+      'ER evaluation and EEG if seizures occur.': 'تقييم في الطوارئ ورسم مخ في حالة حدوث تشنجات.',
+      'Agitation, muscle twitching, sweating, or rapid heart rate — stop tramadol and seek urgent care.': 'اضطراب، رعشة عضلية، عرق، أو ضربات قلب سريعة - توقف عن الترامادول واطلب الرعاية العاجلة.',
+      'RED FLAGS: Seizures, high fever, severe muscle rigidity — emergency services (Serotonin Syndrome protocol).': 'علامات الخطر: تشنجات، حمى عالية، تصلب عضلي شديد - خدمات الطوارئ (بروتوكول متلازمة السيروتونين).',
+      'ER: Benzodiazepines for seizures, Cyproheptadine for serotonin syndrome.': 'الطوارئ: بنزوديازيبينات للتشنجات، سيبروهيبتادين لمتلازمة السيروتونين.',
+      'New twitching, jerking, or loss of consciousness — emergency services immediately.': 'ارتجاف جديد، تشنجات، أو فقدان للوعي - خدمات الطوارئ فوراً.',
+      'RED FLAGS: Tonic-clonic seizure — do not restrain, protect head, call emergency services.': 'علامات الخطر: نوبة صرع كبرى - لا تقيد المريض، احمِ الرأس، واتصل بالطوارئ.',
+      'ER: IV Lorazepam or Diazepam for seizure management.': 'الطوارئ: لورازيبام أو ديازيبام وريدي لإدارة النوبة.',
+      'Watch for black/tarry stools, vomiting blood, or severe stomach pain — seek urgent care.': 'راقب البراز الأسود/القطراني، قيء الدم، أو آلام المعدة الشديدة - اطلب الرعاية العاجلة.',
+      'Heavy NSAID use can harm kidneys and stomach; seek help for reduced urine, swelling, or persistent vomiting.': 'الاستخدام الكثيف للمسكنات يضر الكلى والمعدة؛ اطلب المساعدة في حالة نقص البول، التورم، أو القيء المستمر.',
+      'Avoid NSAIDs in pregnancy unless specifically prescribed.': 'تجنب المسكنات أثناء الحمل ما لم توصف خصيصاً.',
+      'NSAIDs in children: use only with weight-appropriate dosing and clinician advice.': 'المسكنات للأطفال: تستخدم فقط بجرعات مناسبة للوزن وبنصيحة الطبيب.',
+      'Severe vomiting or fainting warrants urgent medical assessment.': 'القيء الشديد أو الإغماء يتطلب تقييماً طبياً عاجلاً.',
+      'Confusion with sweating, tearing, or diarrhea may suggest cholinergic excess — seek emergency advice.': 'الارتباك مع العرق أو الدموع أو الإسهال قد يشير إلى فرط كوليني - اطلب نصيحة الطوارئ.',
+      'Medication review with prescriber before changes.': 'مراجعة الأدوية مع الطبيب قبل إجراء تغييرات.',
+      'Not typical combination in children; specialist only.': 'ليست تركيبة شائعة للأطفال؛ للمتخصصين فقط.',
+      'New agitation, hallucinations, or dizziness after starting antacids — contact prescriber same day.': 'اضطراب جديد، هلوسة، أو دوخة بعد بدء مضادات الحموضة - اتصل بالطبيب في نفس اليوم.',
+      'Severe confusion or inability to walk safely — seek urgent care.': 'ارتباك شديد أو عدم القدرة على المشي بأمان - اطلب الرعاية العاجلة.',
+      'Discuss all new medicines with maternity care.': 'ناقش جميع الأدوية الجديدة مع رعاية الأمومة.',
+      'Specialist guidance only.': 'توجيهات المختصين فقط.',
+      'Falls or new dizziness — medication review with prescriber.': 'سقوط أو دوخة جديدة - مراجعة الأدوية مع الطبيب.',
+      'Severe confusion or reduced consciousness — emergency services.': 'ارتباك شديد أو انخفاض الوعي - خدمات الطوارئ.',
+      'Specialist review.': 'مراجعة المختص.',
+    };
+    return map[text] || text;
+  };
+
   const [activeTab, setActiveTab] = useState('quick');
   const [inputDrug, setInputDrug] = useState('');
   const [medsToCheck, setMedsToCheck] = useState([]);
@@ -204,37 +310,37 @@ const InteractionChecker = ({ onOpenAuth }) => {
           {gs && (
             <div className="fa-row">
               <span className="fa-tag gender">{t('checker.faGender')}</span>
-              <p className="fa-val font-bold text-purple-700">{gs}</p>
+              <p className="fa-val font-bold text-purple-700">{translateResult(gs)}</p>
             </div>
           )}
           {fa?.general && (
             <div className="fa-row">
               <span className="fa-tag">{t('checker.faGeneral')}</span>
-              <p className="fa-val">{fa.general}</p>
+              <p className="fa-val">{translateResult(fa.general)}</p>
             </div>
           )}
           {fa?.toxicity && (
             <div className="fa-row">
               <span className="fa-tag toxic">{t('checker.faToxicity')}</span>
-              <p className="fa-val text-red-600 font-black">{fa.toxicity}</p>
+              <p className="fa-val text-red-600 font-black">{translateResult(fa.toxicity)}</p>
             </div>
           )}
           {fa?.emergencyProtocol && (
             <div className="fa-row emergency-highlight">
               <span className="fa-tag emergency">{t('checker.faEmergency')}</span>
-              <p className="fa-val font-black text-red-900 uppercase">{fa.emergencyProtocol}</p>
+              <p className="fa-val font-black text-red-900 uppercase">{translateResult(fa.emergencyProtocol)}</p>
             </div>
           )}
           {fa?.pregnancy && (
             <div className="fa-row">
               <span className="fa-tag">{t('checker.faPregnancy')}</span>
-              <p className="fa-val">{fa.pregnancy}</p>
+              <p className="fa-val">{translateResult(fa.pregnancy)}</p>
             </div>
           )}
           {fa?.pediatric && (
             <div className="fa-row">
               <span className="fa-tag">{t('checker.faPediatric')}</span>
-              <p className="fa-val">{fa.pediatric}</p>
+              <p className="fa-val">{translateResult(fa.pediatric)}</p>
             </div>
           )}
         </div>
@@ -401,10 +507,10 @@ const InteractionChecker = ({ onOpenAuth }) => {
                               </h4>
                               <div className="card-details">
                                 <p>
-                                  <strong>{t('checker.description')}</strong> {inter.description}
+                                  <strong>{t('checker.description')}</strong> {translateResult(inter.description)}
                                 </p>
                                 <p className="physician-note">
-                                  <strong>{t('checker.note')}</strong> {inter.recommendation}
+                                  <strong>{t('checker.note')}</strong> {translateResult(inter.recommendation)}
                                 </p>
                                 {renderFirstAid(inter)}
                               </div>

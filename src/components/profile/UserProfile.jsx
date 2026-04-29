@@ -137,14 +137,14 @@ const UserProfile = ({ onOpenAuth }) => {
           {/* Main Content Area */}
           <main className="profile-right-col">
             <div className="dashboard-content-stack">
-              {/* Top Widgets Row */}
+              {/* Main Medication Management Panel (Top Priority) */}
+              <DrugSchedulePanel currentUser={currentUser} t={t} />
+
+              {/* Secondary Widgets Row */}
               <div className="widgets-row">
                 <CaregiverCalendar currentUser={currentUser} />
                 <BehaviorLog />
               </div>
-
-              {/* Main Medication Management Panel */}
-              <DrugSchedulePanel currentUser={currentUser} t={t} />
             </div>
           </main>
         </div>
