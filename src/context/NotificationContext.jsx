@@ -1,4 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { useAuth } from './AuthContext';
 import { db, isPreviewMode } from '../firebase/config';
@@ -75,7 +77,9 @@ async function saveInboxItems(uid, items) {
 
 export const NotificationProvider = ({ children }) => {
   const { currentUser } = useAuth();
+  const { i18n } = useTranslation();
   const [items, setItems] = useState([]);
+
   const [open, setOpen] = useState(false);
 
   const sync = useCallback(async () => {
