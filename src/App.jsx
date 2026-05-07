@@ -709,7 +709,7 @@ const App = () => {
         .main-content { flex: 1; padding-top: 60px; width: 100%; position: relative; z-index: 1; margin-bottom: 0; }
         .dark-footer { 
           margin-top: 0; 
-          padding: 6rem 2rem 3rem; 
+          padding: 3.5rem 2rem 2rem; 
           text-align: center; 
           background-color: #1c3a4f; 
           color: white; 
@@ -720,10 +720,10 @@ const App = () => {
         .dark-footer::before {
           content: "";
           position: absolute;
-          top: -99px; /* Slight overlap to prevent 1px gap */
+          top: -49px; /* Reduced height overlap */
           left: 0;
           width: 100%;
-          height: 100px;
+          height: 50px;
           background-color: transparent;
           background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath fill='%231c3a4f' d='M0,50 C200,100 400,0 600,50 C800,100 1000,0 1200,50 V120 H0 Z' /%3E%3C/svg%3E");
           background-size: 100% 100%;

@@ -49,7 +49,13 @@ const InteractionChecker = ({ onOpenAuth }) => {
       'Cholinesterase inhibitors can increase gastric acid; NSAIDs increase GI bleeding risk — combined risk of stomach irritation or bleeding.': 'مثبطات الكولينستريز يمكن أن تزيد من حموضة المعدة؛ المسكنات تزيد من خطر نزيف الجهاز الهضمي - خطر مشترك لتهيج المعدة أو النزيف.',
       'Paroxetine inhibits CYP2D6 and can raise galantamine levels, increasing cholinergic side effects (nausea, vomiting, diarrhea, bradycardia).': 'الباروكستين يثبط إنزيم CYP2D6 ويمكن أن يرفع مستويات الجالانتامين، مما يزيد من الآثار الجانبية الكولينية (الغثيان، القيء، الإسهال، بطء القلب).',
       'Urinary alkalinizers can reduce memantine clearance and increase drug levels and central nervous system side effects.': 'قلويات البول يمكن أن تقلل من التخلص من الميمانتين وتزيد من مستويات الدواء والآثار الجانبية للجهاز العصبي المركزي.',
-      'Additive CNS effects possible (dizziness, confusion).': 'تأثيرات مضافة محتملة على الجهاز العصبي المركزي (دوخة، ارتباك).',
+      'Mechanism: Additive CNS effects possible (dizziness, confusion).': 'تأثيرات مضافة محتملة على الجهاز العصبي المركزي (دوخة، ارتباك).',
+      'Mechanism: Additive Gastrointestinal Side Effects. Both drugs can irritate the digestive tract.': 'الآلية: آثار جانبية هضمية مضافة. كلا الدواءين قد يسببان تهيجاً للجهاز الهضمي.',
+      'Mechanism: Renal Competition. Both drugs are excreted by the kidneys and may compete for clearance.': 'الآلية: تنافس كلوي. يتم إفراز كلا الدواءين عن طريق الكلى وقد يتنافسان على التخلص منهما.',
+      'Mechanism: Mixed Autonomic Interaction. Hypoglycemia from diabetes meds combined with bradycardia from AD meds increases fall risk.': 'الآلية: تفاعل عصبي لاإرادي مختلط. انخفاض سكر الدم الناتج عن أدوية السكري مع بطء القلب الناتج عن أدوية الزهايمر يزيد من خطر السقوط.',
+      'Mechanism: Masked Hypoglycemia. Donepezil/Rivastigmine may mask or be confused with symptoms of low blood sugar.': 'الآلية: نقص سكر الدم المقنع. قد تخفي أدوية الزهايمر أعراض انخفاض سكر الدم أو يتم الخلط بينهما.',
+      'Mechanism: Shared Renal Excretion. Possible accumulation of both drugs in patients with kidney issues.': 'الآلية: إفراز كلوي مشترك. احتمال تراكم كلا الدواءين في المرضى الذين يعانون من مشاكل الكلى.',
+      'Mechanism: Additive GI Side Effects. No direct serious interaction, but both can cause stomach upset.': 'الآلية: آثار جانبية هضمية مضافة. لا يوجد تفاعل خطير مباشر، لكن كلاهما قد يسببان اضطراباً في المعدة.',
 
       // Recommendations / Comments
       'CRITICAL: Strictly contraindicated. These drugs actively erase the benefit of memory treatment.': 'حرج: يمنع استخدامه قطعيًا. هذه الأدوية تبطل مفعول علاج الذاكرة تماماً.',
@@ -68,6 +74,12 @@ const InteractionChecker = ({ onOpenAuth }) => {
       'Report persistent vomiting, fainting, or very slow pulse to a clinician promptly.': 'أبلغ الطبيب فوراً عن القيء المستمر أو الإغماء أو نبض القلب البطيء جداً.',
       'Review use of antacids and urinary alkalinizers with a pharmacist or doctor if memantine side effects appear.': 'راجع استخدام مضادات الحموضة وقلويات البول مع الصيدلي أو الطبيب إذا ظهرت آثار جانبية للميمانتين.',
       'Avoid duplicate therapy unless neurologist-directed.': 'تجنب العلاج المكرر ما لم يوجه بذلك طبيب الأعصاب.',
+      'CAUTION: Increased risk of nausea and diarrhea. Monitor patient tolerance.': 'تنبيه: زيادة خطر الغثيان والإسهال. راقب تحمل المريض.',
+      'CAUTION: Monitor kidney function, especially in patients with existing renal impairment.': 'تنبيه: راقب وظائف الكلى، خاصة في المرضى الذين يعانون من قصور كلوي موجود مسبقاً.',
+      'WARNING: Close monitoring of blood glucose and pulse is mandatory.': 'تحذير: المراقبة الدقيقة لسكر الدم والنبض إلزامية.',
+      'WARNING: Hypoglycemia confusion can be mistaken for Alzheimer\'s agitation. Monitor blood sugar closely.': 'تحذير: يمكن الخلط بين ارتباك نقص سكر الدم واضطراب الزهايمر. راقب سكر الدم عن كثب.',
+      'CAUTION: Monitor renal function (Creatinine/GFR).': 'تنبيه: راقب وظائف الكلى (الكرياتينين/معدل الترشيح الكلوي).',
+      'Generally safe together. Monitor for temporary nausea or diarrhea.': 'آمنان معاً بشكل عام. راقب الغثيان أو الإسهال المؤقت.',
 
       // Gender Specifics
       'Females: Elderly women often use drugs for urinary incontinence (e.g., Vesicare). This interaction leads to painful urinary retention, potential sepsis, and acute delirium.': 'الإناث: غالباً ما تستخدم النساء المسنات أدوية لسلس البول (مثل فيزيكير). هذا التفاعل يؤدي إلى احتباس بول مؤلم، وتسمم دم محتمل، وهذيان حاد.',
@@ -132,6 +144,15 @@ const InteractionChecker = ({ onOpenAuth }) => {
       'Falls or new dizziness — medication review with prescriber.': 'سقوط أو دوخة جديدة - مراجعة الأدوية مع الطبيب.',
       'Severe confusion or reduced consciousness — emergency services.': 'ارتباك شديد أو انخفاض الوعي - خدمات الطوارئ.',
       'Specialist review.': 'مراجعة المختص.',
+      'Monitor for dehydration if diarrhea occurs.': 'راقب حدوث الجفاف في حالة حدوث إسهال.',
+      'Ensure adequate hydration.': 'تأكد من شرب كميات كافية من السوائل.',
+      'Check blood glucose if patient feels dizzy or weak.': 'افحص سكر الدم إذا شعر المريض بالدوخة أو الضعف.',
+      'Always rule out hypoglycemia first when sudden confusion occurs.': 'استبعد دائماً نقص سكر الدم أولاً عند حدوث ارتباك مفاجئ.',
+      'Ensure regular kidney function check-ups.': 'تأكد من إجراء فحص دوري لوظائف الكلى.',
+      'Take with food to minimize stomach upset.': 'تناول الدواء مع الطعام لتقليل اضطراب المعدة.',
+      'RED FLAGS: Severe dizziness, cold sweat, confusion, and slow pulse.': 'علامات الخطر: دوخة شديدة، عرق بارد، ارتباك، ونبض بطيء.',
+      'RED FLAGS: Sudden confusion, agitation, or loss of consciousness.': 'علامات الخطر: ارتباك مفاجئ، اضطراب، أو فقدان للوعي.',
+      'SIGNS: Lactic acidosis (metformin) or neurotoxicity (memantine) in severe renal failure.': 'العلامات: الحماض اللبني (ميتفورمين) أو التسمم العصبي (ميمانتين) في حالة الفشل الكلوي الحاد.',
     };
     return map[text] || text;
   };
@@ -462,25 +483,7 @@ const InteractionChecker = ({ onOpenAuth }) => {
                 </div>
               ) : reportData.checked ? (
                 <div className="interactions-container animate-fade-in">
-                  <div className="critical-medical-disclaimer glass-card mb-6">
-                    <AlertTriangle size={24} className="text-red-600" />
-                    <p className="font-bold text-red-800">{t('checker.criticalDisclaimer')}</p>
-                  </div>
-
-                  {reportData.meta && (
-                    <div className="source-banner glass-card">
-                      {reportData.meta.rxnavUsed ? (
-                        <span className="ok">{t('checker.sourceRxnav')}</span>
-                      ) : reportData.meta.rxnavAttempted ? (
-                        <span className="warn">{t('checker.sourceRxnavEmpty')}</span>
-                      ) : (
-                        <span className="warn">{t('checker.sourceRxnavShort')}</span>
-                      )}
-                      {reportData.meta.localPairs > 0 && (
-                        <span className="muted"> · {t('checker.sourceLocal', { n: reportData.meta.localPairs })}</span>
-                      )}
-                    </div>
-                  )}
+                  {/* Clinical results below */}
 
                   <div className="interaction-report glass-card border-top-purple">
                     <div className="report-header">
@@ -744,10 +747,18 @@ const InteractionChecker = ({ onOpenAuth }) => {
         .food-detail p { margin: 0; color: var(--text-main); font-size: 0.95rem; line-height: 1.5; }
         .source-note { font-size: 0.8rem; color: #d97706; border-top: 1px solid #fde68a; padding-top: 0.5rem; margin-top: 0.5rem; font-style: italic; text-align: inherit; }
 
-        .disclaimer-box { background: #eff6ff; border: 1px solid #bfdbfe; padding: 1.25rem; border-radius: 12px; color: #1e40af; font-size: 0.9rem; line-height: 1.6; text-align: inherit; }
-
-        .critical-medical-disclaimer { display: flex; gap: 1rem; align-items: center; padding: 1.25rem; background: #fff1f2; border: 2px solid #fecaca; border-radius: 16px; }
-        .critical-medical-disclaimer p { margin: 0; font-size: 0.95rem; line-height: 1.5; }
+        .disclaimer-box { 
+          background: #f8fafc; 
+          border: 1px solid #e2e8f0; 
+          padding: 1rem 1.25rem; 
+          border-radius: 12px; 
+          color: #64748b; 
+          font-size: 0.8rem; 
+          line-height: 1.6; 
+          text-align: inherit; 
+          margin-top: 2rem;
+        }
+        .disclaimer-box strong { color: #475569; display: block; margin-bottom: 4px; font-size: 0.85rem; }
 
         .fa-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; text-align: inherit; }
         .fa-tag { font-size: 0.65rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.05em; color: #64748b; }

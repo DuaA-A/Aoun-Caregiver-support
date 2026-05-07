@@ -4,18 +4,23 @@ const rxcuiCache = new Map();
 const interactionsCache = new Map();
 
 export const BASELINE_AD_DRUGS = [
+  'Donepezil',
   'Rivastigmine',
   'Galantamine',
   'Memantine',
 ];
 
 const AD_SYNONYMS = [
+  'donepezil',
+  'aricept',
+  'alzepzil',
   'rivastigmine',
   'exelon',
   'galantamine',
   'razadyne',
   'memantine',
   'namenda',
+  'ebixa',
 ];
 
 export const isLikelyAdTherapyName = (name) => {

@@ -149,7 +149,8 @@
   "mentalExercises": {
     "title": "Mental Exercises",
     "subtitle": "Cognitive Stimulation",
-    "desc": "Discover simple, effective activities caregivers can use to help stimulate memory, improve focus, and enhance the daily life of Alzheimer's patients."
+    "desc": "Discover simple, effective activities caregivers can use to help stimulate memory, improve focus, and enhance the daily life of Alzheimer's patients.",
+    "goalInfo": "The goal of these exercises is not to treat damage that has already occurred, but rather to maintain the efficiency of the remaining healthy cells and slow the rate of cognitive decline."
   },
   "mythsFacts": {
     "subtitle": "Clear the Confusion",
@@ -231,8 +232,8 @@
     "timing": "Timing:",
     "instruction": "Instructions:",
     "source": "Source:",
-    "disclaimerTitle": "Medical Disclaimer:",
-    "disclaimerDesc": "This tool is for educational support for caregivers. It is not a replacement for professional medical advice. Never change a patient's medication without a doctor's order.",
+    "disclaimerTitle": "Academic Notice & Disclaimer:",
+    "disclaimerDesc": "This system is an academic research project developed for educational and guidance purposes only to promote health awareness. All medical information provided is indicative and not a substitute for professional medical consultation. Alzheimer's medications require extreme precision and direct medical supervision for any modifications.",
     "genderSpecifics": "Gender-Specific Risks:",
     "archiveTitle": "Caregiver Login",
     "archiveDesc": "Sign in to save patient medication history.",

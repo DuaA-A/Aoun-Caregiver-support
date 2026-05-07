@@ -1,172 +1,140 @@
 export const mentalExercisesData = {
   en: [
     {
-      id: 'conversation',
-      title: 'Conversation & Memory',
-      subtitle: 'Stimulating memory through social interaction',
-      summary: 'Engaging in meaningful conversations and reminiscence therapy helps keep the brain active, fosters social connection, and improves mood.',
-      coverImage: '/images/education/exercise_reminiscence_1777347764983.png',
-      content: [
-        {
-          heading: '1. Reminiscence Therapy',
-          text: 'Look at old photo albums, listen to music from their youth, or discuss family history. This can boost mood and stimulate long-term memory, which often remains intact longer than short-term memory.'
-        },
-        {
-          heading: '2. Word Association',
-          text: 'Provide a simple prompt (e.g., "beach" or "kitchen") and ask the person to describe what comes to mind. This encourages verbal expression without the pressure of a "right" answer.'
-        },
-        {
-          heading: '3. Reading Aloud',
-          text: 'Read short passages, poems, or uplifting news stories together. After reading, ask simple, opinion-based questions like "What do you think about this?" rather than factual quizzes.'
-        }
-      ]
-    },
-    {
-      id: 'puzzles',
-      title: 'Puzzles & Games',
-      subtitle: 'Encouraging problem-solving and focus',
-      summary: 'Simple games and puzzles help maintain concentration and cognitive flexibility in a fun, low-pressure environment.',
-      coverImage: '/images/education/exercise_puzzles_1777347792920.png',
-      content: [
-        {
-          heading: '1. Brain Teasers',
-          text: 'Use large-print crosswords, word searches, or Sudoku tailored to their current ability level. Avoid puzzles that are too complex to prevent frustration.'
-        },
-        {
-          heading: '2. Board and Card Games',
-          text: 'Classic games like checkers, dominoes, or simple card games (like "Go Fish") are excellent for maintaining focus and sequencing skills.'
-        },
-        {
-          heading: '3. Matching Games',
-          text: 'Try picture-matching games or a simple "object recall" game where you place a few everyday items on a tray, cover them, and see how many they can remember.'
-        }
-      ]
-    },
-    {
-      id: 'purposeful-tasks',
-      title: 'Purposeful Daily Tasks',
-      subtitle: 'Building structure and self-esteem',
-      summary: 'Involving the patient in safe, familiar household chores provides a sense of purpose and helps them feel like a contributing member of the household.',
+      id: 'physical',
+      title: 'Physical Exercises',
+      subtitle: 'Focusing on body movement',
+      summary: 'Physical activity improves blood and oxygen flow to the brain and stimulates the release of BDNF protein, which is responsible for growing and protecting neurons. It also helps reduce stress, which can accelerate cognitive decline.',
       coverImage: '/images/education/exercise_tasks_1777347869581.png',
       content: [
         {
-          heading: '1. Sorting and Organizing',
-          text: 'Ask for their help with simple sorting tasks, such as pairing socks, folding hand towels, or organizing a drawer of safe, non-sharp items.'
+          heading: '1. Light Activity',
+          text: 'Gentle walking or seated "Chair Exercises" are excellent ways to maintain physical health without overexertion.'
         },
         {
-          heading: '2. Kitchen Assistance',
-          text: 'Have them help with low-risk kitchen prep, like washing vegetables, stirring batter, or setting the table. The sensory experience of food preparation is highly stimulating.'
-        },
-        {
-          heading: '3. Gardening',
-          text: 'If they enjoy the outdoors, tasks like watering plants, pulling easy weeds, or potting flowers offer both cognitive stimulation and gentle physical exercise.'
+          heading: '2. Simplified Explanation',
+          text: 'These exercises aim to keep the body active and ensure the brain receives the nutrients it needs through better circulation.'
         }
       ]
     },
     {
-      id: 'creative',
-      title: 'Creative Expression',
-      subtitle: 'Unlocking emotions through art',
-      summary: 'Creative activities allow patients to express themselves without relying entirely on language, reducing anxiety and improving overall well-being.',
+      id: 'cognitive',
+      title: 'Cognitive Exercises',
+      subtitle: 'Training the mind like a muscle',
+      summary: 'These exercises enhance Neuroplasticity—the brain\'s ability to form new neural connections to compensate for damaged cells. Regular mental stimulation prevents cognitive atrophy.',
+      coverImage: '/images/education/exercise_puzzles_1777347792920.png',
+      content: [
+        {
+          heading: '1. Mental Games',
+          text: 'Solving simple puzzles, memory games (like remembering images), and reading provide continuous mental engagement.'
+        },
+        {
+          heading: '2. Reminiscence & Discussion',
+          text: 'Reading and discussing old events helps reinforce long-term memory and verbal expression.'
+        }
+      ]
+    },
+    {
+      id: 'coordination',
+      title: 'Coordination Exercises',
+      subtitle: 'Maintaining brain-body communication',
+      summary: 'These exercises maintain communication between the right and left hemispheres of the brain. They help preserve fine motor skills and delay the loss of ability to perform daily tasks like eating or dressing.',
+      coverImage: '/images/education/exercise_reminiscence_1777347764983.png',
+      content: [
+        {
+          heading: '1. Motor-Visual Tasks',
+          text: 'Activities like catching a ball or tasks requiring the use of both hands simultaneously are highly effective for coordination.'
+        },
+        {
+          heading: '2. Nerve Efficiency',
+          text: 'Consistent practice maintains the efficiency of nerve signals sent from the brain to the muscles.'
+        }
+      ]
+    },
+    {
+      id: 'sensory',
+      title: 'Sensory Stimulation',
+      subtitle: 'Retrieving memories through the senses',
+      summary: 'Sensory memory often remains intact longer in Alzheimer\'s patients. Activating it helps improve mood and reduces episodes of agitation or confusion.',
       coverImage: '/images/education/exercise_creative_1777348053586.png',
       content: [
         {
-          heading: '1. Art Therapy',
-          text: 'Provide watercolors, colored pencils, or clay. Focus on the process of creating rather than the final product. Praise their effort and use of colors.'
+          heading: '1. Olfactory & Auditory',
+          text: 'Smelling familiar scents or listening to calm music can trigger positive emotional responses and memories.'
         },
         {
-          heading: '2. Music and Movement',
-          text: 'Play familiar, upbeat music and encourage singing along or tapping to the rhythm. Gentle movements, like chair dancing or swaying, integrate physical and cognitive engagement.'
-        },
-        {
-          heading: '3. Sensory Crafting',
-          text: 'Activities involving different textures, like knitting, arranging flowers, or working with kinetic sand, provide excellent tactile stimulation and comfort.'
+          heading: '2. Tactile Exploration',
+          text: 'Touching different textures and surfaces provides comforting sensory input and environmental awareness.'
         }
       ]
     }
   ],
   ar: [
     {
-      id: 'conversation',
-      title: 'المحادثة والذاكرة',
-      subtitle: 'تحفيز الذاكرة من خلال التفاعل الاجتماعي',
-      summary: 'يساعد الانخراط في محادثات هادفة وعلاج استرجاع الذكريات في الحفاظ على نشاط الدماغ، وتعزيز التواصل الاجتماعي، وتحسين المزاج.',
-      coverImage: '/images/education/exercise_reminiscence_1777347764983.png',
-      content: [
-        {
-          heading: '1. علاج استرجاع الذكريات (Reminiscence)',
-          text: 'انظروا إلى ألبومات الصور القديمة، أو استمعوا إلى موسيقى من شبابهم، أو تحدثوا عن تاريخ العائلة. هذا يعزز المزاج ويحفز الذاكرة طويلة المدى، التي تظل سليمة لفترة أطول من الذاكرة قصيرة المدى.'
-        },
-        {
-          heading: '2. ربط الكلمات',
-          text: 'قدم كلمة بسيطة (مثل "بحر" أو "مطبخ") واطلب من المريض وصف ما يتبادر إلى ذهنه. هذا يشجع التعبير اللفظي دون ضغط البحث عن إجابة "صحيحة".'
-        },
-        {
-          heading: '3. القراءة بصوت عالٍ',
-          text: 'اقرأوا فقرات قصيرة، قصائد، أو قصص إيجابية معاً. بعد القراءة، اطرح أسئلة بسيطة تعتمد على الرأي مثل "ما رأيك في هذا؟" بدلاً من الاختبارات الواقعية الصارمة.'
-        }
-      ]
-    },
-    {
-      id: 'puzzles',
-      title: 'الألغاز والألعاب',
-      subtitle: 'تشجيع حل المشكلات والتركيز',
-      summary: 'تساعد الألعاب والألغاز البسيطة في الحفاظ على التركيز والمرونة المعرفية في بيئة ممتعة وخالية من الضغوط.',
-      coverImage: '/images/education/exercise_puzzles_1777347792920.png',
-      content: [
-        {
-          heading: '1. ألعاب العقل',
-          text: 'استخدم الكلمات المتقاطعة ذات الطباعة الكبيرة، أو البحث عن الكلمات، أو سودوكو المصممة لتناسب مستوى قدرتهم الحالي. تجنب الألغاز المعقدة جداً لمنع الإحباط.'
-        },
-        {
-          heading: '2. ألعاب الطاولة والبطاقات',
-          text: 'الألعاب الكلاسيكية مثل الدومينو أو ألعاب البطاقات البسيطة ممتازة للحفاظ على التركيز ومهارات التسلسل المنطقي.'
-        },
-        {
-          heading: '3. ألعاب المطابقة',
-          text: 'جرب ألعاب مطابقة الصور أو لعبة "تذكر الأشياء" البسيطة حيث تضع بعض الأشياء اليومية على صينية، ثم تغطيها لترى كم منها يمكنهم تذكره.'
-        }
-      ]
-    },
-    {
-      id: 'purposeful-tasks',
-      title: 'المهام اليومية الهادفة',
-      subtitle: 'بناء الهيكل والشعور بالقيمة',
-      summary: 'إن إشراك المريض في أعمال منزلية آمنة ومألوفة يوفر له إحساساً بالهدف ويجعله يشعر بأنه فرد مساهم في المنزل.',
+      id: 'physical',
+      title: 'التمارين البدنية (Physical Exercises)',
+      subtitle: 'التركيز على حركة الجسم',
+      summary: 'تهدف هذه التمارين إلى تحسين تدفق الدم والأكسجين إلى الدماغ. ممارسة الرياضة تحفز إفراز بروتين يسمى (BDNF)، وهو المسؤول عن نمو الخلايا العصبية وحمايتها، كما تساعد في تقليل التوتر الذي يسرع من تدهور الحالة.',
       coverImage: '/images/education/exercise_tasks_1777347869581.png',
       content: [
         {
-          heading: '1. الفرز والتنظيم',
-          text: 'اطلب مساعدتهم في مهام الفرز البسيطة، مثل مطابقة الجوارب، وطي المناشف، أو ترتيب درج يحتوي على عناصر آمنة وغير حادة.'
+          heading: '1. النشاط الخفيف',
+          text: 'مثل المشي الخفيف أو تمارين الكرسي (Chair Exercises) التي تناسب قدرات المريض البدنية.'
         },
         {
-          heading: '2. المساعدة في المطبخ',
-          text: 'اجعلهم يساعدون في تحضيرات المطبخ منخفضة المخاطر، مثل غسل الخضروات، وتقليب الخليط، أو ترتيب الطاولة. التجربة الحسية لتحضير الطعام محفزة للغاية.'
-        },
-        {
-          heading: '3. البستنة',
-          text: 'إذا كانوا يستمتعون بالخارج، فإن مهام مثل ري النباتات، أو قطف الزهور توفر تحفيزاً معرفياً وتمريناً بدنياً خفيفاً.'
+          heading: '2. الشرح المبسط',
+          text: 'الهدف هو الحفاظ على كفاءة الخلايا السليمة المتبقية وإبطاء وتيرة تدهور القدرات الإدراكية.'
         }
       ]
     },
     {
-      id: 'creative',
-      title: 'التعبير الإبداعي',
-      subtitle: 'إطلاق المشاعر من خلال الفن',
-      summary: 'تسمح الأنشطة الإبداعية للمرضى بالتعبير عن أنفسهم دون الاعتماد كلياً على اللغة، مما يقلل من القلق ويحسن الرفاهية العامة.',
+      id: 'cognitive',
+      title: 'تمارين الإدراك والذاكرة (Cognitive Exercises)',
+      subtitle: 'تمرين العقل تماماً كما نمرن العضلات',
+      summary: 'تعمل هذه التمارين على تعزيز اللدونة العصبية (Neuroplasticity)، وهي قدرة الدماغ على تكوين روابط عصبية جديدة للتعويض عن الخلايا التي تضررت بسبب المرض، مما يمنع ضمور القدرات العقلية.',
+      coverImage: '/images/education/exercise_puzzles_1777347792920.png',
+      content: [
+        {
+          heading: '1. الألعاب الذهنية',
+          text: 'مثل حل الألغاز البسيطة، ألعاب الذاكرة (تذكر الصور)، أو القراءة ومناقشة أحداث قديمة.'
+        },
+        {
+          heading: '2. الشرح المبسط',
+          text: 'الهدف من هذه التمارين هو إبقاء العقل نشطاً ومنع تدهور الذاكرة والقدرة على التركيز.'
+        }
+      ]
+    },
+    {
+      id: 'coordination',
+      title: 'تمارين التنسيق الحركي-البصري (Coordination Exercises)',
+      subtitle: 'الحفاظ على التواصل بين فصي الدماغ',
+      summary: 'تساعد هذه التمارين في الحفاظ على المهارات الحركية الدقيقة وتأخير فقدان القدرة على أداء المهام اليومية (مثل الأكل أو اللباس)، حيث تحافظ على كفاءة الإشارات العصبية المرسلة من الدماغ إلى العضلات.',
+      coverImage: '/images/education/exercise_reminiscence_1777347764983.png',
+      content: [
+        {
+          heading: '1. تمارين التنسيق',
+          text: 'مثل تمارين مسك الكرة، أو الحركات التي تتطلب استخدام اليدين معاً في وقت واحد (كما يظهر في فيديوهات تنشيط الدماغ).'
+        },
+        {
+          heading: '2. الشرح المبسط',
+          text: 'تهدف إلى الحفاظ على التواصل الفعال بين الجانبين الأيمن والأيسر من الدماغ.'
+        }
+      ]
+    },
+    {
+      id: 'sensory',
+      title: 'التمارين الحسية (Sensory Stimulation)',
+      subtitle: 'استرجاع الذاكرة من خلال الحواس',
+      summary: 'الذاكرة الحسية غالباً ما تظل صامدة لفترة أطول في مرضى الزهايمر؛ وتنشيطها يساعد في تحسين الحالة المزاجية وتقليل نوبات الهياج أو الارتباك (Agitation).',
       coverImage: '/images/education/exercise_creative_1777348053586.png',
       content: [
         {
-          heading: '1. العلاج بالفن',
-          text: 'قدم لهم الألوان المائية أو أقلام الرصاص الملونة أو الصلصال. ركز على عملية الإبداع بدلاً من المنتج النهائي. امدح جهدهم واستخدامهم للألوان.'
+          heading: '1. التحفيز الحسي',
+          text: 'مثل شم روائح مألوفة، الاستماع لموسيقى هادئة، أو لمس أسطح مختلفة الملمس.'
         },
         {
-          heading: '2. الموسيقى والحركة',
-          text: 'قم بتشغيل موسيقى مألوفة ومبهجة وشجعهم على الغناء أو النقر على الإيقاع. الحركات الخفيفة، مثل الرقص على الكرسي، تدمج بين التفاعل الجسدي والمعرفي.'
-        },
-        {
-          heading: '3. الحرف الحسية',
-          text: 'الأنشطة التي تنطوي على مواد مختلفة، مثل الحياكة، أو تنسيق الزهور، أو اللعب بالرمل الحركي، توفر تحفيزاً وراحة حسية ممتازة.'
+          heading: '2. الشرح المبسط',
+          text: 'تهدف إلى الوصول للذكريات والعواطف من خلال الحواس الخمس.'
         }
       ]
     }

@@ -13,7 +13,7 @@ const createCombinations = (groupA, groupB, interactionData) => {
   return result;
 };
 
-const cholinesteraseInhibitors = ['rivastigmine', 'exelon', 'rivamer', 'galantamine', 'reminyl'];
+const cholinesteraseInhibitors = ['donepezil', 'aricept', 'alzepzil', 'rivastigmine', 'exelon', 'rivamer', 'galantamine', 'reminyl'];
 const memantineGroup = ['memantine', 'ebixa', 'memixa', 'memental'];
 
 // 1. Anticholinergics - Critical (Level 4)
@@ -103,6 +103,15 @@ const urineAlkalinizers = ['sodium bicarbonate', 'potassium citrate', 'acetazola
 
 // 7. Cholinergic Agonists (Level 2)
 const cholinergicAgonists = ['pyridostigmine', 'neostigmine', 'pilocarpine', 'bethanechol', 'mestinon', 'prostigmin', 'salagen', 'urecholine'];
+
+// 8. Diabetes Medications (Level 3/2)
+const metforminGroup = ['metformin', 'glucophage', 'cidophage', 'janumet', 'eucreas'];
+const sulfonylureas = ['glibenclamide', 'daonil', 'glimepiride', 'amaryl'];
+const insulinGroup = ['insulin', 'mixtard', 'lantus', 'novorapid', 'humalog'];
+const gliptins = ['sitagliptin', 'januvia', 'vildagliptin', 'galvus', 'janumet', 'eucreas'];
+
+// 9. Antibiotics - Specific
+const amoxicillinGroup = ['amoxicillin', 'amoxil', 'augmentin', 'hibiotic', 'curam', 'flumox'];
 
 const ADDITIONAL_ENTRIES = [
   // 1. Anticholinergics
@@ -319,6 +328,88 @@ const ADDITIONAL_ENTRIES = [
       general: 'New twitching, jerking, or loss of consciousness — emergency services immediately.',
       toxicity: 'RED FLAGS: Tonic-clonic seizure — do not restrain, protect head, call emergency services.',
       emergencyProtocol: 'ER: IV Lorazepam or Diazepam for seizure management.',
+      pregnancy: 'N/A',
+      pediatric: 'N/A'
+    }
+  }),
+  
+  // 14. Diabetes Interactions
+  ...createCombinations(cholinesteraseInhibitors, metforminGroup, {
+    severity: 'Moderate (Level 2)',
+    description: 'Mechanism: Additive Gastrointestinal Side Effects. Both drugs can irritate the digestive tract.',
+    genderSpecifics: 'N/A',
+    comment: 'CAUTION: Increased risk of nausea and diarrhea. Monitor patient tolerance.',
+    firstAid: {
+      general: 'Monitor for dehydration if diarrhea occurs.',
+      toxicity: 'SYMPTOMS: Severe persistent nausea and diarrhea.',
+      emergencyProtocol: 'Clinical review.',
+      pregnancy: 'N/A',
+      pediatric: 'N/A'
+    }
+  }),
+  ...createCombinations(memantineGroup, metforminGroup, {
+    severity: 'Moderate (Level 2)',
+    description: 'Mechanism: Renal Competition. Both drugs are excreted by the kidneys and may compete for clearance.',
+    genderSpecifics: 'N/A',
+    comment: 'CAUTION: Monitor kidney function, especially in patients with existing renal impairment.',
+    firstAid: {
+      general: 'Ensure adequate hydration.',
+      toxicity: 'SIGNS: Lactic acidosis (metformin) or neurotoxicity (memantine) in severe renal failure.',
+      emergencyProtocol: 'Clinical review of renal function tests.',
+      pregnancy: 'N/A',
+      pediatric: 'N/A'
+    }
+  }),
+  ...createCombinations(cholinesteraseInhibitors, sulfonylureas, {
+    severity: 'Major (Level 3)',
+    description: 'Mechanism: Mixed Autonomic Interaction. Hypoglycemia from diabetes meds combined with bradycardia from AD meds increases fall risk.',
+    genderSpecifics: 'Elderly: Extremely high risk of "silent" hypoglycemia and falls.',
+    comment: 'WARNING: Close monitoring of blood glucose and pulse is mandatory.',
+    firstAid: {
+      general: 'Check blood glucose if patient feels dizzy or weak.',
+      toxicity: 'RED FLAGS: Severe dizziness, cold sweat, confusion, and slow pulse.',
+      emergencyProtocol: 'ER for stabilization of glucose levels.',
+      pregnancy: 'N/A',
+      pediatric: 'N/A'
+    }
+  }),
+  ...createCombinations(cholinesteraseInhibitors, insulinGroup, {
+    severity: 'Major (Level 3)',
+    description: 'Mechanism: Masked Hypoglycemia. Donepezil/Rivastigmine may mask or be confused with symptoms of low blood sugar.',
+    genderSpecifics: 'N/A',
+    comment: 'WARNING: Hypoglycemia confusion can be mistaken for Alzheimer\'s agitation. Monitor blood sugar closely.',
+    firstAid: {
+      general: 'Always rule out hypoglycemia first when sudden confusion occurs.',
+      toxicity: 'RED FLAGS: Sudden confusion, agitation, or loss of consciousness.',
+      emergencyProtocol: 'ER for glucose management.',
+      pregnancy: 'N/A',
+      pediatric: 'N/A'
+    }
+  }),
+  ...createCombinations(memantineGroup, gliptins, {
+    severity: 'Moderate (Level 2)',
+    description: 'Mechanism: Shared Renal Excretion. Possible accumulation of both drugs in patients with kidney issues.',
+    genderSpecifics: 'N/A',
+    comment: 'CAUTION: Monitor renal function (Creatinine/GFR).',
+    firstAid: {
+      general: 'Ensure regular kidney function check-ups.',
+      toxicity: 'N/A',
+      emergencyProtocol: 'Clinical review.',
+      pregnancy: 'N/A',
+      pediatric: 'N/A'
+    }
+  }),
+
+  // 15. Amoxicillin + Cholinesterase Inhibitors
+  ...createCombinations(cholinesteraseInhibitors, amoxicillinGroup, {
+    severity: 'Low (Level 1)',
+    description: 'Mechanism: Additive GI Side Effects. No direct serious interaction, but both can cause stomach upset.',
+    genderSpecifics: 'N/A',
+    comment: 'Generally safe together. Monitor for temporary nausea or diarrhea.',
+    firstAid: {
+      general: 'Take with food to minimize stomach upset.',
+      toxicity: 'N/A',
+      emergencyProtocol: 'Clinical review if diarrhea is severe.',
       pregnancy: 'N/A',
       pediatric: 'N/A'
     }

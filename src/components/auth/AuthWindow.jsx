@@ -126,14 +126,14 @@ const AuthWindow = ({ onClose }) => {
             />
           </div>
 
-          <button type="submit" className="btn btn-premium w-full" disabled={loading}>
+          <button type="submit" className="btn btn-auth-animated w-full" disabled={loading}>
             {loading ? t('auth.processing') : (isLogin ? t('auth.signIn') : t('auth.createAccount'))}
           </button>
         </form>
 
         <div className="auth-footer">
           <span>{isLogin ? t('auth.newTo') : t('auth.alreadyMember')}</span>
-          <button className="btn-text" onClick={() => setIsLogin(!isLogin)}>
+          <button className="btn-text btn-text-animated" onClick={() => setIsLogin(!isLogin)}>
             {isLogin ? t('auth.signUp') : t('auth.signIn')}
           </button>
         </div>
@@ -255,6 +255,36 @@ const AuthWindow = ({ onClose }) => {
         }
         .btn-text:hover {
           text-decoration: underline;
+        }
+        .btn-auth-animated {
+          background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent), var(--primary)) !important;
+          background-size: 200% auto !important;
+          animation: auth-gradient 3s linear infinite !important;
+          border: none !important;
+          color: #1e3a5f !important;
+          font-weight: 800;
+          transition: transform 0.2s ease !important;
+          box-shadow: 0 4px 15px rgba(30, 58, 95, 0.15) !important;
+        }
+        .btn-auth-animated:hover:not(:disabled) {
+          transform: translateY(-2px) !important;
+          box-shadow: 0 8px 25px rgba(30, 58, 95, 0.2) !important;
+        }
+        @keyframes auth-gradient {
+          0% { background-position: 0% center; }
+          100% { background-position: 200% center; }
+        }
+        .btn-text-animated {
+          position: relative;
+          display: inline-block;
+          animation: gentle-bounce 3s infinite ease-in-out;
+          padding: 2px 8px;
+          border-radius: 6px;
+          background: rgba(59, 130, 246, 0.05);
+        }
+        @keyframes gentle-bounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-3px); }
         }
         @media (max-width: 480px) {
           .auth-modal {

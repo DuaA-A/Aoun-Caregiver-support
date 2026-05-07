@@ -22,6 +22,23 @@ const MentalExercises = () => {
         </div>
       </div>
 
+      <div className="video-section-header animate-fade-in">
+        <p className="goal-info-text">
+          <span>{t('mentalExercises.goalInfo')}</span>
+        </p>
+      </div>
+
+      <div className="video-card-wrapper animate-fade-in">
+        <div className="video-card">
+          <iframe 
+            src="https://www.youtube.com/embed/9nDBY2tH3lI?autoplay=0&controls=1&loop=1&playlist=9nDBY2tH3lI" 
+            title="Mental Exercises Intro"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowFullScreen
+          ></iframe>
+        </div>
+      </div>
+
       <div className="alzheimer-nav-cards">
         {data.map((sectionData) => (
           <div 

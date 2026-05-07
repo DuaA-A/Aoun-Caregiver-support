@@ -303,6 +303,7 @@ const Navbar = ({ onOpenAuth }) => {
           justify-content: space-between;
           align-items: center;
           width: 100%;
+          height: 100%;
         }
 
         .nav-logo {
@@ -342,7 +343,7 @@ const Navbar = ({ onOpenAuth }) => {
         .white-text { color: white !important; }
         .logo-img { height: 40px; width: auto; border-radius: 8px; }
         
-        .nav-links { display: flex; align-items: center; gap: 2rem; }
+        .nav-links { display: flex; align-items: center; gap: 2rem; height: 100%; }
         .nav-link {
           text-decoration: none;
           color: var(--text-muted);
@@ -414,7 +415,7 @@ const Navbar = ({ onOpenAuth }) => {
         .mobile-logout-btn { background: none; border: none; padding: 0; font: inherit; color: var(--error) !important; cursor: pointer; text-align: left; }
         .mobile-menu[dir="rtl"] .mobile-logout-btn { text-align: right; }
 
-        .btn-sm { padding: 10px 24px; font-size: 0.9rem; }
+        .btn-sm { padding: 8px 24px; font-size: 0.9rem; line-height: 1; margin-top: 2px; }
         .btn-white { background: white; color: var(--primary); }
         .btn-white:hover { background: #f8f9fa; transform: translateY(-2px); }
 
