@@ -106,23 +106,23 @@ const NotificationBell = ({ isFAB = false }) => {
           position: relative;
           display: flex; align-items: center; justify-content: center;
           width: 44px; height: 44px; border: none; border-radius: 12px; cursor: pointer;
-          background: rgba(10, 37, 64, 0.06);
-          color: #0a2540;
-          transition: background 0.2s, color 0.2s, transform 0.15s;
+          background: rgba(59, 130, 246, 0.08);
+          color: var(--primary);
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .notif-bell:hover { background: rgba(10, 37, 64, 0.12); }
+        .notif-bell:hover { background: rgba(59, 130, 246, 0.15); color: var(--secondary); }
         .is-fab .notif-bell {
           width: 64px; height: 64px; border-radius: 50%;
-          background: linear-gradient(135deg, #1e3a5f, #3b82f6);
+          background: linear-gradient(135deg, var(--primary), var(--secondary));
           color: #fff;
-          box-shadow: 0 10px 30px rgba(30, 58, 95, 0.4);
+          box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
           border: 3px solid #fff;
         }
-        .is-fab .notif-bell:hover { transform: scale(1.05); box-shadow: 0 15px 40px rgba(30, 58, 95, 0.5); }
+        .is-fab .notif-bell:hover { transform: scale(1.05) rotate(5deg); box-shadow: 0 15px 40px rgba(59, 130, 246, 0.5); }
         
         .navbar-transparent .notif-bell { background: rgba(255,255,255,0.2); color: #fff; }
         .navbar-transparent .notif-bell:hover { background: rgba(255,255,255,0.3); }
-        .navbar-scrolled .notif-bell { background: rgba(10, 37, 64, 0.06); color: #0a2540; }
+        .navbar-scrolled .notif-bell { background: rgba(59, 130, 246, 0.06); color: var(--primary); }
         
         .notif-badge {
           position: absolute; top: -5px; right: -5px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px;
@@ -182,14 +182,14 @@ const NotificationBell = ({ isFAB = false }) => {
         
         .notif-actions { display: flex; gap: 8px; margin-top: 12px; }
         .notif-pill { padding: 8px 14px; border-radius: 10px; font-weight: 700; transition: all 0.2s; }
-        .notif-pill.mark-taken { background: #1e3a5f; color: #fff; }
-        .notif-pill.mark-taken:hover { background: #2a528a; transform: translateY(-1px); }
+        .notif-pill.mark-taken { background: var(--primary); color: #fff; }
+        .notif-pill.mark-taken:hover { background: var(--secondary); transform: translateY(-1px); }
         
         .notif-done-lbl { display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 700; color: #16a34a; margin-top: 8px; }
 
         .notif-footer { padding: 16px; background: #f8fafc; border-top: 1px solid rgba(0,0,0,0.06); }
-        .notif-link-dash { width: 100%; padding: 10px; border-radius: 10px; background: #fff; border: 1px solid #e2e8f0; color: #1e3a5f; transition: all 0.2s; }
-        .notif-link-dash:hover { background: #1e3a5f; color: #fff; }
+        .notif-link-dash { width: 100%; padding: 10px; border-radius: 10px; background: #fff; border: 1px solid #e2e8f0; color: var(--primary); transition: all 0.2s; font-weight: 700; }
+        .notif-link-dash:hover { background: var(--primary); color: #fff; }
 
         @media (max-width: 768px) {
           .panel-fab {

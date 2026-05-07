@@ -377,16 +377,16 @@ const Home = ({ onOpenAuth }) => {
         .image-circle img { width: 100%; height: 100%; object-fit: cover; }
         
         /* Spread Wide Layout - Fixed to Right Half to Avoid Overlap */
-        .image-circle.circle-1 { width: 320px; height: 320px; z-index: 3; top: 0; right: 0; }
-        .image-circle.circle-2 { width: 260px; height: 260px; z-index: 2; bottom: 20px; right: 40px; }
-        .image-circle.circle-3 { width: 220px; height: 220px; z-index: 4; top: 160px; right: 260px; }
-        .image-circle.circle-4 { width: 180px; height: 180px; z-index: 5; top: 20px; right: 340px; }
+        .image-circle.circle-1 { width: 440px; height: 440px; z-index: 3; top: -70px; right: 60px; }
+        .image-circle.circle-2 { width: 280px; height: 280px; z-index: 2; bottom: -10px; right: -30px; }
+        .image-circle.circle-3 { width: 240px; height: 240px; z-index: 4; top: 240px; right: 380px; }
+        .image-circle.circle-4 { width: 200px; height: 200px; z-index: 5; top: 40px; right: 460px; }
 
         /* RTL Circle Flipping */
-        [dir="rtl"] .image-circle.circle-1 { right: auto; left: 0; }
-        [dir="rtl"] .image-circle.circle-2 { right: auto; left: 40px; }
-        [dir="rtl"] .image-circle.circle-3 { right: auto; left: 260px; }
-        [dir="rtl"] .image-circle.circle-4 { right: auto; left: 340px; }
+        [dir="rtl"] .image-circle.circle-1 { right: auto; left: 60px; }
+        [dir="rtl"] .image-circle.circle-2 { right: auto; left: -30px; }
+        [dir="rtl"] .image-circle.circle-3 { right: auto; left: 380px; }
+        [dir="rtl"] .image-circle.circle-4 { right: auto; left: 460px; }
         
         .mini-bubble { position: absolute; border-radius: 50%; opacity: 0.6; filter: blur(2px); animation: pulse-mini 5s infinite ease-in-out; }
         @keyframes pulse-mini { 0%, 100% { transform: scale(1); opacity: 0.4; } 50% { transform: scale(1.4); opacity: 0.8; } }
